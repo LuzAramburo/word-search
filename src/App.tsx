@@ -2,17 +2,16 @@ import './App.css';
 import { Grid } from './components/grid/Grid';
 import { WordList } from './components/wordList/WordList';
 import { useState } from 'react';
+import { gridFactory } from '@/utils/gridFactory.ts';
 
 const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Bread', 'Rusk'];
-const gridSize = 12;
-const matrixFactory = (): null[][] => new Array(gridSize).fill(Array(gridSize).fill(null));
 
 function App() {
   const [wordsList, setWordsList] = useState(myWords);
-  const [gridMatrix, setGridMatrix] = useState(matrixFactory());
+  const [gridMatrix, setGridMatrix] = useState(gridFactory(12));
 
   return (
-    <main className="p-4">
+    <main className="p-4 max-w-screen-2xl mx-auto">
       <h1 className="text-3xl font-bold underline mb-6">
         Word Search
       </h1>

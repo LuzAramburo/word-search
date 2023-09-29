@@ -1,10 +1,10 @@
+import { IGridItem } from '@/types/IGridMatrix.tsx';
+
 type GridCellProps = {
-  letter: string;
-  row: number;
-  col: number;
+  item: IGridItem;
 };
-export const GridCell = ({ letter }: GridCellProps) => {
+export const GridCell = ({ item }: GridCellProps) => {
   return (
-    <div className="w-10 h-10 border border-gray-400 flex justify-center items-center">{ letter }</div>
+    <div className="w-10 h-10 border border-gray-400 flex justify-center items-center">{ item.letter }</div>
   );
 };
