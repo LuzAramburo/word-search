@@ -1,20 +1,26 @@
 import './App.css';
+import { Grid } from './components/grid/Grid';
+import { WordList } from './components/wordList/WordList';
+import { useState } from 'react';
+
+const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Bread', 'Rusk'];
+const gridSize = 12;
+const matrixFactory = (): null[][] => new Array(gridSize).fill(Array(gridSize).fill(null));
 
 function App() {
+  const [wordsList, setWordsList] = useState(myWords);
+  const [gridMatrix, setGridMatrix] = useState(matrixFactory());
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
+    <main className="p-4">
+      <h1 className="text-3xl font-bold underline mb-6">
+        Word Search
       </h1>
-      <details className="dropdown mb-32">
-        <summary className="m-1 btn">open or close</summary>
-        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-          <li><a>Item 1</a></li>
-          <li><a>Item 2</a></li>
-        </ul>
-      </details>
-    </>
+      <div className="grid grid-cols-5 gap-4">
+        <WordList wordsList={wordsList} />
+        <Grid matrix={gridMatrix} wordsList={wordsList} />
+      </div>
+    </main>
   );
 }
 

@@ -28,6 +28,10 @@ module.exports = {
     "indent": ["error", 2],
     "no-trailing-spaces": "error",
     "react/react-in-jsx-scope": "off",
-    "react/jsx-max-props-per-line": [1, { "when": "multiline" }]
+    "react/jsx-max-props-per-line": [1, { "when": "multiline" }],
+    "react/self-closing-comp": ["error", {
+      "component": true,
+      "html": true
+    }]
   },
 }
