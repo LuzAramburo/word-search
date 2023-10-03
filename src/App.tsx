@@ -4,11 +4,12 @@ import { WordList } from './components/wordList/WordList';
 import { useState } from 'react';
 import { gridFactory } from '@/utils/gridFactory.ts';
 
-const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Bread', 'Rusk'];
+const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk'];
+const gridSize = 12;
 
 function App() {
   const [wordsList, setWordsList] = useState(myWords);
-  const [gridMatrix, setGridMatrix] = useState(gridFactory(12));
+  const [gridMatrix, setGridMatrix] = useState(gridFactory(gridSize, myWords));
 
   return (
     <main className="p-4 max-w-screen-2xl mx-auto">
@@ -17,7 +18,7 @@ function App() {
       </h1>
       <div className="grid grid-cols-5 gap-4">
         <WordList wordsList={wordsList} />
-        <Grid matrix={gridMatrix} wordsList={wordsList} />
+        <Grid grid={gridMatrix} />
       </div>
     </main>
   );

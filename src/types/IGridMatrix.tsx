@@ -3,6 +3,7 @@ export interface IGridItem {
   position: number;
   row: number;
   col: number;
+  orientation: string;
 }
 
 export type IGridMatrix = IGridItem[]
