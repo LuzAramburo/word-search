@@ -15,7 +15,7 @@ const testWord = (
 ): IGridMatrix | null => {
   const newGrid = [...grid];
 
-  if(grid[cell.position].letter === '' || grid[cell.position].letter === word.slice(0, 1)) {
+  if(newGrid[cell.position].letter === word.slice(0, 1) || newGrid[cell.position].letter === '' ) {
 
     if (direction === POSITIONS.ROW && (cell.col + word.length) <= gridSize) {
       let startingCell = cell.position;
@@ -37,6 +37,10 @@ const testWord = (
       return newGrid;
     }
 
+    if (direction === POSITIONS.DIAGONAL) {
+
+    }
+
   }
   return null;
 };
@@ -51,7 +55,7 @@ const placeWords = (gridMatrix: IGridMatrix, wordList: string[], gridSize: numbe
       const orientation = positions[Math.floor(Math.random() * positions.length)];
       const startingPosition = Math.floor(Math.random() * gridMatrix.length);
 
-      const cellFormatted = { ...newGrid[startingPosition], letter: word.slice(0, 1), orientation };
+      const cellFormatted = { ...newGrid[startingPosition], orientation };
 
       const grid = testWord(newGrid, gridSize, word, cellFormatted, orientation);
 
@@ -61,6 +65,14 @@ const placeWords = (gridMatrix: IGridMatrix, wordList: string[], gridSize: numbe
       }
     }
   }
+
+  // 0x00D1 Ñ
+  // const letters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+  // for (let position = 0; position < newGrid.length; position++) {
+  //   if (newGrid[position].letter === '') {
+  //     newGrid[position] = { ...newGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
+  //   }
+  // }
 
   return newGrid;
 };

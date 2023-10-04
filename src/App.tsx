@@ -4,7 +4,7 @@ import { WordList } from './components/wordList/WordList';
 import { useState } from 'react';
 import { gridFactory } from '@/utils/gridFactory.ts';
 
-const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk'];
+const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
 const gridSize = 12;
 
 function App() {
