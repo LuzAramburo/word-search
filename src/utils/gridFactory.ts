@@ -21,7 +21,7 @@ const testWord = (
       let startingCell = cell.position;
       for (const letter of word) {
         if (newGrid[startingCell].letter !== '' && newGrid[startingCell].letter !== letter) return null;
-        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase() };
+        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase(), color: 'lightblue' };
         startingCell = startingCell + 1;
       }
       return newGrid;
@@ -31,14 +31,24 @@ const testWord = (
       let startingCell = cell.position;
       for (const letter of word) {
         if (newGrid[startingCell].letter !== '' && newGrid[startingCell].letter !== letter) return null;
-        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase() };
+        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase(), color: 'lightgreen' };
         startingCell = startingCell + gridSize;
       }
       return newGrid;
     }
 
-    if (direction === POSITIONS.DIAGONAL) {
-
+    if (
+      direction === POSITIONS.DIAGONAL
+      && (cell.col + word.length) <= gridSize
+      && (cell.row + word.length) <= gridSize
+    ) {
+      let startingCell = cell.position;
+      for (const letter of word) {
+        if (newGrid[startingCell].letter !== '' && newGrid[startingCell].letter !== letter) return null;
+        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase(), color: 'pink' };
+        startingCell = startingCell + gridSize + 1;
+      }
+      return newGrid;
     }
 
   }
@@ -46,7 +56,7 @@ const testWord = (
 };
 
 const placeWords = (gridMatrix: IGridMatrix, wordList: string[], gridSize: number) => {
-  const positions = [POSITIONS.ROW, POSITIONS.COLUMN];
+  const positions = [POSITIONS.ROW, POSITIONS.COLUMN, POSITIONS.DIAGONAL];
   let newGrid = [...gridMatrix];
 
   for (const word of wordList) {
@@ -67,12 +77,12 @@ const placeWords = (gridMatrix: IGridMatrix, wordList: string[], gridSize: numbe
   }
 
   // 0x00D1 Ñ
-  // const letters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
-  // for (let position = 0; position < newGrid.length; position++) {
-  //   if (newGrid[position].letter === '') {
-  //     newGrid[position] = { ...newGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
-  //   }
-  // }
+  const letters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+  for (let position = 0; position < newGrid.length; position++) {
+    if (newGrid[position].letter === '') {
+      newGrid[position] = { ...newGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
+    }
+  }
 
   return newGrid;
 };
