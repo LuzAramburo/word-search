@@ -1,4 +1,4 @@
-import { IGridItem } from '@/types/IGridMatrix.tsx';
+import { IGridItem } from '@/types/IGrid.tsx';
 
 type GridCellProps = {
   item: IGridItem;

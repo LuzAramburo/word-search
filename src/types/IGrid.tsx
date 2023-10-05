@@ -5,6 +5,3 @@ export interface IGridItem {
   col: number;
   orientation: string;
 }
-
-export type IGridMatrix = IGridItem[]
-

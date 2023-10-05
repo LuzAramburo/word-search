@@ -1,8 +1,7 @@
 import { GridCell } from '@/components/grid/GridCell.tsx';
-import { IGridMatrix } from '@/types/IGridMatrix.tsx';
 
 type GridProps = {
-  grid: IGridMatrix;
+  grid: IGridItem[];
 };
 
 export const Grid = ({ grid }: GridProps) => {

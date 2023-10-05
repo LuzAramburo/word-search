@@ -1,4 +1,4 @@
-import { IGridItem, IGridMatrix } from '@/types/IGridMatrix.tsx';
+import { IGridItem } from '@/types/IGrid.tsx';
 
 const POSITIONS = {
   ROW: 'row',
@@ -7,12 +7,12 @@ const POSITIONS = {
 };
 
 const testWord = (
-  grid: IGridMatrix,
+  grid: IGridItem[],
   gridSize: number,
   word: string,
   cell: IGridItem,
   direction: string,
-): IGridMatrix | null => {
+): IGridItem[] | null => {
   const newGrid = [...grid];
 
   if(newGrid[cell.position].letter === word.slice(0, 1) || newGrid[cell.position].letter === '' ) {
@@ -55,7 +55,7 @@ const testWord = (
   return null;
 };
 
-const placeWords = (gridMatrix: IGridMatrix, wordList: string[], gridSize: number) => {
+const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: number) => {
   const positions = [POSITIONS.ROW, POSITIONS.COLUMN, POSITIONS.DIAGONAL];
   let newGrid = [...gridMatrix];
 
@@ -89,7 +89,7 @@ const placeWords = (gridMatrix: IGridMatrix, wordList: string[], gridSize: numbe
 
 export const gridFactory = (gridSize: number, wordList: string[]) => {
   const emptyGrid: null[][] = new Array(gridSize * gridSize).fill(null);
-  const grid: IGridMatrix = emptyGrid.map((_item, itemIndex) =>  {
+  const grid: IGridItem[] = emptyGrid.map((_item, itemIndex) =>  {
     return {
       letter: '',
       position: itemIndex,

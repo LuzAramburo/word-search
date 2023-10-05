@@ -1,14 +1,20 @@
 import { createContext, Dispatch, ReactNode, useReducer } from 'react';
-import { WordSearchActions, WordSearchContextType } from '@/context/WordSearchContext.types.tsx';
+import { WordSearchActions, WordSearchContextType, wordSearchReducer } from '@/context/WordSearchReducer.tsx';
+import { gridFactory } from '@/utils/gridFactory.ts';
 
 export const WordSearchContext = createContext<WordSearchContextType | null>(null);
 export const WordSearchDispatchContext = createContext<Dispatch<WordSearchActions> | null>(null);
 
 export type WordSearchProps = { children: ReactNode; };
 
+const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
+const gridSize = 12;
+
 const initialValue: WordSearchContextType = {
   gameState: 'idle',
+  wordList: myWords,
   collectedLetters: [],
+  grid: gridFactory(gridSize, myWords),
 };
 
 export const WordSearchProvider = ({ children }: WordSearchProps) => {
@@ -23,24 +29,3 @@ export const WordSearchProvider = ({ children }: WordSearchProps) => {
   );
 };
 
-function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions) {
-  const { type, payload } = action;
-
-  switch (type) {
-  case 'setCollectedLetter':
-    return {
-      ...state,
-      collectedLetters: [...state.collectedLetters, payload],
-    };
-
-  case 'setGameState':
-    return {
-      ...state,
-      gameState: payload,
-    };
-
-
-  default:
-    return state;
-  }
-}
