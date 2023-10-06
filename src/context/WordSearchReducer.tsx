@@ -1,36 +1,34 @@
+import { GameStateType, WordSearchContextType } from '@/context/WordSearchContext.tsx';
 import { IGridItem } from '@/types/IGrid.tsx';
 
-type GameState = 'idle' | 'collecting' | 'answering'
+type GameStateAction = { type: 'setGameState'; payload: GameStateType; }
+type CollectingAction = { type: 'setCollectedLetter'; payload: IGridItem; }
+type ResetCollectingAction = { type: 'resetCollecting' }
 
-export type WordSearchContextType = {
-  gameState: GameState;
-  collectedLetters: string[];
-  wordList: string[];
-  grid: IGridItem[];
-}
-
-export type GameStateAction = { type: 'setGameState'; payload: GameState; }
-export type CollectingAction = { type: 'setCollectedLetter'; payload: string; }
-
-export type WordSearchActions = CollectingAction | GameStateAction;
+export type WordSearchActions = CollectingAction | GameStateAction | ResetCollectingAction;
 
 
-export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions) {
-  const { type, payload } = action;
-
-  switch (type) {
+export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
+  switch (action.type) {
   case 'setCollectedLetter':
     return {
       ...state,
-      collectedLetters: [...state.collectedLetters, payload],
+      gameState: 'collecting',
+      collectedLetters: [...state.collectedLetters, action.payload],
+    };
+
+  case 'resetCollecting':
+    return {
+      ...state,
+      gameState: 'idle',
+      collectedLetters: [],
     };
 
   case 'setGameState':
     return {
       ...state,
-      gameState: payload,
+      gameState: action.payload,
     };
-
 
   default:
     return state;
