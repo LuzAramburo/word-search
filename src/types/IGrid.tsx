@@ -4,4 +4,5 @@ export interface IGridItem {
   row: number;
   col: number;
   orientation: string;
+  color?: string;
 }

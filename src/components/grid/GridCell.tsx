@@ -16,17 +16,12 @@ export const GridCell = ({ item }: GridCellProps) => {
     dispatch({ type: 'setCollectedLetter', payload: item });
   };
 
-  const mouseUpHandler = () => {
-    dispatch({ type: 'setGameState', payload: 'answering' });
-  };
-
   return (
     <div
       className="w-10 h-10 border border-gray-400 flex justify-center items-center select-none cursor-pointer"
-      style={{ background: item.color }}
+      style={{ backgroundColor: item.color }}
       onMouseEnter={hoverHandler}
       onMouseDown={mouseDownHandler}
-      onMouseUp={mouseUpHandler}
     >{ item.letter }</div>
   );
 };
