@@ -1,4 +1,4 @@
-import { IGridItem } from '@/types/IGrid.tsx';
+import { IGridItem } from '@/types/IGrid.ts';
 import { useWordSearchContext, useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
 
 type GridCellProps = {

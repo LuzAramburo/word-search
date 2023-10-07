@@ -1,4 +1,4 @@
-import { IGridItem } from '@/types/IGrid.tsx';
+import { IGridItem } from '@/types/IGrid.ts';
 
 const POSITIONS = {
   ROW: 'row',
@@ -21,7 +21,7 @@ const testWord = (
       let startingCell = cell.position;
       for (const letter of word) {
         if (newGrid[startingCell].letter !== '' && newGrid[startingCell].letter !== letter) return null;
-        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase(), color: 'lightblue' };
+        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase() };
         startingCell = startingCell + 1;
       }
       return newGrid;
@@ -31,7 +31,7 @@ const testWord = (
       let startingCell = cell.position;
       for (const letter of word) {
         if (newGrid[startingCell].letter !== '' && newGrid[startingCell].letter !== letter) return null;
-        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase(), color: 'lightgreen' };
+        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase() };
         startingCell = startingCell + gridSize;
       }
       return newGrid;
@@ -45,7 +45,7 @@ const testWord = (
       let startingCell = cell.position;
       for (const letter of word) {
         if (newGrid[startingCell].letter !== '' && newGrid[startingCell].letter !== letter) return null;
-        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase(), color: 'pink' };
+        newGrid[startingCell] = { ...newGrid[startingCell], letter: letter.toUpperCase() };
         startingCell = startingCell + gridSize + 1;
       }
       return newGrid;

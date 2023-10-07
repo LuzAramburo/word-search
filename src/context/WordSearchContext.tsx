@@ -1,19 +1,20 @@
 import { createContext, Dispatch, ReactNode, useContext, useReducer } from 'react';
 import { WordSearchActions, wordSearchReducer } from '@/context/WordSearchReducer.tsx';
 import { gridFactory } from '@/utils/gridFactory.ts';
-import { IGridItem } from '@/types/IGrid.tsx';
+import { IGridItem } from '@/types/IGrid.ts';
+import { IWord } from '@/types/IWord.ts';
 
 export const WordSearchContext = createContext<WordSearchContextType | null>(null);
 export const WordSearchDispatchContext = createContext<Dispatch<WordSearchActions> | null>(null);
 
 export type WordSearchProps = { children: ReactNode; };
 
-export type GameStateType = 'idle' | 'collecting' | 'answering';
+export type GameStateType = 'idle' | 'collecting';
 
 export type WordSearchContextType = {
   gameState: GameStateType;
   collectedLetters: IGridItem[];
-  wordList: string[];
+  wordList: IWord[];
   grid: IGridItem[];
 }
 
@@ -22,7 +23,7 @@ const gridSize = 12;
 
 const initialValue: WordSearchContextType = {
   gameState: 'idle',
-  wordList: myWords,
+  wordList: myWords.map(word => ({ word: word.toUpperCase(), found: false })),
   collectedLetters: [] as IGridItem[],
   grid: gridFactory(gridSize, myWords),
 };

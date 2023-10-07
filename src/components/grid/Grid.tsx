@@ -1,5 +1,5 @@
 import { GridCell } from '@/components/grid/GridCell.tsx';
-import { IGridItem } from '@/types/IGrid.tsx';
+import { IGridItem } from '@/types/IGrid.ts';
 
 type GridProps = {
   grid: IGridItem[];
