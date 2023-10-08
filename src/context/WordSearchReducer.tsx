@@ -23,7 +23,7 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
   switch (action.type) {
   case 'setCollectedLetter': {
     const updatedGrid = [...state.grid];
-    updatedGrid[action.payload.position] = { ...action.payload, color: 'var(--color-primary)' };
+    updatedGrid[action.payload.position] = { ...action.payload, collected: true };
     return {
       ...state,
       gameState: 'collecting',
@@ -50,7 +50,7 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
     } else {
       const collectedLetters = state.collectedLetters.map(item => item.position);
       updatedGrid = updatedGrid.map(cell => {
-        if (collectedLetters.includes(cell.position)) return { ...cell, color: '' };
+        if (collectedLetters.includes(cell.position)) return { ...cell, collected: false };
         return cell;
       });
     }

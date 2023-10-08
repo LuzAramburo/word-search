@@ -100,6 +100,7 @@ export const gridFactory = (gridSize: number, wordList: IWord[]) => {
       row: Math.floor(itemIndex / gridSize),
       col: itemIndex % gridSize,
       orientation: '',
+      collected: false,
     };
   });
 
