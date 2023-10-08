@@ -10,7 +10,3 @@ Sopa de letras is a game where you search for a words in a grid of letters.
 - [ ] random words each time
 - [ ] theme colors
 - [ ] achievements, save to account or local
-
-# Bugs
-- [x] Eggs word not working
-- [ ] Click on collected word removes sets false

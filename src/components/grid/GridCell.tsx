@@ -14,7 +14,7 @@ export const GridCell = ({ item }: GridCellProps) => {
   };
 
   const mouseDownHandler = () => {
-    dispatch({ type: 'setCollectedLetter', payload: item });
+    if (!item.collected) dispatch({ type: 'setCollectedLetter', payload: item });
   };
 
   return (
