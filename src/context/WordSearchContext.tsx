@@ -1,35 +1,22 @@
 import { createContext, Dispatch, ReactNode, useContext, useReducer } from 'react';
 import { WordSearchActions, wordSearchReducer } from '@/context/WordSearchReducer.tsx';
-import { gridFactory } from '@/utils/gridFactory.ts';
-import { IGridItem } from '@/types/IGrid.ts';
-import { IWord } from '@/types/IWord.ts';
+import {
+  wordListFactory,
+  WordSearchContextType,
+  wordSearchInitialValuesFactory
+} from '@/utils/WordSearchInitialValuesFactory.ts';
+
+export type WordSearchProps = { children: ReactNode; };
 
 export const WordSearchContext = createContext<WordSearchContextType | null>(null);
 export const WordSearchDispatchContext = createContext<Dispatch<WordSearchActions> | null>(null);
 
-export type WordSearchProps = { children: ReactNode; };
-
-export type GameStateType = 'idle' | 'collecting';
-
-export type WordSearchContextType = {
-  gameState: GameStateType;
-  collectedLetters: IGridItem[];
-  wordList: IWord[];
-  grid: IGridItem[];
-}
-
 const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
-const gridSize = 12;
-
-const initialValue: WordSearchContextType = {
-  gameState: 'idle',
-  wordList: myWords.map(word => ({ word: word.toUpperCase(), found: false })),
-  collectedLetters: [] as IGridItem[],
-  grid: gridFactory(gridSize, myWords),
-};
-
 export const WordSearchProvider = ({ children }: WordSearchProps) => {
-  const [state, dispatch ] = useReducer(wordSearchReducer, initialValue);
+  const [state, dispatch ] = useReducer(
+    wordSearchReducer,
+    wordSearchInitialValuesFactory(wordListFactory(myWords, 12)),
+  );
 
   return (
     <WordSearchContext.Provider value={state}>

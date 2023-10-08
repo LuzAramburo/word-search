@@ -12,7 +12,10 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-    "max-len": ["error", { code: 120 }],
+    "max-len": ["error", {
+      ignorePattern: 'd="([\\s\\S]*?)"',
+      code: 120
+    }],
     "semi": ["warn", "always"],
     "comma-dangle": ["warn", {
       "arrays": "always-multiline",

@@ -1,4 +1,5 @@
 import { IGridItem } from '@/types/IGrid.ts';
+import { IWord } from '@/types/IWord.ts';
 
 const POSITIONS = {
   ROW: 'row',
@@ -57,37 +58,40 @@ const testWord = (
 
 const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: number) => {
   const positions = [POSITIONS.ROW, POSITIONS.COLUMN, POSITIONS.DIAGONAL];
-  let newGrid = [...gridMatrix];
+  let updatedGrid = [...gridMatrix];
 
-  for (const word of wordList) {
+  for (let i = 0; i < wordList.length; i++) {
+    const word = wordList[i];
     let wordPlaced = false;
+
     while (!wordPlaced) {
       const orientation = positions[Math.floor(Math.random() * positions.length)];
       const startingPosition = Math.floor(Math.random() * gridMatrix.length);
 
-      const cellFormatted = { ...newGrid[startingPosition], orientation };
+      const cellFormatted = { ...updatedGrid[startingPosition], orientation };
 
-      const grid = testWord(newGrid, gridSize, word, cellFormatted, orientation);
+      const grid = testWord(updatedGrid, gridSize, word, cellFormatted, orientation);
 
       if (grid !== null) {
-        newGrid = grid;
+        updatedGrid = grid;
         wordPlaced = true;
       }
     }
   }
 
+
   // 0x00D1 Ñ
   const letters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
-  for (let position = 0; position < newGrid.length; position++) {
-    if (newGrid[position].letter === '') {
-      newGrid[position] = { ...newGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
+  for (let position = 0; position < updatedGrid.length; position++) {
+    if (updatedGrid[position].letter === '') {
+      updatedGrid[position] = { ...updatedGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
     }
   }
 
-  return newGrid;
+  return updatedGrid;
 };
 
-export const gridFactory = (gridSize: number, wordList: string[]) => {
+export const gridFactory = (gridSize: number, wordList: IWord[]) => {
   const emptyGrid: null[][] = new Array(gridSize * gridSize).fill(null);
   const grid: IGridItem[] = emptyGrid.map((_item, itemIndex) =>  {
     return {
@@ -99,5 +103,7 @@ export const gridFactory = (gridSize: number, wordList: string[]) => {
     };
   });
 
-  return placeWords(grid, wordList, gridSize);
+  const wordListStrings = wordList.map(item => item.word);
+
+  return placeWords(grid, wordListStrings, gridSize);
 };

@@ -1,12 +1,23 @@
-import { GameStateType, WordSearchContextType } from '@/context/WordSearchContext.tsx';
 import { IGridItem } from '@/types/IGrid.ts';
+import {
+  GameDifficultyType,
+  GameStateType, wordListFactory,
+  WordSearchContextType,
+  wordSearchInitialValuesFactory
+} from '@/utils/WordSearchInitialValuesFactory.ts';
 
 type GameStateAction = { type: 'setGameState'; payload: GameStateType; }
 type CollectingAction = { type: 'setCollectedLetter'; payload: IGridItem; }
 type ResetCollectingAction = { type: 'resetCollecting' }
 type CheckMatchesAction = { type: 'checkMatches' }
+type ChangeDifficultyAction = { type: 'changeDifficulty', payload: GameDifficultyType }
 
-export type WordSearchActions = CollectingAction | GameStateAction | ResetCollectingAction | CheckMatchesAction;
+export type WordSearchActions =
+  CollectingAction
+  | GameStateAction
+  | ResetCollectingAction
+  | CheckMatchesAction
+  | ChangeDifficultyAction;
 
 export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
   switch (action.type) {
@@ -50,6 +61,18 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
       wordList: updatedWordList,
       grid: updatedGrid,
     };
+  }
+
+  case 'changeDifficulty': {
+    if (action.payload === state.difficulty) return state;
+
+    let updatedSize = 12;
+    if (action.payload === 'easy') updatedSize = 7;
+    if (action.payload === 'normal') updatedSize = 12;
+    if (action.payload === 'hard') updatedSize = 17;
+
+    const safeWordList = wordListFactory(state.wordList.map(item => item.word), updatedSize);
+    return wordSearchInitialValuesFactory(safeWordList, action.payload, updatedSize);
   }
 
   default:
