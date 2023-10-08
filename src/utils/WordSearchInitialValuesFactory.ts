@@ -2,7 +2,7 @@ import { IGridItem } from '@/types/IGrid.ts';
 import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
 
-export type GameStateType = 'idle' | 'collecting';
+export type GameStateType = 'idle' | 'collecting' | 'won';
 
 export type GameDifficultyType = 'easy' | 'normal' | 'hard';
 

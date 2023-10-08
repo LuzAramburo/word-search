@@ -55,9 +55,10 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
         return cell;
       });
     }
+    const allWordsFound = updatedWordList.every(item => item.found);
     return {
       ...state,
-      gameState: 'idle',
+      gameState: allWordsFound ? 'won' : 'idle',
       collectedLetters: [],
       wordList: updatedWordList,
       grid: updatedGrid,

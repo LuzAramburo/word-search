@@ -12,6 +12,7 @@ export const WordSearchContext = createContext<WordSearchContextType | null>(nul
 export const WordSearchDispatchContext = createContext<Dispatch<WordSearchActions> | null>(null);
 
 const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
+
 export const WordSearchProvider = ({ children }: WordSearchProps) => {
   const [state, dispatch ] = useReducer(
     wordSearchReducer,
