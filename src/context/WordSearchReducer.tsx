@@ -11,13 +11,15 @@ type CollectingAction = { type: 'setCollectedLetter'; payload: IGridItem; }
 type ResetCollectingAction = { type: 'resetCollecting' }
 type CheckMatchesAction = { type: 'checkMatches' }
 type ChangeDifficultyAction = { type: 'changeDifficulty', payload: GameDifficultyType }
+type setRefAction = { type: 'setRef', payload: { name: string, element: HTMLDialogElement | null } }
 
 export type WordSearchActions =
   CollectingAction
   | GameStateAction
   | ResetCollectingAction
   | CheckMatchesAction
-  | ChangeDifficultyAction;
+  | ChangeDifficultyAction
+  | setRefAction;
 
 export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
   switch (action.type) {
@@ -58,10 +60,20 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
     const allWordsFound = updatedWordList.every(item => item.found);
     return {
       ...state,
-      gameState: allWordsFound ? 'won' : 'idle',
+      gameState: allWordsFound ? 'winner' : 'idle',
       collectedLetters: [],
       wordList: updatedWordList,
       grid: updatedGrid,
+    };
+  }
+
+  case 'setRef': {
+    return {
+      ...state,
+      refs: {
+        ...state.refs,
+        [action.payload.name]: action.payload.element,
+      },
     };
   }
 

@@ -1,29 +1,36 @@
 import { useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { GameDifficultyType } from '@/utils/WordSearchInitialValuesFactory.ts';
 
 export const ConfigDialog = () => {
   const dispatch = useWordSearchDispatch();
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
+  // const [configDialogRef, setConfigDialogRef] = useState<HTMLDialogElement | undefined>();
+  const configDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const difficultyList = ['easy', 'normal', 'hard'];
+
+  useEffect(() => {
+    dispatch({ type: 'setRef', payload: { name: 'configDialog', element: configDialogRef.current } });
+  }, [configDialogRef, dispatch]);
 
   const changeDifficultyHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDifficultySetting(e.target.value as GameDifficultyType);
   };
 
   const confirmHandler = () => {
-    document.getElementById('configDialog').close();
+    configDialogRef?.current?.close();
     dispatch({ type: 'changeDifficulty', payload: difficultySetting });
   };
 
   const cancelHandler = () => {
-    document.getElementById('configDialog').close();
+    configDialogRef?.current?.close();
   };
 
   return (
     <>
-      <dialog id="configDialog" className="modal">
+      {/*<dialog ref={(ref) => {setConfigDialogRef(ref);}} id="configDialog" className="modal">*/}
+      <dialog ref={configDialogRef} id="configDialog" className="modal">
         <div className="modal-box">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}

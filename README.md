@@ -10,3 +10,6 @@ Sopa de letras is a game where you search for a words in a grid of letters.
 - [ ] random words each time
 - [ ] theme colors
 - [ ] achievements, save to account or local
+
+# Bugs
+- [ ] When letters overlap you can't select the word

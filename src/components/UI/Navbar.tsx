@@ -1,11 +1,17 @@
+import { useWordSearchContext } from '@/context/WordSearchContext.tsx';
+
 export const Navbar = () => {
+  const { refs } = useWordSearchContext();
+
+  const openConfigHandler = () => refs.configDialog?.showModal();
+
   return (
     <div className="navbar bg-base-200 rounded mb-6">
       <div className="flex-1 ml-3">
         <h1 className="text-3xl text-primary font-bold underline">Word Soup</h1>
       </div>
       <div className="flex-none">
-        <button className="btn btn-square btn-ghost" onClick={()=>document.getElementById('configDialog').showModal()}>
+        <button className="btn btn-square btn-ghost" onClick={openConfigHandler}>
           <svg
             className="inline-block w-5 h-5 fill-base-content/70"
             xmlns="http://www.w3.org/2000/svg"
