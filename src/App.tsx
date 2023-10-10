@@ -12,7 +12,7 @@ function App() {
   const dispatch = useWordSearchDispatch();
 
   const mouseDownHandler = () => {
-    if(gameState === 'collecting') dispatch({ type: 'resetCollecting' });
+    if (gameState === 'collecting') dispatch({ type: 'resetCollecting' });
   };
 
   const mouseUpHandler = () => {

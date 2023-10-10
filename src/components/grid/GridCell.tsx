@@ -20,8 +20,10 @@ export const GridCell = ({ item }: GridCellProps) => {
   return (
     <div
       className={classNames(
-        'w-10 h-10 border border-gray-400 flex justify-center items-center select-none cursor-pointer',
-        { 'bg-primary': item.collected },
+        'w-10 h-10 flex justify-center items-center select-none cursor-pointer ',
+        'transition-colors border border-gray-400',
+        { 'hover:bg-base-200': !item.collected },
+        { 'bg-primary-content text-primary': item.collected },
       )}
       onMouseEnter={hoverHandler}
       onMouseDown={mouseDownHandler}
