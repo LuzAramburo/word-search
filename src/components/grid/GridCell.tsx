@@ -1,6 +1,6 @@
 import { IGridItem } from '@/types/IGrid.ts';
 import { useWordSearchContext, useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 
 type GridCellProps = {
   item: IGridItem;
@@ -14,7 +14,8 @@ export const GridCell = ({ item }: GridCellProps) => {
   };
 
   const mouseDownHandler = () => {
-    if (!item.collected) dispatch({ type: 'setCollectedLetter', payload: item });
+    if (!item.collected || item.collected && gameState !== 'winner')
+      dispatch({ type: 'setCollectedLetter', payload: item });
   };
 
   return (
@@ -22,8 +23,9 @@ export const GridCell = ({ item }: GridCellProps) => {
       className={classNames(
         'w-10 h-10 flex justify-center items-center select-none cursor-pointer ',
         'transition-colors border border-gray-400',
-        { 'hover:bg-base-200': !item.collected },
+        { 'hover:bg-base-200 text-base-content': !item.collected && !item.used },
         { 'bg-primary-content text-primary': item.collected },
+        { 'text-accent-content bg-accent': item.used && !item.collected },
       )}
       onMouseEnter={hoverHandler}
       onMouseDown={mouseDownHandler}

@@ -5,4 +5,5 @@ export interface IGridItem {
   col: number;
   orientation: string;
   collected: boolean;
+  used: boolean;
 }

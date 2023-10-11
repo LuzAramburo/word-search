@@ -50,6 +50,11 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
 
     if (findIndex >= 0) {
       updatedWordList[findIndex] = { ...updatedWordList[findIndex], found: true };
+      const collectedLetters = state.collectedLetters.map(item => item.position);
+      updatedGrid = updatedGrid.map(cell => {
+        if (collectedLetters.includes(cell.position)) return { ...cell, collected: false, used: true };
+        return cell;
+      });
     } else {
       const collectedLetters = state.collectedLetters.map(item => item.position);
       updatedGrid = updatedGrid.map(cell => {
