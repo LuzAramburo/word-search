@@ -3,7 +3,9 @@ import { useWordSearchContext } from '@/context/WordSearchContext.tsx';
 export const Navbar = () => {
   const { refs } = useWordSearchContext();
 
-  const openConfigHandler = () => refs.configDialog?.showModal();
+  const openConfigHandler = () => {
+    refs.configDialog?.showModal();
+  };
 
   return (
     <div className="navbar bg-base-200 rounded mb-6">

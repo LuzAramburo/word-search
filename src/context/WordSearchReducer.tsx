@@ -1,25 +1,25 @@
 import { IGridItem } from '@/types/IGrid.ts';
 import {
   GameDifficultyType,
-  GameStateType, wordListFactory,
+  wordListFactory,
   WordSearchContextType,
   wordSearchInitialValuesFactory
 } from '@/utils/WordSearchInitialValuesFactory.ts';
 
-type GameStateAction = { type: 'setGameState'; payload: GameStateType; }
 type CollectingAction = { type: 'setCollectedLetter'; payload: IGridItem; }
 type ResetCollectingAction = { type: 'resetCollecting' }
 type CheckMatchesAction = { type: 'checkMatches' }
+type RestartGameAction = { type: 'restartGame' }
 type ChangeDifficultyAction = { type: 'changeDifficulty', payload: GameDifficultyType }
 type setRefAction = { type: 'setRef', payload: { name: string, element: HTMLDialogElement | null } }
 
 export type WordSearchActions =
   CollectingAction
-  | GameStateAction
   | ResetCollectingAction
   | CheckMatchesAction
   | ChangeDifficultyAction
-  | setRefAction;
+  | setRefAction
+  | RestartGameAction;
 
 export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
   switch (action.type) {
@@ -58,6 +58,7 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
       });
     }
     const allWordsFound = updatedWordList.every(item => item.found);
+    if (allWordsFound) state.refs.winnerDialog?.showModal();
     return {
       ...state,
       gameState: allWordsFound ? 'winner' : 'idle',
@@ -86,7 +87,18 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
     if (action.payload === 'hard') updatedSize = 17;
 
     const safeWordList = wordListFactory(state.wordList.map(item => item.word), updatedSize);
-    return wordSearchInitialValuesFactory(safeWordList, action.payload, updatedSize);
+    return {
+      ...wordSearchInitialValuesFactory(safeWordList, action.payload, updatedSize),
+      refs: { ...state.refs },
+    };
+  }
+
+  case 'restartGame': {
+    const safeWordList = wordListFactory(state.wordList.map(item => item.word), state.size);
+    return {
+      ...wordSearchInitialValuesFactory(safeWordList, state.difficulty, state.size),
+      refs: { ...state.refs },
+    };
   }
 
   default:

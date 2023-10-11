@@ -6,6 +6,7 @@ import {
 } from '@/context/WordSearchContext.tsx';
 import { Navbar } from '@/components/UI/Navbar.tsx';
 import { ConfigDialog } from '@/components/UI/ConfigDialog.tsx';
+import { WinnerDialog } from '@/components/UI/WinnerDialog.tsx';
 
 function App() {
   const { gameState, wordList, collectedLetters } = useWordSearchContext();
@@ -36,6 +37,7 @@ function App() {
         </h4>
       </div>
       <ConfigDialog />
+      <WinnerDialog />
     </main>
   );
 }

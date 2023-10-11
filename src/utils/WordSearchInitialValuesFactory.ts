@@ -8,6 +8,7 @@ export type GameDifficultyType = 'easy' | 'normal' | 'hard';
 
 export interface UIRefs {
   configDialog: HTMLDialogElement | null
+  winnerDialog: HTMLDialogElement | null
 }
 
 export type WordSearchContextType = {
@@ -32,7 +33,7 @@ export const wordSearchInitialValuesFactory = (
   size = 12,
 ) => {
   return <WordSearchContextType>{
-    gameState: 'winner',
+    gameState: 'idle',
     wordList,
     collectedLetters: [] as IGridItem[],
     grid: gridFactory(size, wordList),
