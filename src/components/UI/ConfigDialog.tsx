@@ -1,26 +1,28 @@
 import { useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { GameDifficultyType } from '@/utils/WordSearchInitialValuesFactory.ts';
+import { GameDifficultyType } from '@/utils/WordSearchContextFactory.ts';
+import { WordListSubjects } from '@/utils/WordListFactory.tsx';
 
 export const ConfigDialog = () => {
   const dispatch = useWordSearchDispatch();
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const configDialogRef = useRef<HTMLDialogElement | null>(null);
 
-  const [wordsTheme, setWordsTheme] = useState('random');
+  const [wordListSubject, setWordListSubject] = useState<WordListSubjects>('random');
 
-  const wordThemeChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    setWordsTheme(e.target.value);
+  const wordSubjectChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    setWordListSubject(e.target.value as WordListSubjects);
   };
 
   const difficultyList = ['easy', 'normal', 'hard'];
-  const wordsThemes = [
+  const selectSubjectOptions: { id: WordListSubjects, label: string }[] = [
     { id: 'random', label: 'Random' },
-    { id:'adjectives', label: 'Adjectives' },
+    { id: 'adjectives', label: 'Adjectives' },
     { id: 'boardgames', label: 'Boardgames' },
     { id: 'computers', label: 'Computers' },
     { id: 'food', label: 'Food' },
-    { id: 'space', label: 'Outer Space' }];
+    { id: 'space', label: 'Outer Space' },
+  ];
 
   useEffect(() => {
     dispatch({ type: 'setRef', payload: { name: 'configDialog', element: configDialogRef.current } });
@@ -32,7 +34,7 @@ export const ConfigDialog = () => {
 
   const confirmHandler = () => {
     configDialogRef?.current?.close();
-    dispatch({ type: 'changeDifficulty', payload: difficultySetting });
+    dispatch({ type: 'changeSettings', payload: { difficulty: difficultySetting, subject: wordListSubject } });
   };
 
   const cancelHandler = () => {
@@ -64,10 +66,10 @@ export const ConfigDialog = () => {
         <h4 className="py-4 font-bold text-sm uppercase text-base-content/70 mt-3">Word List Theme</h4>
         <select
           className="select select-bordered w-full max-w-xs"
-          onChange={wordThemeChangeHandler}
-          defaultValue={wordsTheme}
+          onChange={wordSubjectChangeHandler}
+          defaultValue={wordListSubject}
         >
-          {wordsThemes.length > 0 && wordsThemes.map(item => (
+          {selectSubjectOptions.length > 0 && selectSubjectOptions.map(item => (
             <option value={item.id} key={item.id}>{item.label}</option>
           ))}
         </select>

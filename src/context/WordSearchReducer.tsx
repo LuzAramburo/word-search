@@ -1,35 +1,42 @@
 import { IGridItem } from '@/types/IGrid.ts';
 import {
   GameDifficultyType,
-  wordListFactory,
   WordSearchContextType,
-  wordSearchInitialValuesFactory
-} from '@/utils/WordSearchInitialValuesFactory.ts';
+  wordSearchContextFactory
+} from '@/utils/WordSearchContextFactory.ts';
+import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.tsx';
+
+interface ChangeSettingsPayload {
+  difficulty: GameDifficultyType;
+  subject: WordListSubjects;
+}
+
+interface setRefPayload {
+  name: string;
+  element: HTMLDialogElement | null;
+}
 
 type InitializeAction = { type: 'initialize' }
 type CollectingAction = { type: 'setCollectedLetter', payload: IGridItem; }
 type ResetCollectingAction = { type: 'resetCollecting' }
 type CheckMatchesAction = { type: 'checkMatches' }
 type RestartGameAction = { type: 'restartGame' }
-type ChangeDifficultyAction = { type: 'changeDifficulty', payload: GameDifficultyType }
-type setRefAction = { type: 'setRef', payload: { name: string, element: HTMLDialogElement | null } }
+type ChangeSettingsAction = { type: 'changeSettings', payload: ChangeSettingsPayload }
+type setRefAction = { type: 'setRef', payload: setRefPayload }
 
 export type WordSearchActions =
   InitializeAction
   | CollectingAction
   | ResetCollectingAction
   | CheckMatchesAction
-  | ChangeDifficultyAction
+  | ChangeSettingsAction
   | setRefAction
   | RestartGameAction;
-
-
-const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
 
 export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
   switch (action.type) {
   case 'initialize': {
-    return wordSearchInitialValuesFactory(wordListFactory(myWords, 12));
+    return wordSearchContextFactory(wordListFactory());
   }
 
   case 'setCollectedLetter': {
@@ -92,25 +99,23 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
     };
   }
 
-  case 'changeDifficulty': {
-    if (action.payload === state.difficulty) return state;
-
+  case 'changeSettings': {
+    if (action.payload.difficulty === state.difficulty && action.payload.subject === state.subject) return state;
     let updatedSize = 12;
-    if (action.payload === 'easy') updatedSize = 7;
-    if (action.payload === 'normal') updatedSize = 12;
-    if (action.payload === 'hard') updatedSize = 17;
-
-    const safeWordList = wordListFactory(state.wordList.map(item => item.word), updatedSize);
+    if (action.payload.difficulty === 'easy') updatedSize = 7;
+    if (action.payload.difficulty === 'normal') updatedSize = 12;
+    if (action.payload.difficulty === 'hard') updatedSize = 17;
+    const wordList = wordListFactory(action.payload.subject, updatedSize, action.payload.difficulty);
     return {
-      ...wordSearchInitialValuesFactory(safeWordList, action.payload, updatedSize),
+      ...wordSearchContextFactory(wordList, state.subject, action.payload.difficulty, updatedSize),
       refs: { ...state.refs },
     };
   }
 
   case 'restartGame': {
-    const safeWordList = wordListFactory(state.wordList.map(item => item.word), state.size);
+    const safeWordList = wordListFactory(state.subject, state.size, state.difficulty);
     return {
-      ...wordSearchInitialValuesFactory(safeWordList, state.difficulty, state.size),
+      ...wordSearchContextFactory(safeWordList, state.subject, state.difficulty, state.size),
       refs: { ...state.refs },
     };
   }

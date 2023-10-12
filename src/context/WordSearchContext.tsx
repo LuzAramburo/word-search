@@ -2,7 +2,7 @@ import { createContext, Dispatch, ReactNode, useContext, useEffect, useReducer }
 import { WordSearchActions, wordSearchReducer } from '@/context/WordSearchReducer.tsx';
 import {
   WordSearchContextType
-} from '@/utils/WordSearchInitialValuesFactory.ts';
+} from '@/utils/WordSearchContextFactory.ts';
 
 export type WordSearchProps = { children: ReactNode; };
 

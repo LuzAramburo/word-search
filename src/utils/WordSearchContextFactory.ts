@@ -1,6 +1,7 @@
 import { IGridItem } from '@/types/IGrid.ts';
 import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
+import { WordListSubjects } from '@/utils/WordListFactory.tsx';
 
 export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';
 
@@ -13,6 +14,7 @@ export interface UIRefs {
 
 export type WordSearchContextType = {
   gameState: GameStateType;
+  subject: WordListSubjects;
   collectedLetters: IGridItem[];
   wordList: IWord[];
   grid: IGridItem[];
@@ -21,19 +23,15 @@ export type WordSearchContextType = {
   refs: UIRefs;
 }
 
-export const wordListFactory = (myWords: string[], gridSize: number) => {
-  return myWords
-    .filter(word => word.length < gridSize)
-    .map(word => ({ word: word.toUpperCase(), found: false }));
-};
-
-export const wordSearchInitialValuesFactory = (
+export const wordSearchContextFactory = (
   wordList: IWord[],
+  subject: WordListSubjects = 'random',
   difficulty = 'normal',
   size = 12,
 ) => {
   return <WordSearchContextType>{
     gameState: 'idle',
+    subject,
     wordList,
     collectedLetters: [] as IGridItem[],
     grid: gridFactory(size, wordList),
