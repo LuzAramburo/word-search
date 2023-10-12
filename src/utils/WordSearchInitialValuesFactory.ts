@@ -2,7 +2,7 @@ import { IGridItem } from '@/types/IGrid.ts';
 import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
 
-export type GameStateType = 'idle' | 'collecting' | 'winner';
+export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';
 
 export type GameDifficultyType = 'easy' | 'normal' | 'hard';
 
@@ -41,6 +41,7 @@ export const wordSearchInitialValuesFactory = (
     difficulty,
     refs: {
       configDialog: null,
+      winnerDialog: null,
     },
   };
 };

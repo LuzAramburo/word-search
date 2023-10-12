@@ -20,6 +20,12 @@ function App() {
     if (collectedLetters.length > 0) dispatch({ type: 'checkMatches' });
   };
 
+  const loadingView = (
+    <div className="w-screen h-[60vh] flex justify-center items-center">
+      <span className="loading loading-bars loading-lg" />
+    </div>
+  );
+
   return (
     <main
       className="w-screen h-screen"
@@ -28,10 +34,13 @@ function App() {
     >
       <div className="p-4 max-w-screen-2xl mx-auto min-h-screen">
         <Navbar />
-        <div className="grid grid-cols-5 gap-4">
-          <WordList wordsList={wordList} />
-          <Grid />
-        </div>
+        {gameState === 'loading' && loadingView}
+        {gameState !== 'loading' && (
+          <div className="grid grid-cols-5 gap-4">
+            <WordList wordsList={wordList} />
+            <Grid />
+          </div>
+        )}
         <h4 className="bg-blue-200 text-lg px-4 mt-4">
           {gameState}
         </h4>

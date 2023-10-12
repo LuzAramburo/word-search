@@ -6,7 +6,8 @@ import {
   wordSearchInitialValuesFactory
 } from '@/utils/WordSearchInitialValuesFactory.ts';
 
-type CollectingAction = { type: 'setCollectedLetter'; payload: IGridItem; }
+type InitializeAction = { type: 'initialize' }
+type CollectingAction = { type: 'setCollectedLetter', payload: IGridItem; }
 type ResetCollectingAction = { type: 'resetCollecting' }
 type CheckMatchesAction = { type: 'checkMatches' }
 type RestartGameAction = { type: 'restartGame' }
@@ -14,15 +15,23 @@ type ChangeDifficultyAction = { type: 'changeDifficulty', payload: GameDifficult
 type setRefAction = { type: 'setRef', payload: { name: string, element: HTMLDialogElement | null } }
 
 export type WordSearchActions =
-  CollectingAction
+  InitializeAction
+  | CollectingAction
   | ResetCollectingAction
   | CheckMatchesAction
   | ChangeDifficultyAction
   | setRefAction
   | RestartGameAction;
 
+
+const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
+
 export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
   switch (action.type) {
+  case 'initialize': {
+    return wordSearchInitialValuesFactory(wordListFactory(myWords, 12));
+  }
+
   case 'setCollectedLetter': {
     const updatedGrid = [...state.grid];
     updatedGrid[action.payload.position] = { ...action.payload, collected: true };

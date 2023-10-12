@@ -1,9 +1,7 @@
-import { createContext, Dispatch, ReactNode, useContext, useReducer } from 'react';
+import { createContext, Dispatch, ReactNode, useContext, useEffect, useReducer } from 'react';
 import { WordSearchActions, wordSearchReducer } from '@/context/WordSearchReducer.tsx';
 import {
-  wordListFactory,
-  WordSearchContextType,
-  wordSearchInitialValuesFactory
+  WordSearchContextType
 } from '@/utils/WordSearchInitialValuesFactory.ts';
 
 export type WordSearchProps = { children: ReactNode; };
@@ -11,13 +9,27 @@ export type WordSearchProps = { children: ReactNode; };
 export const WordSearchContext = createContext<WordSearchContextType | null>(null);
 export const WordSearchDispatchContext = createContext<Dispatch<WordSearchActions> | null>(null);
 
-const myWords = ['Eggs', 'Milk', 'Butter', 'Oats', 'Sugar', 'Rusk', 'Chocolate'];
-
 export const WordSearchProvider = ({ children }: WordSearchProps) => {
   const [state, dispatch ] = useReducer(
     wordSearchReducer,
-    wordSearchInitialValuesFactory(wordListFactory(myWords, 12)),
+    {
+      gameState: 'loading',
+      collectedLetters: [],
+      wordList: [],
+      grid: [],
+      size: 12,
+      difficulty: 'normal',
+      refs: {
+        configDialog: null,
+        winnerDialog: null,
+      },
+    },
   );
+
+
+  useEffect(() => {
+    dispatch({ type: 'initialize' });
+  }, []);
 
   return (
     <WordSearchContext.Provider value={state}>

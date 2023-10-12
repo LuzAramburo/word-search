@@ -7,7 +7,20 @@ export const ConfigDialog = () => {
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const configDialogRef = useRef<HTMLDialogElement | null>(null);
 
+  const [wordsTheme, setWordsTheme] = useState('random');
+
+  const wordThemeChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    setWordsTheme(e.target.value);
+  };
+
   const difficultyList = ['easy', 'normal', 'hard'];
+  const wordsThemes = [
+    { id: 'random', label: 'Random' },
+    { id:'adjectives', label: 'Adjectives' },
+    { id: 'boardgames', label: 'Boardgames' },
+    { id: 'computers', label: 'Computers' },
+    { id: 'food', label: 'Food' },
+    { id: 'space', label: 'Outer Space' }];
 
   useEffect(() => {
     dispatch({ type: 'setRef', payload: { name: 'configDialog', element: configDialogRef.current } });
@@ -48,6 +61,16 @@ export const ConfigDialog = () => {
             />
           ))}
         </div>
+        <h4 className="py-4 font-bold text-sm uppercase text-base-content/70 mt-3">Word List Theme</h4>
+        <select
+          className="select select-bordered w-full max-w-xs"
+          onChange={wordThemeChangeHandler}
+          defaultValue={wordsTheme}
+        >
+          {wordsThemes.length > 0 && wordsThemes.map(item => (
+            <option value={item.id} key={item.id}>{item.label}</option>
+          ))}
+        </select>
         <div className="mt-8 flex justify-end gap-3">
           <button className="btn btn-outline" onClick={cancelHandler}>Cancel</button>
           <button className="btn btn-primary" onClick={confirmHandler}>Confirm</button>

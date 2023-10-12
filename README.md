@@ -11,6 +11,3 @@ Word Soup is a game where you search for a words in a grid of letters.
 - [ ] achievements, save to account or local
 - [ ] Confetti when you win
 - [ ] if your second letter collected is diagonal, only collect diagonal letters
-
-# Bugs
-- [ ] When letters overlap you can't select the word

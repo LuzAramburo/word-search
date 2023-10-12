@@ -1,0 +1,26 @@
+import { IWord } from '@/types/IWord.ts';
+
+export default [
+  { word: 'picante', found: false },
+  { word: 'delicioso', found: false },
+  { word: 'sabroso', found: false },
+  { word: 'crujiente', found: false },
+  { word: 'jugoso', found: false },
+  { word: 'tierno', found: false },
+  { word: 'dulce', found: false },
+  { word: 'amargo', found: false },
+  { word: 'agrio', found: false },
+  { word: 'cremoso', found: false },
+  { word: 'especiado', found: false },
+  { word: 'cítrico', found: false },
+  { word: 'esponjoso', found: false },
+  { word: 'ahumado', found: false },
+  { word: 'salado', found: false },
+  { word: 'refrescante', found: false },
+  { word: 'sabroso', found: false },
+  { word: 'nuez', found: false },
+  { word: 'casero', found: false },
+  { word: 'horneado', found: false },
+  { word: 'asado', found: false },
+  { word: 'derretido', found: false },
+] as IWord[];

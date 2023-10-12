@@ -101,6 +101,7 @@ export const gridFactory = (gridSize: number, wordList: IWord[]) => {
       col: itemIndex % gridSize,
       orientation: '',
       collected: false,
+      used: false,
     };
   });
 
