@@ -11,29 +11,38 @@ interface ChangeSettingsPayload {
   subject: WordListSubjects;
 }
 
-interface setRefPayload {
-  name: string;
-  element: HTMLDialogElement | null;
+interface ShowDialogPayload {
+  name: 'gameSettingsDialog' | 'winnerDialog';
+  show: boolean;
 }
 
-type InitializeAction = { type: 'initialize' }
-type CollectingAction = { type: 'setCollectedLetter', payload: IGridItem; }
-type ResetCollectingAction = { type: 'resetCollecting' }
-type CheckMatchesAction = { type: 'checkMatches' }
-type RestartGameAction = { type: 'restartGame' }
-type ChangeSettingsAction = { type: 'changeSettings', payload: ChangeSettingsPayload }
-type setRefAction = { type: 'setRef', payload: setRefPayload }
+type InitializeAction = { type: 'initialize' };
+type CollectingAction = { type: 'setCollectedLetter'; payload: IGridItem };
+type ResetCollectingAction = { type: 'resetCollecting' };
+type CheckMatchesAction = { type: 'checkMatches' };
+type RestartGameAction = { type: 'restartGame' };
+type ChangeSettingsAction = {
+  type: 'changeSettings';
+  payload: ChangeSettingsPayload;
+};
+type ShowDialogAction = {
+  type: 'showDialog';
+  payload: ShowDialogPayload;
+};
 
 export type WordSearchActions =
-  InitializeAction
+  | InitializeAction
   | CollectingAction
   | ResetCollectingAction
   | CheckMatchesAction
   | ChangeSettingsAction
-  | setRefAction
+  | ShowDialogAction
   | RestartGameAction;
 
-export function wordSearchReducer (state: WordSearchContextType, action: WordSearchActions): WordSearchContextType {
+export function wordSearchReducer(
+  state: WordSearchContextType,
+  action: WordSearchActions,
+): WordSearchContextType {
   switch (action.type) {
   case 'initialize': {
     return wordSearchContextFactory(wordListFactory());
@@ -41,11 +50,14 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
 
   case 'setCollectedLetter': {
     const updatedGrid = [...state.grid];
-    updatedGrid[action.payload.position] = { ...action.payload, collected: true };
+    updatedGrid[action.payload.position] = {
+      ...action.payload,
+      collected: true,
+    };
     return {
       ...state,
-      gameState: 'collecting',
       collectedLetters: [...state.collectedLetters, action.payload],
+      gameState: 'collecting',
       grid: updatedGrid,
     };
   }
@@ -53,70 +65,99 @@ export function wordSearchReducer (state: WordSearchContextType, action: WordSea
   case 'resetCollecting':
     return {
       ...state,
-      gameState: 'idle',
       collectedLetters: [],
+      gameState: 'idle',
     };
 
   case 'checkMatches': {
-    const wordToMatch = state.collectedLetters.map(item => item.letter).join('');
+    const wordToMatch = state.collectedLetters
+      .map((item) => item.letter)
+      .join('');
     const updatedWordList = [...state.wordList];
     let updatedGrid = [...state.grid];
 
-    const findIndex = state.wordList.findIndex(item => item.word === wordToMatch);
+    const findIndex = state.wordList.findIndex(
+      (item) => item.word === wordToMatch,
+    );
 
     if (findIndex >= 0) {
-      updatedWordList[findIndex] = { ...updatedWordList[findIndex], found: true };
-      const collectedLetters = state.collectedLetters.map(item => item.position);
-      updatedGrid = updatedGrid.map(cell => {
-        if (collectedLetters.includes(cell.position)) return { ...cell, collected: false, used: true };
+      updatedWordList[findIndex] = {
+        ...updatedWordList[findIndex],
+        found: true,
+      };
+      const collectedLetters = state.collectedLetters.map(
+        (item) => item.position,
+      );
+      updatedGrid = updatedGrid.map((cell) => {
+        if (collectedLetters.includes(cell.position))
+          return { ...cell, collected: false, used: true };
         return cell;
       });
     } else {
-      const collectedLetters = state.collectedLetters.map(item => item.position);
-      updatedGrid = updatedGrid.map(cell => {
-        if (collectedLetters.includes(cell.position)) return { ...cell, collected: false };
+      const collectedLetters = state.collectedLetters.map(
+        (item) => item.position,
+      );
+      updatedGrid = updatedGrid.map((cell) => {
+        if (collectedLetters.includes(cell.position))
+          return { ...cell, collected: false };
         return cell;
       });
     }
-    const allWordsFound = updatedWordList.every(item => item.found);
-    if (allWordsFound) state.refs.winnerDialog?.showModal();
+    const allWordsFound = updatedWordList.every((item) => item.found);
     return {
       ...state,
-      gameState: allWordsFound ? 'winner' : 'idle',
       collectedLetters: [],
-      wordList: updatedWordList,
+      winnerDialog: allWordsFound,
+      gameState: allWordsFound ? 'winner' : 'idle',
       grid: updatedGrid,
+      wordList: updatedWordList,
     };
   }
 
-  case 'setRef': {
+  case 'showDialog': {
     return {
       ...state,
-      refs: {
-        ...state.refs,
-        [action.payload.name]: action.payload.element,
-      },
+      [action.payload.name]: action.payload.show,
     };
   }
 
   case 'changeSettings': {
-    if (action.payload.difficulty === state.difficulty && action.payload.subject === state.subject) return state;
+    if (
+      action.payload.difficulty === state.difficulty
+      && action.payload.subject === state.subject
+    ) return state;
     let updatedSize = 12;
     if (action.payload.difficulty === 'easy') updatedSize = 7;
     if (action.payload.difficulty === 'normal') updatedSize = 12;
     if (action.payload.difficulty === 'hard') updatedSize = 17;
-    const wordList = wordListFactory(action.payload.subject, updatedSize, action.payload.difficulty);
+    const wordList = wordListFactory(
+      action.payload.subject,
+      updatedSize,
+      action.payload.difficulty,
+    );
     return {
-      ...wordSearchContextFactory(wordList, state.subject, action.payload.difficulty, updatedSize),
-      refs: { ...state.refs },
+      ...wordSearchContextFactory(
+        wordList,
+        state.subject,
+        action.payload.difficulty,
+        updatedSize,
+      ),
     };
   }
 
   case 'restartGame': {
-    const safeWordList = wordListFactory(state.subject, state.size, state.difficulty);
+    const safeWordList = wordListFactory(
+      state.subject,
+      state.size,
+      state.difficulty,
+    );
     return {
-      ...wordSearchContextFactory(safeWordList, state.subject, state.difficulty, state.size),
-      refs: { ...state.refs },
+      ...wordSearchContextFactory(
+        safeWordList,
+        state.subject,
+        state.difficulty,
+        state.size,
+      ),
     };
   }
 

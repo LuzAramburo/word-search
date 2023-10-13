@@ -5,12 +5,21 @@ import {
   useWordSearchContext, useWordSearchDispatch
 } from '@/context/WordSearchContext.tsx';
 import { Navbar } from '@/components/UI/Navbar.tsx';
-import { ConfigDialog } from '@/components/UI/ConfigDialog.tsx';
+import { GameSettingsDialog } from '@/components/UI/GameSettingsDialog.tsx';
 import { WinnerDialog } from '@/components/UI/WinnerDialog.tsx';
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
+import { confettiOptions } from '@/utils/confettiOptions.tsx';
+import { useCallback } from 'react';
+import type { Engine } from 'tsparticles-engine';
 
 function App() {
   const { gameState, wordList, collectedLetters } = useWordSearchContext();
   const dispatch = useWordSearchDispatch();
+
+  const particlesInit = useCallback(async (main: Engine) => {
+    await loadFull(main);
+  }, []);
 
   const mouseDownHandler = () => {
     if (gameState === 'collecting') dispatch({ type: 'resetCollecting' });
@@ -27,24 +36,27 @@ function App() {
   );
 
   return (
-    <main
-      className="w-screen h-screen"
-      onMouseDown={mouseDownHandler}
-      onMouseUp={mouseUpHandler}
-    >
-      <div className="p-4 max-w-screen-2xl mx-auto min-h-screen">
-        <Navbar />
-        <div className="grid grid-cols-5 gap-4">
-          <WordList wordsList={wordList} />
-          <Grid />
+    <>
+      { gameState === 'winner' &&<Particles
+        init={particlesInit}
+        options={confettiOptions}
+      />}
+      <main
+        className="w-screen h-screen"
+        onMouseDown={mouseDownHandler}
+        onMouseUp={mouseUpHandler}
+      >
+        <div className="p-4 max-w-screen-2xl mx-auto min-h-screen">
+          <Navbar />
+          <div className="grid grid-cols-5 gap-4">
+            <WordList wordsList={wordList} />
+            <Grid />
+          </div>
         </div>
-        <h4 className="bg-blue-200 text-lg px-4 mt-4">
-          {gameState}
-        </h4>
-      </div>
-      <ConfigDialog />
-      <WinnerDialog />
-    </main>
+        <GameSettingsDialog />
+        <WinnerDialog />
+      </main>
+    </>
   );
 }
 

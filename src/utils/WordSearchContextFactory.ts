@@ -7,11 +7,6 @@ export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';
 
 export type GameDifficultyType = 'easy' | 'normal' | 'hard';
 
-export interface UIRefs {
-  configDialog: HTMLDialogElement | null
-  winnerDialog: HTMLDialogElement | null
-}
-
 export type WordSearchContextType = {
   gameState: GameStateType;
   subject: WordListSubjects;
@@ -20,7 +15,8 @@ export type WordSearchContextType = {
   grid: IGridItem[];
   size: number;
   difficulty: GameDifficultyType;
-  refs: UIRefs;
+  gameSettingsDialog: boolean;
+  winnerDialog: boolean;
 }
 
 export const wordSearchContextFactory = (
@@ -30,16 +26,14 @@ export const wordSearchContextFactory = (
   size = 12,
 ) => {
   return <WordSearchContextType>{
-    gameState: 'idle',
-    subject,
-    wordList,
     collectedLetters: [] as IGridItem[],
+    difficulty,
+    gameSettingsDialog: false,
+    gameState: 'idle',
     grid: gridFactory(size, wordList),
     size: size,
-    difficulty,
-    refs: {
-      configDialog: null,
-      winnerDialog: null,
-    },
+    subject,
+    winnerDialog: false,
+    wordList,
   };
 };

@@ -13,16 +13,15 @@ export const WordSearchProvider = ({ children }: WordSearchProps) => {
   const [state, dispatch ] = useReducer(
     wordSearchReducer,
     {
-      gameState: 'loading',
       collectedLetters: [],
-      wordList: [],
+      difficulty: 'normal',
+      gameState: 'loading',
       grid: [],
       size: 12,
-      difficulty: 'normal',
-      refs: {
-        configDialog: null,
-        winnerDialog: null,
-      },
+      subject: 'random',
+      wordList: [],
+      gameSettingsDialog: false,
+      winnerDialog: false,
     },
   );
 
