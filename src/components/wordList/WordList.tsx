@@ -1,5 +1,5 @@
 import { IWord } from '@/types/IWord.ts';
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 
 type WordListProps = {
   wordsList: IWord[]
