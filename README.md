@@ -2,8 +2,9 @@
 
 Word Soup is a game where you search for a words in a grid of letters.
 
+# Features
+- 3 levels of difficulty
+- Random words each game and you can select a subject
+
 # Roadmap
-- [ ] Select language
-- [ ] theme colors
-- [ ] achievements, save to account or local
-- [ ] if your second letter collected is diagonal, only collect diagonal letters
+https://trello.com/b/MYcA2WEJ/word-soup

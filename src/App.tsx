@@ -1,6 +1,6 @@
 import './App.css';
-import { Grid } from './components/grid/Grid';
-import { WordList } from './components/wordList/WordList';
+import { Grid } from '@/components/grid/Grid';
+import { WordList } from '@/components/wordList/WordList';
 import {
   useWordSearchContext, useWordSearchDispatch
 } from '@/context/WordSearchContext.tsx';
@@ -9,7 +9,7 @@ import { GameSettingsDialog } from '@/components/UI/GameSettingsDialog.tsx';
 import { WinnerDialog } from '@/components/UI/WinnerDialog.tsx';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
-import { confettiOptions } from '@/utils/confettiOptions.tsx';
+import { confettiOptions } from '@/utils/confettiOptions.ts';
 import { useCallback } from 'react';
 import type { Engine } from 'tsparticles-engine';
 
