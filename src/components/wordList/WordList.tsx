@@ -1,11 +1,8 @@
-import { IWord } from '@/types/IWord.ts';
 import classNames from 'classnames';
+import { useAppSelector } from '@/store/hooks.ts';
 
-type WordListProps = {
-  wordsList: IWord[]
-};
-
-export const WordList = ({ wordsList }: WordListProps) => {
+export const WordList = () => {
+  const wordsList = useAppSelector(state => state.game.wordList);
   return (
     <ul className="grid-span-1 border border-gray-400 p-4">
       { wordsList.length > 0 && wordsList.map((item, index) => (

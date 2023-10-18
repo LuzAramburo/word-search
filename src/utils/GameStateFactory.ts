@@ -19,7 +19,7 @@ export type WordSearchContextType = {
   winnerDialog: boolean;
 }
 
-export const wordSearchContextFactory = (
+export const gameStateFactory = (
   wordList: IWord[],
   subject: WordListSubjects = 'random',
   difficulty = 'normal',

@@ -1,10 +1,11 @@
-import { useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
+import { showDialog } from '@/store/gameSlice.ts';
+import { useAppDispatch } from '@/store/hooks.ts';
 
 export const Navbar = () => {
-  const dispatch = useWordSearchDispatch();
+  const dispatch = useAppDispatch();
 
   const openConfigHandler = () => {
-    dispatch({ type: 'showDialog', payload: { name:'gameSettingsDialog', show: true } });
+    dispatch(showDialog({ name:'gameSettingsDialog', show: true }));
   };
 
   return (

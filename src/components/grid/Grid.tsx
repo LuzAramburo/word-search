@@ -1,8 +1,8 @@
 import { GridCell } from '@/components/grid/GridCell.tsx';
-import { useWordSearchContext } from '@/context/WordSearchContext.tsx';
+import { useAppSelector } from '@/store/hooks.ts';
 
 export const Grid = () => {
-  const { size, grid } = useWordSearchContext();
+  const { size, grid } = useAppSelector(state => state.game);
   return (
     <div className="col-span-4" >
       <div

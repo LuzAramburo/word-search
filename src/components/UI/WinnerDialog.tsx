@@ -1,12 +1,13 @@
-import { useWordSearchContext, useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
 import { Dialog } from '@/components/UI/Dialog.tsx';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
+import { restartGame } from '@/store/gameSlice.ts';
 
 export const WinnerDialog = () => {
-  const { winnerDialog } = useWordSearchContext();
-  const dispatch = useWordSearchDispatch();
+  const winnerDialog = useAppSelector(state => state.game.winnerDialog);
+  const dispatch = useAppDispatch();
 
   const resetGame = () => {
-    dispatch({ type: 'restartGame' });
+    dispatch(restartGame());
   };
 
   return (

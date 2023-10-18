@@ -1,4 +1,4 @@
-import { GameDifficultyType } from '@/utils/WordSearchContextFactory.ts';
+import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
 
 export interface Participants {

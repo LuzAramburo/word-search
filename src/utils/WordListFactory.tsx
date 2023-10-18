@@ -3,7 +3,7 @@ import wordListAdjectives from '@/data/adjectives.en.tsx';
 import wordListBoardgames from '@/data/boardgames.en.tsx';
 import wordListComputers from '@/data/computers.en.tsx';
 import wordListSpace from '@/data/space.en.tsx';
-import { GameDifficultyType } from '@/utils/WordSearchContextFactory.ts';
+import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { IWord } from '@/types/IWord.ts';
 
 export type WordListSubjects =  'adjectives' | 'boardgames' | 'computers' | 'food' | 'space' | 'random'

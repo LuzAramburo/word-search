@@ -1,14 +1,15 @@
-import { useWordSearchContext, useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
 import { ChangeEvent, useState } from 'react';
-import { GameDifficultyType } from '@/utils/WordSearchContextFactory.ts';
+import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
 import { Dialog } from '@/components/UI/Dialog.tsx';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
+import { changeSettings, showDialog } from '@/store/gameSlice.ts';
 
 export const GameSettingsDialog = () => {
-  const { gameSettingsDialog } = useWordSearchContext();
-  const dispatch = useWordSearchDispatch();
-  const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
+  const gameSettingsDialog = useAppSelector(state => state.game.gameSettingsDialog);
+  const dispatch = useAppDispatch();
 
+  const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const [wordListSubject, setWordListSubject] = useState<WordListSubjects>('random');
 
   const wordSubjectChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -25,23 +26,22 @@ export const GameSettingsDialog = () => {
     { id: 'space', label: 'Outer Space' },
   ];
 
-
   const changeDifficultyHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDifficultySetting(e.target.value as GameDifficultyType);
   };
 
   const confirmHandler = () => {
-    dispatch({ type: 'changeSettings', payload: { difficulty: difficultySetting, subject: wordListSubject } });
+    dispatch(changeSettings({ difficulty: difficultySetting, subject: wordListSubject }));
   };
 
   const cancelHandler = () => {
-    dispatch({ type: 'showDialog', payload: { name: 'gameSettingsDialog', show: false } });
+    dispatch(showDialog({ name: 'gameSettingsDialog', show: false }));
   };
 
   return (
     <Dialog open={gameSettingsDialog}>
       <form method="dialog">
-        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={cancelHandler}>✕</button>
       </form>
       <h1 className="font-bold text-2xl">Game Settings</h1>
       <h4 className="py-4 font-bold text-sm uppercase text-base-content/70">Game Difficulty</h4>

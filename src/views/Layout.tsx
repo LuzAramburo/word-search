@@ -1,9 +1,11 @@
-import { useWordSearchContext, useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
 import { Navbar } from '@/components/UI/Navbar.tsx';
 import { Outlet } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
+import { useEffect } from 'react';
+import { checkMatch, init, stopCollecting } from '@/store/gameSlice.ts';
 
 // const app = initializeApp({
 //   apiKey: 'AIzaSyB6uHnhocwg15ubmiBGnrr0Vz3NIb28how',
@@ -17,15 +19,20 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 // const auth = getAuth(app);
 
 function Layout() {
-  const { gameState, collectedLetters } = useWordSearchContext();
-  const dispatch = useWordSearchDispatch();
+  const dispatch = useAppDispatch();
+
+  const { gameState, collectedLetters } = useAppSelector(state => state.game);
+
+  useEffect(() => {
+    dispatch(init());
+  }, [dispatch]);
 
   const mouseDownHandler = () => {
-    if (gameState === 'collecting') dispatch({ type: 'resetCollecting' });
+    if (gameState === 'collecting') dispatch(stopCollecting());
   };
 
   const mouseUpHandler = () => {
-    if (collectedLetters.length > 0) dispatch({ type: 'checkMatches' });
+    if (collectedLetters.length > 0) dispatch(checkMatch());
   };
 
   if (gameState === 'loading') return (

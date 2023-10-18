@@ -1,21 +1,24 @@
 import { IGridItem } from '@/types/IGrid.ts';
-import { useWordSearchContext, useWordSearchDispatch } from '@/context/WordSearchContext.tsx';
 import classNames from 'classnames';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
+import { setCollectedLetter } from '@/store/gameSlice.ts';
 
 type GridCellProps = {
   item: IGridItem;
 };
+
 export const GridCell = ({ item }: GridCellProps) => {
-  const dispatch = useWordSearchDispatch();
-  const { gameState } = useWordSearchContext();
+  const dispatch = useAppDispatch();
+  const { gameState } = useAppSelector(state => state.game);
 
   const hoverHandler = () => {
-    if (gameState === 'collecting') dispatch({ type: 'setCollectedLetter', payload: item });
+    if (gameState === 'collecting') dispatch(setCollectedLetter(item));
   };
 
   const mouseDownHandler = () => {
-    if (!item.collected || item.collected && gameState !== 'winner')
-      dispatch({ type: 'setCollectedLetter', payload: item });
+    if (!item.collected || item.collected && gameState !== 'winner') {
+      dispatch(setCollectedLetter(item));
+    }
   };
 
   return (
