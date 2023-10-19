@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .navbar {
+    min-height: 3.5rem;
+  }
+
+  .btn-hug {
+    @apply min-h-[auto] min-w-[auto] w-auto h-auto p-0;
+  }
+}

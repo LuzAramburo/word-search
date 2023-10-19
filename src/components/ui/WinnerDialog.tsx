@@ -1,4 +1,4 @@
-import { Dialog } from '@/components/UI/Dialog.tsx';
+import { Dialog } from '@/components/ui/Dialog.tsx';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { restartGame } from '@/store/gameSlice.ts';
 

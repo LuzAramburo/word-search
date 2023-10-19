@@ -22,7 +22,8 @@ export const wordListFactory = (
     ...wordListBoardgames,
     ...wordListComputers,
     ...wordListFood,
-    ...wordListSpace];
+    ...wordListSpace,
+  ];
 
   const wordListMap = new Map<WordListSubjects, IWord[]>([
     ['adjectives', wordListAdjectives],

@@ -1,27 +1,15 @@
-import { Navbar } from '@/components/UI/Navbar.tsx';
+import { Navbar } from '@/components/navbar/Navbar.tsx';
 import { Outlet } from 'react-router-dom';
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useEffect } from 'react';
 import { checkMatch, init, stopCollecting } from '@/store/gameSlice.ts';
-
-// const app = initializeApp({
-//   apiKey: 'AIzaSyB6uHnhocwg15ubmiBGnrr0Vz3NIb28how',
-//   authDomain: 'word-soup-71429.firebaseapp.com',
-//   databaseURL: 'https://word-soup-71429-default-rtdb.firebaseio.com',
-//   projectId: 'word-soup-71429',
-//   storageBucket: 'word-soup-71429.appspot.com',
-//   messagingSenderId: '126585871128',
-//   appId: '1:126585871128:web:9f9112f344899381cbdc6d',
-// });
-// const auth = getAuth(app);
+import { GameSettingsDialog } from '@/components/ui/GameSettingsDialog.tsx';
+import { WinnerDialog } from '@/components/ui/WinnerDialog.tsx';
 
 function Layout() {
   const dispatch = useAppDispatch();
 
-  const { gameState, collectedLetters } = useAppSelector(state => state.game);
+  const { gameState, collectedLetters, gameSettingsDialog, winnerDialog } = useAppSelector(state => state.game);
 
   useEffect(() => {
     dispatch(init());

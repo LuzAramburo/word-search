@@ -11,16 +11,16 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-200 rounded mb-6 px-5">
+    <div className="navbar bg-base-200 rounded mb-4 px-5">
       <div className="flex-1">
-        <Link to="/"><h1 className="text-3xl text-primary font-bold underline">Word Soup</h1></Link>
+        <Link to="/"><h1 className="text-2xl text-primary font-bold underline">Word Soup</h1></Link>
       </div>
       <div className="flex-none">
-        <Link className="btn btn-ghost" to="/tournament">Play Tournament</Link>
+        <Link className="btn btn-ghost btn-sm" to="/tournament">Play Tournament</Link>
         <div className="divider lg:divider-horizontal" />
         <div className="flex items-center gap-3">
           <button
-            className="btn btn-square btn-ghost"
+            className="btn btn-square btn-ghost btn-sm"
             onClick={openConfigHandler}
           >
             <svg
