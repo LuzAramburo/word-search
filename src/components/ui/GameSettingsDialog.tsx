@@ -1,16 +1,21 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
-import { Dialog } from '@/components/UI/Dialog.tsx';
+import { Dialog } from '@/components/ui/Dialog.tsx';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { changeSettings, showDialog } from '@/store/gameSlice.ts';
 
 export const GameSettingsDialog = () => {
-  const gameSettingsDialog = useAppSelector(state => state.game.gameSettingsDialog);
+  const { gameSettingsDialog, subject, difficulty } = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
 
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const [wordListSubject, setWordListSubject] = useState<WordListSubjects>('random');
+
+  useEffect(() => {
+    setDifficultySetting(difficulty);
+    setWordListSubject(subject);
+  }, [difficulty, subject]);
 
   const wordSubjectChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     setWordListSubject(e.target.value as WordListSubjects);
@@ -52,8 +57,8 @@ export const GameSettingsDialog = () => {
             type="radio"
             name="gameDifficulty"
             aria-label={item}
-            checked={difficultySetting === item}
-            key={item}
+            defaultChecked={difficulty === item}
+            key={item + 'radio'}
             value={item}
             onChange={(e) => changeDifficultyHandler(e)}
           />
@@ -63,7 +68,7 @@ export const GameSettingsDialog = () => {
       <select
         className="select select-bordered w-full max-w-xs"
         onChange={wordSubjectChangeHandler}
-        defaultValue={wordListSubject}
+        defaultValue={subject}
       >
         {selectSubjectOptions.length > 0 && selectSubjectOptions.map(item => (
           <option value={item.id} key={item.id}>{item.label}</option>

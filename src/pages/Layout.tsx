@@ -51,6 +51,8 @@ function Layout() {
         <div className="p-4 max-w-screen-2xl mx-auto min-h-screen">
           <Navbar />
           <Outlet />
+          {gameSettingsDialog && <GameSettingsDialog/>}
+          {winnerDialog && <WinnerDialog/>}
         </div>
       </main>
     </>
