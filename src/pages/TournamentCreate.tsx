@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { Link } from 'react-router-dom';
 
 export const TournamentCreate = () => {
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
@@ -73,6 +74,7 @@ export const TournamentCreate = () => {
         </div>
         <div className="form-control w-full mt-4">
           <button className="btn btn-secondary">Create</button>
+          <Link to="/tournament/lobby" className="btn btn-ghost mt-4">To Lobby</Link>
         </div>
       </form>
     </div>

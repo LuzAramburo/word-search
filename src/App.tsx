@@ -8,6 +8,7 @@ import { auth } from '@/firebase.ts';
 import { useAppDispatch } from '@/store/hooks.ts';
 import { setLoading, setUser } from '@/store/userSlice.ts';
 import { TournamentCreate } from '@/pages/TournamentCreate.tsx';
+import { TournamentLobby } from '@/pages/TournamentLobby.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'tournament/create',
         element: <TournamentCreate/>,
+      },
+      {
+        path: 'tournament/lobby',
+        element: <TournamentLobby/>,
       },
       {
         path: 'tournament/:id',
