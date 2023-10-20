@@ -19,33 +19,29 @@ export const NavbarAvatar = () => {
     dispatch(clearUser());
   };
 
-  if (user && user?.avatar) return (
-    <div>
-      <div className="dropdown dropdown-end">
-        <button className="btn btn-square btn-hug">
-          <div className="avatar">
+  if (user) return (
+    <div className="dropdown dropdown-end">
+      <button className="btn btn-square btn-hug">
+        <div className={classNames('avatar', { 'placeholder':  !user.avatar })}>
+          {user.avatar && (
             <div className="w-7 rounded">
               <img src={user.avatar} referrerPolicy="no-referrer" alt={user.displayName ?? ''} />
             </div>
-          </div>
-        </button>
-        <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-          <li><button onClick={logOutHandler}>Log out</button></li>
-        </ul>
-      </div>
+          )}
+          {!user.avatar &&(
+            <div className="bg-neutral-focus text-neutral-content rounded w-7">
+              <span className="text-xs">{userInitialLetter}</span>
+            </div>
+          )}
+        </div>
+      </button>
+      <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+        <li><button onClick={logOutHandler}>Log out</button></li>
+      </ul>
     </div>
   );
 
-  if (user && !user?.avatar) return (
-    <button>
-      <div className="avatar placeholder">
-        <div className="bg-neutral-focus text-neutral-content rounded w-7">
-          <span className="text-xs">{userInitialLetter}</span>
-        </div>
-      </div>
-    </button>
-  );
-
+  // TODO redirect on click to login when there's no user and is not loading
   return (
     <div className={classNames(
       'avatar placeholder',

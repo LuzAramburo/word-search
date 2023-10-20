@@ -4,6 +4,7 @@ import { WordListSubjects } from '@/utils/WordListFactory.tsx';
 import { Dialog } from '@/components/ui/Dialog.tsx';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { changeSettings, showDialog } from '@/store/gameSlice.ts';
+import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';
 
 export const GameSettingsDialog = () => {
   const { gameSettingsDialog, subject, difficulty } = useAppSelector(state => state.game);
@@ -21,15 +22,6 @@ export const GameSettingsDialog = () => {
     setWordListSubject(e.target.value as WordListSubjects);
   };
 
-  const difficultyList = ['easy', 'normal', 'hard'];
-  const selectSubjectOptions: { id: WordListSubjects, label: string }[] = [
-    { id: 'random', label: 'Random' },
-    { id: 'adjectives', label: 'Adjectives' },
-    { id: 'boardgames', label: 'Boardgames' },
-    { id: 'computers', label: 'Computers' },
-    { id: 'food', label: 'Food' },
-    { id: 'space', label: 'Outer Space' },
-  ];
 
   const changeDifficultyHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDifficultySetting(e.target.value as GameDifficultyType);
@@ -51,7 +43,7 @@ export const GameSettingsDialog = () => {
       <h1 className="font-bold text-2xl">Game Settings</h1>
       <h4 className="py-4 font-bold text-sm uppercase text-base-content/70">Game Difficulty</h4>
       <div className="join">
-        {difficultyList.length > 0 && difficultyList.map((item) => (
+        {DIFFICULTY_OPTIONS.map((item) => (
           <input
             className="join-item btn"
             type="radio"
@@ -70,7 +62,7 @@ export const GameSettingsDialog = () => {
         onChange={wordSubjectChangeHandler}
         defaultValue={subject}
       >
-        {selectSubjectOptions.length > 0 && selectSubjectOptions.map(item => (
+        {SUBJECT_OPTIONS.map(item => (
           <option value={item.id} key={item.id}>{item.label}</option>
         ))}
       </select>

@@ -1,10 +1,10 @@
 import { useAppSelector } from '@/store/hooks.ts';
 import Auth from '@/components/auth/Auth.tsx';
+import { Link } from 'react-router-dom';
 
-const JoinTournament = () => {
+const TournamentLanding = () => {
   const { user } = useAppSelector(state => state.user);
 
-  // TODO Guard with router
   if (!user) return <Auth />;
 
   return (
@@ -15,8 +15,8 @@ const JoinTournament = () => {
         <button className="btn btn-primary join-item rounded-r-full">Join</button>
       </div>
       <div className="divider w-2/4 mx-auto">OR</div>
-      <button className="btn btn-primary">Create a Tournament</button>
+      <Link to="/tournament/create" className="btn btn-primary">Create a Tournament</Link>
     </div>
   );
 };
-export default JoinTournament;
+export default TournamentLanding;
