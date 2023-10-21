@@ -23,7 +23,7 @@ export const NavbarAvatar = () => {
 
   if (user) return (
     <div className="dropdown dropdown-end">
-      <button className="btn btn-square btn-hug">
+      <button className="btn btn-square btn-hug opacity-80 hover:opacity-100">
         <Avatar user={user} isLoading={isLoading} />
       </button>
       <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">

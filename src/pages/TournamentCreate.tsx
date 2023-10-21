@@ -6,10 +6,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { db } from '@/firebase.ts';
 import { collection, addDoc } from 'firebase/firestore';
 import generateUniqueId from 'generate-unique-id';
-import { useAppDispatch } from '@/store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { setTournament } from '@/store/userSlice.ts';
+import { IParticipant } from '@/types/ITournament.ts';
 
 export const TournamentCreate = () => {
+  const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -19,19 +21,31 @@ export const TournamentCreate = () => {
 
   const createTournament = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return;
     try {
       const id = generateUniqueId({
         length: 6,
         excludeSymbols: ['0', 'o', '1', 'l'],
       }).toUpperCase();
+
+      const firstParticipant: IParticipant = {
+        uid: user?.uid,
+        displayName: user?.displayName,
+        avatar: user?.avatar,
+        currentRound: 1,
+      };
+      if (user?.avatar) firstParticipant.avatar = user?.avatar;
+
       const tournamentSettings = {
         difficulty: difficultySetting,
         id,
-        participants: [],
+        participants: [firstParticipant],
         rounds: rounds,
         started: false,
         subject: wordListSubject,
+        owner: user.uid,
       };
+
       const docRef = await addDoc(collection(db, 'tournaments'), tournamentSettings);
       dispatch(setTournament({
         ...tournamentSettings,

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUser } from '@/types/IUser.ts';
-import { ITournament } from '@/types/ITournament.ts';
+import { IParticipant, ITournament } from '@/types/ITournament.ts';
 
 interface userState {
   user: IUser | null;
@@ -27,8 +27,15 @@ const userSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    //TODO get tournament on refresh page
     setTournament: (state, action: PayloadAction<ITournament>) => {
       state.tournament = action.payload;
+    },
+    updateParticipants: (state, action: PayloadAction<IParticipant[]>) => {
+      if (state.tournament) state.tournament.participants = action.payload;
+    },
+    startTournament: (state) => {
+      if (state.tournament) state.tournament.started = true;
     },
   },
 });
@@ -38,6 +45,7 @@ export const {
   clearUser,
   setLoading,
   setTournament,
+  updateParticipants,
 } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;

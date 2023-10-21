@@ -1,8 +1,10 @@
 import classNames from 'classnames';
 import { IUser } from '@/types/IUser.ts';
 
+interface IAvatar extends Omit<IUser, 'email'> {}
+
 type Props = {
-  user: IUser | null;
+  user: IAvatar | null;
   large?: boolean;
   isLoading?: boolean;
 };

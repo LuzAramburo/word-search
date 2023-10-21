@@ -30,6 +30,7 @@ const router = createBrowserRouter([
         element: <TournamentCreate/>,
       },
       // TODO id always in uppercase
+      // TODO redirect to join screen if you add id directly
       {
         path: 'tournament/:id',
         element: <TournamentGame />,
