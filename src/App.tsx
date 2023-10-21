@@ -8,7 +8,7 @@ import { auth } from '@/firebase.ts';
 import { useAppDispatch } from '@/store/hooks.ts';
 import { setLoading, setUser } from '@/store/userSlice.ts';
 import { TournamentCreate } from '@/pages/TournamentCreate.tsx';
-import { TournamentLobby } from '@/pages/TournamentLobby.tsx';
+import { TournamentGame } from '@/pages/TournamentGame.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,13 +29,10 @@ const router = createBrowserRouter([
         path: 'tournament/create',
         element: <TournamentCreate/>,
       },
-      {
-        path: 'tournament/lobby',
-        element: <TournamentLobby/>,
-      },
+      // TODO id always in uppercase
       {
         path: 'tournament/:id',
-        element: <Game/>,
+        element: <TournamentGame />,
       },
     ],
   },

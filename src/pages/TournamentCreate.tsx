@@ -1,13 +1,48 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { db } from '@/firebase.ts';
+import { collection, addDoc } from 'firebase/firestore';
+import generateUniqueId from 'generate-unique-id';
+import { useAppDispatch } from '@/store/hooks.ts';
+import { setTournament } from '@/store/userSlice.ts';
 
 export const TournamentCreate = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const [rounds, setRounds] = useState(4);
   const [wordListSubject, setWordListSubject] = useState<WordListSubjects>('random');
+
+  const createTournament = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const id = generateUniqueId({
+        length: 6,
+        excludeSymbols: ['0', 'o', '1', 'l'],
+      }).toUpperCase();
+      const tournamentSettings = {
+        difficulty: difficultySetting,
+        id,
+        participants: [],
+        rounds: rounds,
+        started: false,
+        subject: wordListSubject,
+      };
+      const docRef = await addDoc(collection(db, 'tournaments'), tournamentSettings);
+      dispatch(setTournament({
+        ...tournamentSettings,
+        docId: docRef.id,
+      }));
+      navigate(`/tournament/${id}`);
+    } catch (e) {
+      // TODO Error handling
+      console.error('Error adding document: ', e);
+    }
+  };
 
   const changeRoundsHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setRounds(Number(e.target.value));
@@ -24,7 +59,7 @@ export const TournamentCreate = () => {
   return (
     <div className="min-h-[70vh] mx-auto w-1/3 flex flex-col justify-center">
       <h2 className="text-xl font-bold">Create Tournament</h2>
-      <form action="" className="max-w-xl">
+      <form onSubmit={e => createTournament(e)} className="max-w-xl">
         <div className="flex gap-5">
           <div className="form-control w-full">
             <label className="label">
@@ -55,6 +90,8 @@ export const TournamentCreate = () => {
               className="input input-bordered w-full"
               onChange={changeRoundsHandler}
               max={25}
+              min={1}
+              required
             />
           </div>
         </div>

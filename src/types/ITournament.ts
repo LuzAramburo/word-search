@@ -7,6 +7,7 @@ export interface IParticipants extends IUser {
 }
 
 export interface ITournament {
+  docId: string;
   difficulty: GameDifficultyType;
   id: string;
   participants: IParticipants[];

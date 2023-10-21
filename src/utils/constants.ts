@@ -1,6 +1,7 @@
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 
-export const SUBJECT_OPTIONS: { id: WordListSubjects, label: string }[] = [
+export const SUBJECT_OPTIONS: { id: WordListSubjects; label: string }[] = [
   { id: 'random', label: 'Random' },
   { id: 'adjectives', label: 'Adjectives' },
   { id: 'boardgames', label: 'Boardgames' },
@@ -10,4 +11,4 @@ export const SUBJECT_OPTIONS: { id: WordListSubjects, label: string }[] = [
 ];
 
 
-export const DIFFICULTY_OPTIONS = ['easy', 'normal', 'hard'];
+export const DIFFICULTY_OPTIONS: GameDifficultyType[] = ['easy', 'normal', 'hard'];
