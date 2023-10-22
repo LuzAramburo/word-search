@@ -46,6 +46,7 @@ export const {
   setLoading,
   setTournament,
   updateParticipants,
+  startTournament,
 } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;

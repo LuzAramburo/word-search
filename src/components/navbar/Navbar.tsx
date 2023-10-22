@@ -1,15 +1,15 @@
 import { showDialog } from '@/store/gameSlice.ts';
 import { useAppDispatch } from '@/store/hooks.ts';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { NavbarAvatar } from '@/components/navbar/NavbarAvatar.tsx';
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
-
+  const location = useLocation();
   const openConfigHandler = () => {
     dispatch(showDialog({ name:'gameSettingsDialog', show: true }));
   };
-
+  // TODO before confirm change settings, confirmation dialog warning that you will leave the tournament
   return (
     <div className="navbar bg-base-200 rounded mb-4 px-5">
       <div className="flex-1">
@@ -22,6 +22,7 @@ export const Navbar = () => {
           <button
             className="btn btn-square btn-ghost btn-sm"
             onClick={openConfigHandler}
+            disabled={location.pathname.includes('tournament')}
           >
             <svg
               className="inline-block w-5 h-5"

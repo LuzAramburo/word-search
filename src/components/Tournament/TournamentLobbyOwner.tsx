@@ -1,10 +1,30 @@
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useAppSelector } from '@/store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useRef } from 'react';
+import { startTournament } from '@/store/userSlice.ts';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/firebase.ts';
 
 export const TournamentLobbyOwner = () => {
   const tournament = useAppSelector(state => state.user.tournament);
+  const dispatch = useAppDispatch();
+
   const idInput = useRef<null | HTMLInputElement>(null);
+
+  const startHandler = async () => {
+    if (!tournament) return;
+    const docRef = doc(db, 'tournaments', tournament.docId);
+    try {
+      const startTournamentDB = await updateDoc(docRef, {
+        started: true,
+      });
+      console.log(startTournamentDB);
+      dispatch(startTournament());
+    }catch (e) {
+      throw new Error('Error Starting Tournament');
+    }
+  };
+
   const focusInput = async () => {
     idInput?.current?.focus();
     idInput?.current?.select();
@@ -33,7 +53,7 @@ export const TournamentLobbyOwner = () => {
           </CopyToClipboard>
         </span>
       </div>
-      <button className="btn btn-primary">Start Game</button>
+      <button className="btn btn-primary" onClick={startHandler}>Start Game</button>
     </>
   );
 };
