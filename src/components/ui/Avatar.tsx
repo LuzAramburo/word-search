@@ -26,7 +26,7 @@ export const Avatar = ({ user, large = false, isLoading = false }: Props) => {
       {user?.avatar && (
         <div className={classNames(
           'rounded',
-          { 'w-7': !large },
+          { 'w-8': !large },
           { 'w-12': large },
         )}>
           <img src={user.avatar} referrerPolicy="no-referrer" alt={user?.displayName ?? ''} />

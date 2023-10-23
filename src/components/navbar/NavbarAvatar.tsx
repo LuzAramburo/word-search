@@ -22,7 +22,7 @@ export const NavbarAvatar = () => {
   );
 
   if (user) return (
-    <div className="dropdown dropdown-end">
+    <div className="dropdown dropdown-end flex items-center justify-center">
       <button className="btn btn-square btn-hug opacity-80 hover:opacity-100">
         <Avatar user={user} isLoading={isLoading} />
       </button>
