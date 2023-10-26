@@ -2,12 +2,12 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { db } from '@/firebase.ts';
 import { collection, addDoc } from 'firebase/firestore';
 import generateUniqueId from 'generate-unique-id';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
-import { setTournament } from '@/store/userSlice.ts';
+import { changeSettings, setTournament } from '@/store/gameSlice.ts';
 import { IParticipant } from '@/types/ITournament.ts';
 
 export const TournamentCreate = () => {
@@ -23,7 +23,7 @@ export const TournamentCreate = () => {
     e.preventDefault();
     if (!user) return;
     try {
-      const id = generateUniqueId({
+      const code = generateUniqueId({
         length: 6,
         excludeSymbols: ['0', 'o', '1', 'l'],
       }).toUpperCase();
@@ -32,26 +32,31 @@ export const TournamentCreate = () => {
         uid: user?.uid,
         displayName: user?.displayName,
         avatar: user?.avatar,
-        currentRound: 1,
+        roundsFinished: 0,
       };
       if (user?.avatar) firstParticipant.avatar = user?.avatar;
 
       const tournamentSettings = {
-        difficulty: difficultySetting,
-        id,
+        code: code,
         participants: [firstParticipant],
         rounds: rounds,
         started: false,
+        userOwner: user.uid,
+        winner: null,
+        difficulty: difficultySetting,
         subject: wordListSubject,
-        owner: user.uid,
       };
-
       const docRef = await addDoc(collection(db, 'tournaments'), tournamentSettings);
+
+      dispatch(changeSettings({
+        difficulty: difficultySetting,
+        subject: wordListSubject,
+      }));
       dispatch(setTournament({
         ...tournamentSettings,
         docId: docRef.id,
       }));
-      navigate(`/tournament/${id}`);
+      navigate(`/tournament/${code}`);
     } catch (e) {
       // TODO Error handling
       console.error('Error adding document: ', e);
@@ -125,7 +130,6 @@ export const TournamentCreate = () => {
         </div>
         <div className="form-control w-full mt-4">
           <button className="btn btn-secondary">Create</button>
-          <Link to="/tournament/lobby" className="btn btn-ghost mt-4">To Lobby</Link>
         </div>
       </form>
     </div>

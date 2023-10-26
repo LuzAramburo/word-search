@@ -1,24 +1,24 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { Avatar } from '@/components/ui/Avatar.tsx';
 import { useEffect } from 'react';
-import { updateParticipants } from '@/store/userSlice.ts';
+import { setTournamentParticipants } from '@/store/gameSlice.ts';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
-import { ITournament } from '@/types/ITournament.ts';
+import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { TournamentLobbyOwner } from '@/components/Tournament/TournamentLobbyOwner.tsx';
 import { TournamentLobbyParticipant } from '@/components/Tournament/TournamentLobbyParticipant.tsx';
+import { TOURNAMENTS_DB } from '@/utils/globals.ts';
 
 export const TournamentLobby = () => {
-  const { tournament, user } = useAppSelector(state => state.user);
+  const tournament = useAppSelector(state => state.game.tournament);
+  const user = useAppSelector(state => state.user.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!tournament) return;
-    return onSnapshot(doc(db, 'tournaments', tournament.docId), (doc) => {
-      const source = doc.metadata.hasPendingWrites ? 'Local' : 'Server';
-      console.log(source, ' data: ', doc.data());
+    return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
       const tournament = doc.data() as ITournament;
-      dispatch(updateParticipants(tournament.participants));
+      dispatch(setTournamentParticipants(tournament.participants));
     });
   }, []);
 
@@ -27,10 +27,10 @@ export const TournamentLobby = () => {
     <>
       <div className="text-center min-h-[70vh] flex flex-col items-center justify-center gap-3">
         <h2 className="text-3xl">Tournament</h2>
-        {tournament?.owner === user?.uid && (
+        {tournament?.userOwner === user?.uid && (
           <TournamentLobbyOwner />
         )}
-        {tournament?.owner !== user?.uid && (
+        {tournament?.userOwner !== user?.uid && (
           <TournamentLobbyParticipant />
         )}
         <h3 className="text-xl mt-6">Participants</h3>
@@ -38,7 +38,7 @@ export const TournamentLobby = () => {
           {
             tournament?.participants
           && tournament?.participants.length > 0
-          && tournament?.participants.map(participant => (
+          && tournament?.participants.map((participant: IParticipant) => (
             <Avatar user={participant} large key={participant.uid} />
           ))
           }

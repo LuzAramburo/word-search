@@ -7,14 +7,20 @@ import { loadFull } from 'tsparticles';
 import { confettiOptions } from '@/utils/confettiOptions.ts';
 import { useCallback } from 'react';
 import type { Engine } from 'tsparticles-engine';
-import { useAppSelector } from '@/store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
+import { restartGame } from '@/store/gameSlice.ts';
 
 function Game() {
-  const gameState= useAppSelector(state => state.game.gameState);
+  const { gameState, gameSettingsDialog, winnerDialog }= useAppSelector(state => state.game);
+  const dispatch = useAppDispatch();
 
   const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
   }, []);
+
+  const resetGame = () => {
+    dispatch(restartGame());
+  };
 
   if (gameState === 'loading') return (
     <div className="w-screen h-screen flex justify-center items-center">
@@ -32,8 +38,8 @@ function Game() {
         <WordList/>
         <Grid />
       </div>
-      <GameSettingsDialog />
-      <WinnerDialog />
+      {gameSettingsDialog && <GameSettingsDialog/>}
+      {winnerDialog && <WinnerDialog title="You Won!" subtitle="Congratulations" onConfirm={resetGame} />}
     </>
   );
 }

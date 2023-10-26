@@ -2,6 +2,7 @@ import { GameDifficultyType, gameStateFactory, WordSearchContextType } from '@/u
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.tsx';
 import { IGridItem } from '@/types/IGrid.ts';
+import { IParticipant, ITournament } from '@/types/ITournament.ts';
 
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
@@ -23,45 +24,47 @@ const initialState: WordSearchContextType = {
   wordList: [],
   gameSettingsDialog: false,
   winnerDialog: false,
+  tournament: null,
 };
 
-const gameSlice = createSlice({
+export const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
     init() {
       return gameStateFactory(wordListFactory());
     },
-    showDialog(state, action: PayloadAction<ShowDialogPayload>) {
-      state[action.payload.name] = action.payload.show;
+    showDialog(state, { payload }: PayloadAction<ShowDialogPayload>) {
+      state[payload.name] = payload.show;
     },
-    changeSettings(state, action: PayloadAction<ChangeSettingsPayload>) {
+    changeSettings(state, { payload }: PayloadAction<ChangeSettingsPayload>) {
       if (
-        action.payload.difficulty === state.difficulty
-        && action.payload.subject === state.subject
+        payload.difficulty === state.difficulty
+        && payload.subject === state.subject
       ) return state;
       let updatedSize = 12;
-      if (action.payload.difficulty === 'easy') updatedSize = 7;
-      if (action.payload.difficulty === 'normal') updatedSize = 12;
-      if (action.payload.difficulty === 'hard') updatedSize = 17;
+      if (payload.difficulty === 'easy') updatedSize = 7;
+      if (payload.difficulty === 'normal') updatedSize = 12;
+      if (payload.difficulty === 'hard') updatedSize = 17;
       const wordList = wordListFactory(
-        action.payload.subject,
+        payload.subject,
         updatedSize,
-        action.payload.difficulty,
+        payload.difficulty,
       );
       return {
+        ...state,
         ...gameStateFactory(
           wordList,
-          action.payload.subject,
-          action.payload.difficulty,
+          payload.subject,
+          payload.difficulty,
           updatedSize,
         ),
       };
     },
-    setCollectedLetter(state, action: PayloadAction<IGridItem>) {
+    setCollectedLetter(state, { payload }: PayloadAction<IGridItem>) {
       const updatedGrid = [...state.grid];
-      updatedGrid[action.payload.position].collected = true;
-      state.collectedLetters.push(action.payload);
+      updatedGrid[payload.position].collected = true;
+      state.collectedLetters.push(payload);
       state.gameState = 'collecting';
       state.grid = updatedGrid;
     },
@@ -118,6 +121,7 @@ const gameSlice = createSlice({
         state.difficulty,
       );
       return {
+        ...state,
         ...gameStateFactory(
           safeWordList,
           state.subject,
@@ -125,6 +129,23 @@ const gameSlice = createSlice({
           state.size,
         ),
       };
+    },
+    //TODO get tournament on refresh page
+    setTournament: (state, { payload }: PayloadAction<ITournament>) => {
+      state.tournament = payload;
+    },
+    clearTournament: (state) => {
+      state.tournament = null;
+    },
+    setTournamentWinner: (state, { payload }: PayloadAction<IParticipant>) => {
+      if (state.tournament) state.tournament.winner = payload;
+      state.winnerDialog = true;
+    },
+    setTournamentParticipants: (state, { payload }: PayloadAction<IParticipant[]>) => {
+      if (state.tournament) state.tournament.participants = payload;
+    },
+    startTournament: (state) => {
+      if (state.tournament) state.tournament.started = true;
     },
   },
 });
@@ -137,6 +158,11 @@ export const {
   stopCollecting,
   checkMatch,
   restartGame,
+  setTournament,
+  setTournamentParticipants,
+  startTournament,
+  setTournamentWinner,
+  clearTournament,
 } = gameSlice.actions;
 const gameReducer =  gameSlice.reducer;
 export default gameReducer;

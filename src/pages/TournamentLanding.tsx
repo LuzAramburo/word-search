@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { db } from '@/firebase.ts';
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import { setTournament } from '@/store/userSlice.ts';
+import { changeSettings, setTournament } from '@/store/gameSlice.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 
 const TournamentLanding = () => {
@@ -22,36 +22,37 @@ const TournamentLanding = () => {
 
   const joinTournament = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (tournamentIdInput === '' || !user) return;
-
-    // TODO handle not found, empty input and errors
-
-    // get tournament and set on redux
-    // Add participant to DB
-    const q = query(collection(db, 'tournaments'), where('id', '==', tournamentIdInput));
-    try {
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        const newParticipant: IParticipant = {
-          uid: user?.uid,
-          displayName: user?.displayName,
-          avatar: user?.avatar,
-          currentRound: 1,
-        };
-        const tournament = doc.data() as ITournament;
-        tournament.docId = doc.id;
-        tournament.participants = [...tournament.participants, newParticipant];
-        updateDoc(doc.ref, {
-          participants: tournament.participants,
+    if (tournamentIdInput !== '' && user) {
+      // TODO handle id not found, empty input and errors
+      const q = query(collection(db, 'tournaments'), where('code', '==', tournamentIdInput));
+      try {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          const newParticipant: IParticipant = {
+            uid: user.uid,
+            displayName: user.displayName,
+            avatar: user.avatar,
+            roundsFinished: 0,
+          };
+          const tournament = doc.data() as ITournament;
+          tournament.docId = doc.id;
+          tournament.participants = [...tournament.participants, newParticipant];
+          updateDoc(doc.ref, {
+            participants: tournament.participants,
+          });
+          dispatch(changeSettings({
+            difficulty: tournament.difficulty,
+            subject: tournament.subject,
+          }));
+          dispatch(setTournament(tournament));
         });
-        dispatch(setTournament(tournament));
-        console.log(tournament);
-      });
-      navigate(`/tournament/${tournamentIdInput}`);
-    } catch (e) {
-      console.error(e);
-      throw new Error('Error getting Tournament');
+        navigate(`/tournament/${tournamentIdInput}`);
+      } catch (e) {
+        console.error(e);
+        throw new Error('Error getting Tournament');
+      }
     }
+
   };
 
   if (!user) return <Auth />;

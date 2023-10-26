@@ -1,18 +1,19 @@
+import { IUser } from '@/types/IUser.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
-import { IUser } from '@/types/IUser.ts';
 
 export interface IParticipant extends Omit<IUser, 'email'> {
-  currentRound: number;
+  roundsFinished: number;
 }
 
 export interface ITournament {
   docId: string;
-  difficulty: GameDifficultyType;
-  id: string;
+  code: string;
   participants: IParticipant[];
   rounds: number;
   started: boolean;
+  userOwner: string;
+  winner: null | IParticipant;
+  difficulty: GameDifficultyType;
   subject: WordListSubjects;
-  owner: string;
 }

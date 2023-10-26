@@ -3,13 +3,11 @@ import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useEffect } from 'react';
 import { checkMatch, init, stopCollecting } from '@/store/gameSlice.ts';
-import { GameSettingsDialog } from '@/components/ui/GameSettingsDialog.tsx';
-import { WinnerDialog } from '@/components/ui/WinnerDialog.tsx';
 
 function Layout() {
   const dispatch = useAppDispatch();
 
-  const { gameState, collectedLetters, gameSettingsDialog, winnerDialog } = useAppSelector(state => state.game);
+  const { gameState, collectedLetters } = useAppSelector(state => state.game);
 
   useEffect(() => {
     dispatch(init());
@@ -39,9 +37,8 @@ function Layout() {
         <div className="p-4 max-w-screen-2xl mx-auto min-h-screen">
           <Navbar />
           <Outlet />
-          {gameSettingsDialog && <GameSettingsDialog/>}
-          {winnerDialog && <WinnerDialog/>}
         </div>
+        {/* TODO Toast system*/}
       </main>
     </>
   );

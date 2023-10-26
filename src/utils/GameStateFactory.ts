@@ -2,6 +2,7 @@ import { IGridItem } from '@/types/IGrid.ts';
 import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { ITournament } from '@/types/ITournament.ts';
 
 export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';
 
@@ -17,6 +18,7 @@ export type WordSearchContextType = {
   difficulty: GameDifficultyType;
   gameSettingsDialog: boolean;
   winnerDialog: boolean;
+  tournament: ITournament | null;
 }
 
 export const gameStateFactory = (

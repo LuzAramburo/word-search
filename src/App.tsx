@@ -8,7 +8,7 @@ import { auth } from '@/firebase.ts';
 import { useAppDispatch } from '@/store/hooks.ts';
 import { setLoading, setUser } from '@/store/userSlice.ts';
 import { TournamentCreate } from '@/pages/TournamentCreate.tsx';
-import { TournamentGame } from '@/pages/TournamentGame.tsx';
+import { TournamentID } from '@/pages/TournamentID.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,21 +19,21 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Game/>,
+        element: <Game />,
       },
       {
         path: 'tournament',
-        element: <TournamentLanding/>,
+        element: <TournamentLanding />,
       },
       {
         path: 'tournament/create',
-        element: <TournamentCreate/>,
+        element: <TournamentCreate />,
       },
       // TODO id always in uppercase
       // TODO redirect to join screen if you add id directly
       {
         path: 'tournament/:id',
-        element: <TournamentGame />,
+        element: <TournamentID />,
       },
     ],
   },
