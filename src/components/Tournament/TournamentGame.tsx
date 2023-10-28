@@ -13,6 +13,7 @@ import { clearTournament, restartGame, setTournamentParticipants, setTournamentW
 import { ITournament } from '@/types/ITournament.ts';
 import { TOURNAMENTS_DB } from '@/utils/globals.ts';
 import { useNavigate } from 'react-router-dom';
+import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
 
 function Game() {
   const { gameState, tournament, winnerDialog }= useAppSelector(state => state.game);
@@ -29,18 +30,12 @@ function Game() {
 
   const goToCreateTournament = () => {
     dispatch(clearTournament());
-    navigate('tournament/create');
+    navigate('/tournament/create');
   };
 
   const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
   }, []);
-
-  // TODO update tournament round when completed
-  // TODO check if the round matches the limit round of the tournament
-
-  // TODO watch if there a winner
-
 
   useEffect(() => {
     if (!tournament) return;
@@ -119,6 +114,7 @@ function Game() {
         btnText="create a tournament"
         onConfirm={goToCreateTournament}
       />}
+      <Notifications />
     </>
   );
 }

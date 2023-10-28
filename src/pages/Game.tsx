@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import type { Engine } from 'tsparticles-engine';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { restartGame } from '@/store/gameSlice.ts';
+import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
 
 function Game() {
   const { gameState, gameSettingsDialog, winnerDialog }= useAppSelector(state => state.game);
@@ -45,6 +46,7 @@ function Game() {
         btnText="Play again?"
         onConfirm={resetGame}
       />}
+      <Notifications />
     </>
   );
 }

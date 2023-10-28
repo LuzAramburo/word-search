@@ -38,7 +38,6 @@ function Layout() {
           <Navbar />
           <Outlet />
         </div>
-        {/* TODO Toast system*/}
       </main>
     </>
   );
