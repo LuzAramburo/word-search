@@ -46,11 +46,9 @@ function Game() {
     if (!tournament) return;
     return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
       const tournamentInDB = doc.data() as ITournament;
-
-      // TODO notify other player won
       console.log('Doc updated', tournamentInDB);
+
       if (tournamentInDB.winner && tournamentInDB.winner.uid !== user?.uid) {
-        console.log(`${tournamentInDB.winner.displayName} Won!`);
         setWinnerDialogText({ title: `${tournamentInDB.winner.displayName} Won!`, subtitle: 'Another round?' });
         dispatch(setTournamentWinner(tournamentInDB.winner));
       }
@@ -89,7 +87,7 @@ function Game() {
 
         if (userCompletedAllRounds) {
           console.log('USER WON');
-          setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations' });
+          setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
         } else {
           dispatch(restartGame());
         }
@@ -118,6 +116,7 @@ function Game() {
       { winnerDialog && <WinnerDialog
         title={winnerDialogText.title}
         subtitle={winnerDialogText.subtitle}
+        btnText="create a tournament"
         onConfirm={goToCreateTournament}
       />}
     </>

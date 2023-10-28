@@ -39,7 +39,12 @@ function Game() {
         <Grid />
       </div>
       {gameSettingsDialog && <GameSettingsDialog/>}
-      {winnerDialog && <WinnerDialog title="You Won!" subtitle="Congratulations" onConfirm={resetGame} />}
+      {winnerDialog && <WinnerDialog
+        title="You Won!"
+        subtitle="Congratulations"
+        btnText="Play again?"
+        onConfirm={resetGame}
+      />}
     </>
   );
 }
