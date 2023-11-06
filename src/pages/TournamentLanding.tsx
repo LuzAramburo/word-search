@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
-import Auth from '@/components/auth/Auth.tsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { db } from '@/firebase.ts';
@@ -54,8 +53,6 @@ const TournamentLanding = () => {
     }
 
   };
-
-  if (!user) return <Auth />;
 
   return (
     <div className="text-center min-h-[70vh] flex flex-col items-center justify-center">

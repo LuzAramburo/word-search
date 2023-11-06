@@ -4,11 +4,13 @@ import { IUser } from '@/types/IUser.ts';
 interface userState {
   user: IUser | null;
   isLoading: boolean;
+  redirectedFrom: string | null;
 }
 
 const initialState: userState = {
   user: null,
-  isLoading: true,
+  isLoading: false,
+  redirectedFrom: null,
 };
 
 const userSlice = createSlice({
@@ -24,6 +26,9 @@ const userSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setIsRedirected: (state, action: PayloadAction<string | null>) => {
+      state.redirectedFrom = action.payload;
+    },
   },
 });
 
@@ -31,6 +36,7 @@ export const {
   setUser,
   clearUser,
   setLoading,
+  setIsRedirected,
 } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;
