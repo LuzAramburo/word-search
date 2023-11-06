@@ -40,6 +40,7 @@ const router = createBrowserRouter([
       // TODO id always in uppercase
       // TODO redirect to join screen if you add id directly
       // TODO you can't join if already started
+      // TODO clear tournament when you leave
       {
         path: '/tournament/:id',
         element: <TournamentID />,
