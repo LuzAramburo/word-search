@@ -9,6 +9,7 @@ import generateUniqueId from 'generate-unique-id';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { changeSettings, setTournament } from '@/store/gameSlice.ts';
 import { IParticipant } from '@/types/ITournament.ts';
+import { addToast } from '@/store/notificationsSlice.ts';
 
 export const TournamentCreate = () => {
   const user = useAppSelector(state => state.user.user);
@@ -58,7 +59,10 @@ export const TournamentCreate = () => {
       }));
       navigate(`/tournament/${code}`);
     } catch (e) {
-      // TODO Error handling
+      dispatch(addToast({
+        type: 'error',
+        content: 'The tournament could not be create, please try again.',
+      }));
       console.error('Error adding document: ', e);
     }
   };

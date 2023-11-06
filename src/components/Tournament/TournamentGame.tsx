@@ -13,7 +13,6 @@ import { clearTournament, restartGame, setTournamentParticipants, setTournamentW
 import { ITournament } from '@/types/ITournament.ts';
 import { TOURNAMENTS_DB } from '@/utils/globals.ts';
 import { useNavigate } from 'react-router-dom';
-import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
 
 function Game() {
   const { gameState, tournament, winnerDialog }= useAppSelector(state => state.game);
@@ -114,7 +113,6 @@ function Game() {
         btnText="create a tournament"
         onConfirm={goToCreateTournament}
       />}
-      <Notifications />
     </>
   );
 }

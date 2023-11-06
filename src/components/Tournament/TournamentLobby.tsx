@@ -8,6 +8,7 @@ import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { TournamentLobbyOwner } from '@/components/Tournament/TournamentLobbyOwner.tsx';
 import { TournamentLobbyParticipant } from '@/components/Tournament/TournamentLobbyParticipant.tsx';
 import { TOURNAMENTS_DB } from '@/utils/globals.ts';
+import { addToast } from '@/store/notificationsSlice.ts';
 
 export const TournamentLobby = () => {
   const tournament = useAppSelector(state => state.game.tournament);
@@ -19,6 +20,9 @@ export const TournamentLobby = () => {
     return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
       const tournament = doc.data() as ITournament;
       dispatch(setTournamentParticipants(tournament.participants));
+      dispatch(addToast({
+        content: 'A new participant joined!',
+      }));
     });
   }, []);
 

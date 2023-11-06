@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useEffect } from 'react';
 import { checkMatch, init, stopCollecting } from '@/store/gameSlice.ts';
+import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
 
 function Layout() {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ function Layout() {
           <Navbar />
           <Outlet />
         </div>
+        <Notifications />
       </main>
     </>
   );
