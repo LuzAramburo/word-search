@@ -5,6 +5,7 @@ import { db } from '@/firebase.ts';
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { changeSettings, setTournament } from '@/store/gameSlice.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
+import { addToast } from '@/store/notificationsSlice.ts';
 
 const TournamentLanding = () => {
   const { user } = useAppSelector(state => state.user);
@@ -26,14 +27,29 @@ const TournamentLanding = () => {
       const q = query(collection(db, 'tournaments'), where('code', '==', tournamentIdInput));
       try {
         const querySnapshot = await getDocs(q);
+
+        if(querySnapshot.empty) {
+          dispatch(addToast({
+            type: 'error',
+            content: 'Tournament Not Found',
+          }));
+        }
         querySnapshot.forEach((doc) => {
+          const tournament = doc.data() as ITournament;
+          if (tournament.started) {
+            dispatch(addToast({
+              type: 'error',
+              content: 'This tournament has already started',
+            }));
+            return;
+          }
+
           const newParticipant: IParticipant = {
             uid: user.uid,
             displayName: user.displayName,
             avatar: user.avatar,
             roundsFinished: 0,
           };
-          const tournament = doc.data() as ITournament;
           tournament.docId = doc.id;
           tournament.participants = [...tournament.participants, newParticipant];
           updateDoc(doc.ref, {
@@ -44,8 +60,8 @@ const TournamentLanding = () => {
             subject: tournament.subject,
           }));
           dispatch(setTournament(tournament));
+          navigate(`/tournament/${tournamentIdInput}`);
         });
-        navigate(`/tournament/${tournamentIdInput}`);
       } catch (e) {
         console.error(e);
         throw new Error('Error getting Tournament');

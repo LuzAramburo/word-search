@@ -8,6 +8,7 @@ type ProtectedRouteProps = {
 };
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const user = useAppSelector(state => state.user.user);
+  const tournament = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
 
@@ -15,8 +16,13 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     if (!user) dispatch(setIsRedirected(pathname));
   }, []);
 
+  if (!tournament && pathname !== '/tournament/create') {
+    return <Navigate to="/tournament/create" />;
+  }
+
   if (!user) {
     return <Navigate to="/login" />;
   }
+
   return children;
 };
