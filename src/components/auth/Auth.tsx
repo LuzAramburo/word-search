@@ -21,6 +21,7 @@ const Auth = () => {
         avatar: photoURL,
       }));
       dispatch(setLoading(false));
+      navigate('/');
     });
 
     if (redirectedFrom) {

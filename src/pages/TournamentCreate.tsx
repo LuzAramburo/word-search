@@ -65,6 +65,7 @@ export const TournamentCreate = () => {
       }));
       console.error('Error adding document: ', e);
     }
+  //   TODO creating game loading
   };
 
   const changeRoundsHandler = (e: ChangeEvent<HTMLInputElement>) => {

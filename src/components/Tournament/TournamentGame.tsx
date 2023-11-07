@@ -15,7 +15,7 @@ import { TOURNAMENTS_DB } from '@/utils/globals.ts';
 import { useNavigate } from 'react-router-dom';
 
 function Game() {
-  const { gameState, tournament, winnerDialog }= useAppSelector(state => state.game);
+  const { gameState, tournament }= useAppSelector(state => state.game);
   const user = useAppSelector(state => state.user.user);
   const dispatch = useAppDispatch();
 
@@ -54,7 +54,6 @@ function Game() {
 
   useEffect( () => {
     if (gameState === 'winner' && tournament && user) {
-      // dispatch(checkTournament(user as IUser));
       const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
       let userCompletedAllRounds = false;
 
@@ -76,13 +75,15 @@ function Game() {
             winner: userCompletedAllRounds ? updatedParticipants[userParticipantIndex] : null,
           });
         } catch (e) {
-          console.log('Error on update doc');
+          console.error(e);
+          throw new Error('Error on update doc');
         }
 
         if (userCompletedAllRounds) {
-          console.log('USER WON');
           setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
+          dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
         } else {
+          console.log('not all rounds finished');
           dispatch(restartGame());
         }
       };
@@ -99,7 +100,7 @@ function Game() {
 
   return (
     <>
-      { winnerDialog && (
+      { !!tournament?.winner && (
         <Particles init={particlesInit} options={confettiOptions} />
       )}
       <p className="text-xl mb-4">Round: {roundsFinished} of {tournament?.rounds}</p>
@@ -107,7 +108,7 @@ function Game() {
         <WordList/>
         <Grid />
       </div>
-      { winnerDialog && <WinnerDialog
+      { !!tournament?.winner && <WinnerDialog
         title={winnerDialogText.title}
         subtitle={winnerDialogText.subtitle}
         btnText="create a tournament"
