@@ -73,7 +73,6 @@ const TournamentLanding = () => {
   return (
     <div className="text-center min-h-[70vh] flex flex-col items-center justify-center">
       <h2 className="text-xl mb-2">Join Tournament</h2>
-      {/* TODO to uppercase */}
       <form onSubmit={e => joinTournament(e)}>
         <div className="join">
           <input

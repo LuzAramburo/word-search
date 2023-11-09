@@ -4,6 +4,9 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useEffect } from 'react';
 import { checkMatch, stopCollecting } from '@/store/gameSlice.ts';
 import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/firebase.ts';
+import { clearUser, setUser } from '@/store/userSlice.ts';
 
 function Layout() {
   const dispatch = useAppDispatch();
@@ -11,8 +14,21 @@ function Layout() {
   const { gameState, collectedLetters } = useAppSelector(state => state.game);
 
   useEffect(() => {
-    dispatch(init());
-  }, [dispatch]);
+    onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        dispatch(
+          setUser({
+            email: userAuth.email,
+            uid: userAuth.uid,
+            displayName: userAuth.displayName,
+            avatar: userAuth.photoURL,
+          }),
+        );
+      } else {
+        dispatch(clearUser());
+      }
+    });
+  }, []);
 
   const mouseDownHandler = () => {
     if (gameState === 'collecting') dispatch(stopCollecting());

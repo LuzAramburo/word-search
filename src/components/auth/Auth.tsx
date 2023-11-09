@@ -1,5 +1,5 @@
 import { auth } from '@/firebase.ts';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { setIsRedirected, setLoading, setUser } from '@/store/userSlice.ts';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ const Auth = () => {
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
+    await setPersistence(auth, browserLocalPersistence);
     await signInWithPopup(auth, provider).then((result) => {
       dispatch(setLoading(true));
       const { email, uid, displayName, photoURL } = result.user;

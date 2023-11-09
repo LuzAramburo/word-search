@@ -40,15 +40,10 @@ function Game() {
     if (!tournament) return;
     return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
       const tournamentInDB = doc.data() as ITournament;
-      console.log('Doc updated', tournamentInDB);
-
       if (tournamentInDB.winner && tournamentInDB.winner.uid !== user?.uid) {
         setWinnerDialogText({ title: `${tournamentInDB.winner.displayName} Won!`, subtitle: 'Another round?' });
         dispatch(setTournamentWinner(tournamentInDB.winner));
       }
-
-      //  TODO notify when other participants complete round.
-      //   idea: if not you is different to local, notify and update local
     });
   }, []);
 
@@ -67,7 +62,7 @@ function Game() {
         setRoundsFinished(prev => prev + 1);
         if (roundsFinished === tournament.rounds) userCompletedAllRounds = true;
 
-        dispatch(setTournamentParticipants(updatedParticipants)); // TODO do i need this? there should be a watcher
+        dispatch(setTournamentParticipants(updatedParticipants));
         const docRef = doc(db, TOURNAMENTS_DB, tournament.docId);
         try {
           await updateDoc(docRef, {
