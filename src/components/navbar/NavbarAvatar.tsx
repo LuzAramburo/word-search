@@ -5,7 +5,6 @@ import { clearUser } from '@/store/userSlice.ts';
 import { Avatar } from '@/components/ui/Avatar.tsx';
 import { Link } from 'react-router-dom';
 
-// TODO esc key to close dropdown
 export const NavbarAvatar = () => {
   const {
     user,

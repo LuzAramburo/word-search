@@ -16,12 +16,15 @@ const TournamentCreate = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [loadingGame, setLoadingGame] = useState(false);
+
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const [rounds, setRounds] = useState(4);
   const [wordListSubject, setWordListSubject] = useState<WordListSubjects>('random');
 
   const createTournament = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoadingGame(true);
     if (!user) return;
     try {
       const code = generateUniqueId({
@@ -133,7 +136,10 @@ const TournamentCreate = () => {
           </select>
         </div>
         <div className="form-control w-full mt-4">
-          <button className="btn btn-secondary">Create</button>
+          <button className="btn btn-secondary">
+            {loadingGame && <span className="loading loading-spinner" />}
+            Create
+          </button>
         </div>
       </form>
     </div>
