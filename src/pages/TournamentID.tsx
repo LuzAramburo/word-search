@@ -8,7 +8,7 @@ import { startTournament } from '@/store/gameSlice.ts';
 import TournamentGame from '@/components/Tournament/TournamentGame.tsx';
 import { TOURNAMENTS_DB } from '@/utils/globals.ts';
 
-export const TournamentID = () => {
+const TournamentID = () => {
   const { tournament } = useAppSelector(state => state.game);
   const { user } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
@@ -30,3 +30,5 @@ export const TournamentID = () => {
     <TournamentGame />
   );
 };
+
+export default TournamentID;

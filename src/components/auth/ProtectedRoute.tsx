@@ -6,7 +6,8 @@ import { setIsRedirected } from '@/store/userSlice.ts';
 type ProtectedRouteProps = {
   children: ReactNode;
 };
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const user = useAppSelector(state => state.user.user);
   const tournament = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
@@ -26,3 +27,5 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   return children;
 };
+
+export default ProtectedRoute;

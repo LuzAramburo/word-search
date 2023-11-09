@@ -11,7 +11,7 @@ import { changeSettings, setTournament } from '@/store/gameSlice.ts';
 import { IParticipant } from '@/types/ITournament.ts';
 import { addToast } from '@/store/notificationsSlice.ts';
 
-export const TournamentCreate = () => {
+const TournamentCreate = () => {
   const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -139,3 +139,5 @@ export const TournamentCreate = () => {
     </div>
   );
 };
+
+export default TournamentCreate;
