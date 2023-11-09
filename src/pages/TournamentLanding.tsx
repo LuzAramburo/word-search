@@ -23,7 +23,7 @@ const TournamentLanding = () => {
   const joinTournament = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (tournamentIdInput !== '' && user) {
-      // TODO handle id not found, empty input and errors
+      // TODO empty input and errors
       const q = query(collection(db, 'tournaments'), where('code', '==', tournamentIdInput));
       try {
         const querySnapshot = await getDocs(q);

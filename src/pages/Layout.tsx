@@ -2,7 +2,7 @@ import { Navbar } from '@/components/navbar/Navbar.tsx';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useEffect } from 'react';
-import { checkMatch, init, stopCollecting } from '@/store/gameSlice.ts';
+import { checkMatch, stopCollecting } from '@/store/gameSlice.ts';
 import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
 
 function Layout() {
@@ -21,12 +21,6 @@ function Layout() {
   const mouseUpHandler = () => {
     if (collectedLetters.length > 0) dispatch(checkMatch());
   };
-
-  if (gameState === 'loading') return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <span className="loading loading-bars loading-lg" />
-    </div>
-  );
 
   return (
     <>

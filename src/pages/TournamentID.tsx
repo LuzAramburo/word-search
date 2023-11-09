@@ -23,7 +23,6 @@ export const TournamentID = () => {
   }, []);
 
   if (!tournament?.started) return (
-    // TODO separete view? code/lobby
     <TournamentLobby />
   );
 
