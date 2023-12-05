@@ -1,6 +1,6 @@
 import { IUser } from '@/types/IUser.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
-import { WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { WordListSubjects } from '@/utils/WordListFactory.ts';
 
 export interface IParticipant extends Omit<IUser, 'email'> {
   roundsFinished: number;

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
-import { WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { Dialog } from '@/components/ui/Dialog.tsx';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { changeSettings, showDialog } from '@/store/gameSlice.ts';

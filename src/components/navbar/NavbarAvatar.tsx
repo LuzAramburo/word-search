@@ -10,11 +10,16 @@ export const NavbarAvatar = () => {
     user,
     isLoading,
   } = useAppSelector(state => state.user);
+  const { tournament } = useAppSelector( state => state.game);
   const dispatch = useAppDispatch();
 
   const logOutHandler = async () => {
-    await signOut(auth);
-    dispatch(clearUser());
+    if (!!tournament && !window.confirm('Are you sure you want to abandon the tournament?')) {
+      return;
+    } else {
+      await signOut(auth);
+      dispatch(clearUser());
+    }
   };
 
   if (isLoading) return (

@@ -6,7 +6,7 @@ import { db } from '@/firebase.ts';
 import { ITournament } from '@/types/ITournament.ts';
 import { startTournament } from '@/store/gameSlice.ts';
 import TournamentGame from '@/components/Tournament/TournamentGame.tsx';
-import { TOURNAMENTS_DB } from '@/utils/globals.ts';
+import { TOURNAMENTS_DB } from '@/utils/constants';
 
 const TournamentID = () => {
   const { tournament } = useAppSelector(state => state.game);

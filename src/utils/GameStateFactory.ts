@@ -1,7 +1,7 @@
 import { IGridItem } from '@/types/IGrid.ts';
 import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
-import { WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { ITournament } from '@/types/ITournament.ts';
 
 export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';

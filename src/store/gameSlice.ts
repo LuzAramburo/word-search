@@ -1,8 +1,9 @@
 import { GameDifficultyType, gameStateFactory, WordSearchContextType } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.tsx';
+import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.ts';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
+import { DIFFICULTY_SIZE } from '@/utils/constants';
 
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
@@ -19,7 +20,7 @@ const initialState: WordSearchContextType = {
   difficulty: 'normal',
   gameState: 'loading',
   grid: [],
-  size: 12,
+  size: DIFFICULTY_SIZE.NORMAL,
   subject: 'random',
   wordList: [],
   gameSettingsDialog: false,
@@ -42,16 +43,16 @@ export const gameSlice = createSlice({
         payload.difficulty === state.difficulty
         && payload.subject === state.subject
       ) return state;
-      let updatedSize = 12;
-      if (payload.difficulty === 'easy') updatedSize = 7;
-      if (payload.difficulty === 'normal') updatedSize = 12;
-      if (payload.difficulty === 'hard') updatedSize = 17;
+      let updatedSize: number = DIFFICULTY_SIZE.NORMAL;
+      if (payload.difficulty === 'easy') updatedSize = DIFFICULTY_SIZE.EASY;
+      if (payload.difficulty === 'normal') updatedSize = DIFFICULTY_SIZE.NORMAL;
+      if (payload.difficulty === 'hard') updatedSize = DIFFICULTY_SIZE.HARD;
       const wordList = wordListFactory(
         payload.subject,
         updatedSize,
         payload.difficulty,
       );
-      return {
+      state = {
         ...state,
         ...gameStateFactory(
           wordList,

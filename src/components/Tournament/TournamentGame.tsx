@@ -11,11 +11,11 @@ import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
 import { clearTournament, restartGame, setTournamentParticipants, setTournamentWinner } from '@/store/gameSlice.ts';
 import { ITournament } from '@/types/ITournament.ts';
-import { TOURNAMENTS_DB } from '@/utils/globals.ts';
+import { TOURNAMENTS_DB } from '@/utils/constants';
 import { useNavigate } from 'react-router-dom';
 
 function Game() {
-  const { gameState, tournament }= useAppSelector(state => state.game);
+  const { gameState, tournament } = useAppSelector(state => state.game);
   const user = useAppSelector(state => state.user.user);
   const dispatch = useAppDispatch();
 
@@ -86,12 +86,6 @@ function Game() {
       updateTournament();
     }
   }, [gameState]);
-
-  if (gameState === 'loading') return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <span className="loading loading-bars loading-lg" />
-    </div>
-  );
 
   return (
     <>

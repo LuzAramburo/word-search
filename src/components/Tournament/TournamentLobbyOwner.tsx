@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { startTournament } from '@/store/gameSlice.ts';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
-import { TOURNAMENTS_DB } from '@/utils/globals.ts';
+import { TOURNAMENTS_DB } from '@/utils/constants';
 
 export const TournamentLobbyOwner = () => {
   const tournament = useAppSelector(state => state.game.tournament);

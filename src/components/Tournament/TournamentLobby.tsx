@@ -7,7 +7,7 @@ import { db } from '@/firebase.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { TournamentLobbyOwner } from '@/components/Tournament/TournamentLobbyOwner.tsx';
 import { TournamentLobbyParticipant } from '@/components/Tournament/TournamentLobbyParticipant.tsx';
-import { TOURNAMENTS_DB } from '@/utils/globals.ts';
+import { TOURNAMENTS_DB } from '@/utils/constants';
 import { addToast } from '@/store/notificationsSlice.ts';
 
 export const TournamentLobby = () => {
