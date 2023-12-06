@@ -37,9 +37,6 @@ const router = createBrowserRouter([
         path: '/tournament/create',
         element: <TournamentCreate />,
       },
-      // TODO id always in uppercase
-      // TODO redirect to join screen if you add id directly
-      // TODO clear tournament when you leave
       {
         path: '/tournament/:id',
         element: <TournamentID />,
