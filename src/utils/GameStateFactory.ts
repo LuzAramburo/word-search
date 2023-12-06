@@ -3,6 +3,7 @@ import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { ITournament } from '@/types/ITournament.ts';
+import { DIFFICULTY_SIZE } from '@/utils/constants.ts';
 
 export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';
 
@@ -25,7 +26,7 @@ export const gameStateFactory = (
   wordList: IWord[],
   subject: WordListSubjects = 'random',
   difficulty = 'normal',
-  size = 12,
+  size = DIFFICULTY_SIZE.NORMAL,
 ) => {
   return <WordSearchContextType>{
     collectedLetters: [] as IGridItem[],

@@ -14,9 +14,10 @@ export const wordListFactory = (
   gridSize = DIFFICULTY_SIZE.NORMAL,
   difficulty: GameDifficultyType = 'normal',
 ) => {
-  let wordListLength = gridSize;
-  if (difficulty === 'easy') wordListLength = DIFFICULTY_SIZE.EASY;
-  if (difficulty === 'hard') wordListLength = DIFFICULTY_SIZE.HARD;
+  const offsetWord = 2;
+  let wordListLength = gridSize - offsetWord;
+  if (difficulty === 'easy') wordListLength = DIFFICULTY_SIZE.EASY - offsetWord;
+  if (difficulty === 'hard') wordListLength = DIFFICULTY_SIZE.HARD - offsetWord;
 
   const wordListRandom = [
     ...wordListAdjectives,
