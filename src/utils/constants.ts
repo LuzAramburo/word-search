@@ -16,6 +16,6 @@ export const DIFFICULTY_OPTIONS: GameDifficultyType[] = ['easy', 'normal', 'hard
 
 export const DIFFICULTY_SIZE = {
   EASY: 7,
-  NORMAL: 12,
-  HARD: 17,
+  NORMAL: 10,
+  HARD: 13,
 };

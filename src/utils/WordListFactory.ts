@@ -5,19 +5,20 @@ import wordListComputers from '@/data/computers.en.tsx';
 import wordListSpace from '@/data/space.en.tsx';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { IWord } from '@/types/IWord.ts';
+import { DIFFICULTY_SIZE } from '@/utils/constants.ts';
 
 export type WordListSubjects =  'adjectives' | 'boardgames' | 'computers' | 'food' | 'space' | 'random'
 
 export const wordListFactory = (
   subject: WordListSubjects = 'random',
-  gridSize: number = 12,
+  gridSize = DIFFICULTY_SIZE.NORMAL,
   difficulty: GameDifficultyType = 'normal',
 ) => {
-  let wordListLength  = 7;
-  if (difficulty === 'easy') wordListLength = 5;
-  if (difficulty === 'hard') wordListLength = 12;
+  let wordListLength = gridSize;
+  if (difficulty === 'easy') wordListLength = DIFFICULTY_SIZE.EASY;
+  if (difficulty === 'hard') wordListLength = DIFFICULTY_SIZE.HARD;
 
-  const wordListRandom =  [
+  const wordListRandom = [
     ...wordListAdjectives,
     ...wordListBoardgames,
     ...wordListComputers,
@@ -38,6 +39,7 @@ export const wordListFactory = (
 
   if (!wordListSelected) throw Error('Word List Subject Unknown');
 
+  console.log(wordListLength);
   return wordListSelected
     .filter(item => item.word.length < gridSize)
     .sort(()=> .5 - Math.random())
