@@ -78,7 +78,6 @@ function Game() {
           setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
           dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
         } else {
-          console.log('not all rounds finished');
           dispatch(restartGame());
         }
       };

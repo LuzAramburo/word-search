@@ -39,7 +39,6 @@ export const wordListFactory = (
 
   if (!wordListSelected) throw Error('Word List Subject Unknown');
 
-  console.log(wordListLength);
   return wordListSelected
     .filter(item => item.word.length < gridSize)
     .sort(()=> .5 - Math.random())
