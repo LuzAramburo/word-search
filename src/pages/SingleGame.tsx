@@ -31,13 +31,14 @@ function SingleGame() {
       <span className="loading loading-bars loading-lg" />
     </div>
   );
-
+  const test = import.meta.env.VITE_FIREBASE_API_KEY;
   return (
     <>
       { gameState === 'winner' &&<Particles
         init={particlesInit}
         options={confettiOptions}
       />}
+      {test} - {typeof test}
       <div className="grid grid-cols-5 gap-4">
         <WordList/>
         <Grid />
