@@ -62,9 +62,10 @@ const TournamentCreate = () => {
       }));
       navigate(`/tournament/${code}`);
     } catch (e) {
+      setLoadingGame(false);
       dispatch(addToast({
         type: 'error',
-        content: 'The tournament could not be create, please try again.',
+        content: 'The tournament could not be created, please try again.',
       }));
       console.error('Error adding document: ', e);
     }
