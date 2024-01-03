@@ -36,8 +36,7 @@ module.exports = {
       "imports": "never",
       "exports": "always-multiline",
       "functions": "always-multiline"
-    },
-    ],
+    }],
     "comma-spacing": ["error", { "before": false, "after": true }],
     "quotes": ["error", "single"],
     "object-curly-spacing": ["error", "always"],
