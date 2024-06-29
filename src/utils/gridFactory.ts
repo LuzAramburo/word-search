@@ -61,10 +61,13 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
   let updatedGrid = [...gridMatrix];
 
   for (let i = 0; i < wordList.length; i++) {
+    if ( i === wordList.length) continue;
     const word = wordList[i];
     let wordPlaced = false;
+    const maxAttempts = 3;
+    let attempts = 0; // Initialize attempt counter
 
-    while (!wordPlaced) {
+    while (!wordPlaced && attempts < maxAttempts) {
       const orientation = positions[Math.floor(Math.random() * positions.length)];
       const startingPosition = Math.floor(Math.random() * gridMatrix.length);
 
@@ -75,6 +78,8 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
       if (grid !== null) {
         updatedGrid = grid;
         wordPlaced = true;
+      } else {
+        attempts++;
       }
     }
   }
