@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Grid updates on settings change
-- 
+- Fixed SEO
+
 ### Added
 
 - License added
