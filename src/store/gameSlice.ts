@@ -43,6 +43,7 @@ export const gameSlice = createSlice({
         payload.difficulty === state.difficulty
         && payload.subject === state.subject
       ) return state;
+
       let updatedSize: number = DIFFICULTY_SIZE.NORMAL;
       if (payload.difficulty === 'easy') updatedSize = DIFFICULTY_SIZE.EASY;
       if (payload.difficulty === 'normal') updatedSize = DIFFICULTY_SIZE.NORMAL;
@@ -52,14 +53,17 @@ export const gameSlice = createSlice({
         updatedSize,
         payload.difficulty,
       );
-      state = {
+
+      const gridState = gameStateFactory(
+        wordList,
+        payload.subject,
+        payload.difficulty,
+        updatedSize,
+      );
+
+      return {
         ...state,
-        ...gameStateFactory(
-          wordList,
-          payload.subject,
-          payload.difficulty,
-          updatedSize,
-        ),
+        ...gridState,
       };
     },
     setCollectedLetter(state, { payload }: PayloadAction<IGridItem>) {
