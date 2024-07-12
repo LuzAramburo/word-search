@@ -19,3 +19,7 @@ export const DIFFICULTY_SIZE = {
   NORMAL: 10,
   HARD: 13,
 };
+
+export const defaultDifficulty = (): GameDifficultyType => import.meta.env.VITE_DEBUG_GRID ? 'easy' : 'normal';
+
+export const defaultSize = () => import.meta.env.VITE_DEBUG_GRID ? DIFFICULTY_SIZE.EASY : DIFFICULTY_SIZE.NORMAL;

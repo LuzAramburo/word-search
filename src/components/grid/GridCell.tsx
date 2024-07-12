@@ -29,6 +29,7 @@ export const GridCell = ({ item }: GridCellProps) => {
         { 'hover:bg-base-200 text-base-content': !item.collected && !item.used },
         { 'bg-primary-content text-primary': item.collected },
         { 'text-accent-content bg-accent': item.used && !item.collected },
+        { 'opacity-40': import.meta.env.VITE_DEBUG_GRID && item.letter === 'x' },
       )}
       onMouseEnter={hoverHandler}
       onMouseDown={mouseDownHandler}

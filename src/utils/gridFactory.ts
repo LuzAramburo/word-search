@@ -86,9 +86,14 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
 
   // INFO: 0x00D1 Ñ
   const letters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+
   for (let position = 0; position < updatedGrid.length; position++) {
     if (updatedGrid[position].letter === '') {
-      updatedGrid[position] = { ...updatedGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
+      updatedGrid[position] = {
+        ...updatedGrid[position],
+        letter:  import.meta.env.VITE_DEBUG_GRID
+          ? 'x'
+          : letters[Math.floor(Math.random() * letters.length)] };
     }
   }
   return updatedGrid;
