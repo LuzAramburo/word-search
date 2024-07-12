@@ -7,6 +7,7 @@ import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/firebase.ts';
 import { clearUser, setUser } from '@/store/userSlice.ts';
+import { primaryInput } from 'detect-it';
 
 function Layout() {
   const dispatch = useAppDispatch();
@@ -31,11 +32,19 @@ function Layout() {
   }, []);
 
   const mouseDownHandler = () => {
-    if (gameState === 'collecting') dispatch(stopCollecting());
+    if (gameState === 'collecting' && primaryInput === 'mouse') dispatch(stopCollecting());
   };
 
   const mouseUpHandler = () => {
-    if (collectedLetters.length > 0) dispatch(checkMatch());
+    if (primaryInput === 'mouse') checkMatchHandler('mouse');
+  };
+
+  const touchEndHandler = () => {
+    if (primaryInput === 'touch') checkMatchHandler('touch');
+  };
+
+  const checkMatchHandler = (primaryInput: 'mouse' | 'touch') => {
+    if (collectedLetters.length > 0) dispatch(checkMatch({ primaryInput }));
   };
 
   return (
@@ -44,6 +53,7 @@ function Layout() {
         className="w-screen h-screen"
         onMouseDown={mouseDownHandler}
         onMouseUp={mouseUpHandler}
+        onTouchEnd={touchEndHandler}
       >
         <div className="p-4 max-w-screen-2xl mx-auto min-h-screen">
           <Navbar />

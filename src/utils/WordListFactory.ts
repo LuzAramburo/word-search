@@ -5,14 +5,16 @@ import wordListComputers from '@/data/computers.en.tsx';
 import wordListSpace from '@/data/space.en.tsx';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { IWord } from '@/types/IWord.ts';
-import { DIFFICULTY_SIZE } from '@/utils/constants.ts';
+import { defaultDifficulty, DIFFICULTY_SIZE } from '@/utils/constants.ts';
 
 export type WordListSubjects =  'adjectives' | 'boardgames' | 'computers' | 'food' | 'space' | 'random'
 
+const defaultSize = () => import.meta.env.VITE_DEBUG_GRID ? DIFFICULTY_SIZE.EASY : DIFFICULTY_SIZE.NORMAL;
+
 export const wordListFactory = (
   subject: WordListSubjects = 'random',
-  gridSize = DIFFICULTY_SIZE.NORMAL,
-  difficulty: GameDifficultyType = 'normal',
+  gridSize = defaultSize(),
+  difficulty: GameDifficultyType = defaultDifficulty(),
 ) => {
   const offsetWord = 2;
   let wordListLength = gridSize - offsetWord;
