@@ -4,7 +4,7 @@ import { useAppSelector } from '@/store/hooks.ts';
 export const Grid = () => {
   const { size, grid } = useAppSelector(state => state.game);
   return (
-    <div className="col-span-4" >
+    <div className="md:col-span-4">
       <div
         className="inline-grid gap-2.5"
         style={{
