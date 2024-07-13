@@ -29,7 +29,7 @@ function Layout() {
         dispatch(clearUser());
       }
     });
-  }, []);
+  }, [dispatch]);
 
   const mouseDownHandler = () => {
     if (gameState === 'collecting' && primaryInput === 'mouse') dispatch(stopCollecting());
