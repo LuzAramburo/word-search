@@ -68,11 +68,29 @@ export const gameSlice = createSlice({
       };
     },
     setCollectedLetter(state, { payload }: PayloadAction<IGridItem>) {
-      const updatedGrid = [...state.grid];
-      updatedGrid[payload.position].collected = true;
-      state.collectedLetters.push(payload);
-      state.gameState = 'collecting';
-      state.grid = updatedGrid;
+
+      const prevCollectedLetter = state.collectedLetters[state.collectedLetters.length - 1];
+      const secondToLastCollectedLetter = state.collectedLetters[state.collectedLetters.length - 2];
+
+      const canLetterBeCollected = state.collectedLetters.length <= 1
+        || (
+          secondToLastCollectedLetter.position === (prevCollectedLetter.position - state.size
+          ) && payload.position - state.size === prevCollectedLetter.position) // vertical
+        || (
+          secondToLastCollectedLetter.position === (prevCollectedLetter.position - 1
+          ) && payload.position - 1 === prevCollectedLetter.position) // horizontal
+        || (
+          secondToLastCollectedLetter.position === (prevCollectedLetter.position - state.size - 1
+          ) && payload.position - state.size - 1 === prevCollectedLetter.position); // diagonal
+
+      if (canLetterBeCollected) {
+        const updatedGrid = [...state.grid];
+        updatedGrid[payload.position].collected = true;
+        state.collectedLetters.push(payload);
+        state.gameState = 'collecting';
+        state.grid = updatedGrid;
+      }
+
     },
     stopCollecting(state) {
       state.collectedLetters = [];
