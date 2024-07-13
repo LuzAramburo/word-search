@@ -88,11 +88,8 @@ export const gameSlice = createSlice({
       const foundWordIndex = state.wordList.findIndex(
         (item) => item.word === wordToMatch,
       );
-      console.log('wordToMatch', wordToMatch);
-      console.log('foundWordIndex', foundWordIndex);
 
       if (foundWordIndex >= 0) {
-        console.log('Word found');
         updatedWordList[foundWordIndex] = {
           ...updatedWordList[foundWordIndex],
           found: true,
@@ -107,7 +104,6 @@ export const gameSlice = createSlice({
         });
         state.collectedLetters = [];
       } else {
-        console.log('Continue collecting');
         if (primaryInput === 'mouse') {
           const collectedLetters = state.collectedLetters.map(
             (item) => item.position,
