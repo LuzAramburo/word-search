@@ -38,9 +38,9 @@ function SingleGame() {
         init={particlesInit}
         options={confettiOptions}
       />}
-      <div className="grid grid-cols-5 gap-4">
-        <WordList/>
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <Grid />
+        <WordList/>
       </div>
       {gameSettingsDialog && <GameSettingsDialog/>}
       {winnerDialog && <WinnerDialog

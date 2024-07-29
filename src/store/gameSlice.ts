@@ -4,6 +4,7 @@ import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.ts';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { DIFFICULTY_SIZE } from '@/utils/constants';
+import { primaryInput } from 'detect-it';
 
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
@@ -67,30 +68,48 @@ export const gameSlice = createSlice({
       };
     },
     setCollectedLetter(state, { payload }: PayloadAction<IGridItem>) {
-      const updatedGrid = [...state.grid];
-      updatedGrid[payload.position].collected = true;
-      state.collectedLetters.push(payload);
-      state.gameState = 'collecting';
-      state.grid = updatedGrid;
+
+      const prevCollectedLetter = state.collectedLetters[state.collectedLetters.length - 1];
+      const secondToLastCollectedLetter = state.collectedLetters[state.collectedLetters.length - 2];
+
+      const canLetterBeCollected = state.collectedLetters.length <= 1
+        || (
+          secondToLastCollectedLetter.position === (prevCollectedLetter.position - state.size
+          ) && payload.position - state.size === prevCollectedLetter.position) // vertical
+        || (
+          secondToLastCollectedLetter.position === (prevCollectedLetter.position - 1
+          ) && payload.position - 1 === prevCollectedLetter.position) // horizontal
+        || (
+          secondToLastCollectedLetter.position === (prevCollectedLetter.position - state.size - 1
+          ) && payload.position - state.size - 1 === prevCollectedLetter.position); // diagonal
+
+      if (canLetterBeCollected) {
+        const updatedGrid = [...state.grid];
+        updatedGrid[payload.position].collected = true;
+        state.collectedLetters.push(payload);
+        state.gameState = 'collecting';
+        state.grid = updatedGrid;
+      }
+
     },
     stopCollecting(state) {
       state.collectedLetters = [];
       state.gameState = 'idle';
     },
-    checkMatch(state) {
+    checkMatch(state, { payload }: PayloadAction<{ primaryInput: 'touch' | 'mouse' }>) {
       const wordToMatch = state.collectedLetters
         .map((item) => item.letter)
         .join('');
       const updatedWordList = [...state.wordList];
       let updatedGrid = [...state.grid];
 
-      const findIndex = state.wordList.findIndex(
+      const foundWordIndex = state.wordList.findIndex(
         (item) => item.word === wordToMatch,
       );
 
-      if (findIndex >= 0) {
-        updatedWordList[findIndex] = {
-          ...updatedWordList[findIndex],
+      if (foundWordIndex >= 0) {
+        updatedWordList[foundWordIndex] = {
+          ...updatedWordList[foundWordIndex],
           found: true,
         };
         const collectedLetters = state.collectedLetters.map(
@@ -101,21 +120,24 @@ export const gameSlice = createSlice({
             return { ...cell, collected: false, used: true };
           return cell;
         });
+        state.collectedLetters = [];
       } else {
-        const collectedLetters = state.collectedLetters.map(
-          (item) => item.position,
-        );
-        updatedGrid = updatedGrid.map((cell) => {
-          if (collectedLetters.includes(cell.position))
-            return { ...cell, collected: false };
-          return cell;
-        });
+        if (primaryInput === 'mouse') {
+          const collectedLetters = state.collectedLetters.map(
+            (item) => item.position,
+          );
+          updatedGrid = updatedGrid.map((cell) => {
+            if (collectedLetters.includes(cell.position))
+              return { ...cell, collected: false };
+            return cell;
+          });
+        }
       }
       const allWordsFound = updatedWordList.every((item) => item.found);
 
-      state.collectedLetters = [];
+      if (primaryInput === 'mouse') state.collectedLetters = [];
       state.winnerDialog = allWordsFound;
-      state.gameState = allWordsFound ? 'winner' : 'idle';
+      state.gameState = allWordsFound ? 'winner' : payload.primaryInput === 'mouse' ? 'idle' : 'collecting';
       state.grid = updatedGrid;
       state.wordList = updatedWordList;
     },

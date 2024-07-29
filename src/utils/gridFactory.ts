@@ -64,7 +64,7 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
     if ( i === wordList.length) continue;
     const word = wordList[i];
     let wordPlaced = false;
-    const maxAttempts = 3;
+    const maxAttempts = 100;
     let attempts = 0; // Initialize attempt counter
 
     while (!wordPlaced && attempts < maxAttempts) {
@@ -83,12 +83,18 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
       }
     }
   }
+  // TODO if no all words placed after attempts, do something. Start again with other words or something else
 
   // INFO: 0x00D1 Ñ
   const letters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+
   for (let position = 0; position < updatedGrid.length; position++) {
     if (updatedGrid[position].letter === '') {
-      updatedGrid[position] = { ...updatedGrid[position], letter: letters[Math.floor(Math.random() * letters.length)] };
+      updatedGrid[position] = {
+        ...updatedGrid[position],
+        letter:  import.meta.env.VITE_DEBUG_GRID
+          ? 'x'
+          : letters[Math.floor(Math.random() * letters.length)] };
     }
   }
   return updatedGrid;

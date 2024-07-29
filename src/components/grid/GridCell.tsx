@@ -2,6 +2,7 @@ import { IGridItem } from '@/types/IGrid.ts';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { setCollectedLetter } from '@/store/gameSlice.ts';
+import { primaryInput } from 'detect-it';
 
 type GridCellProps = {
   item: IGridItem;
@@ -15,9 +16,21 @@ export const GridCell = ({ item }: GridCellProps) => {
     if (gameState === 'collecting') dispatch(setCollectedLetter(item));
   };
 
-  const mouseDownHandler = () => {
+  const collectLetter = () => {
     if (!item.collected || item.collected && gameState !== 'winner') {
       dispatch(setCollectedLetter(item));
+    }
+  };
+
+  const mouseDownHandler = () => {
+    if (primaryInput === 'mouse') {
+      collectLetter();
+    }
+  };
+
+  const onTouchStartHandler = () => {
+    if (primaryInput === 'touch') {
+      collectLetter();
     }
   };
 
@@ -29,9 +42,11 @@ export const GridCell = ({ item }: GridCellProps) => {
         { 'hover:bg-base-200 text-base-content': !item.collected && !item.used },
         { 'bg-primary-content text-primary': item.collected },
         { 'text-accent-content bg-accent': item.used && !item.collected },
+        { 'opacity-40': import.meta.env.VITE_DEBUG_GRID && item.letter === 'x' },
       )}
       onMouseEnter={hoverHandler}
       onMouseDown={mouseDownHandler}
+      onTouchStart={onTouchStartHandler}
     >{ item.letter }</div>
   );
 };
