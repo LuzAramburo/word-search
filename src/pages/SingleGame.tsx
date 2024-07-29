@@ -9,14 +9,18 @@ import { useCallback, useEffect } from 'react';
 import type { Engine } from 'tsparticles-engine';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { init, restartGame } from '@/store/gameSlice.ts';
+import { useGenerateGridQuery } from '@/store/gridApi.ts';
 
 function SingleGame() {
-  const { gameState, gameSettingsDialog, winnerDialog }= useAppSelector(state => state.game);
+  const { gameState, gameSettingsDialog, winnerDialog } = useAppSelector(state => state.game);
+  const { data, error, isLoading } = useGenerateGridQuery({ subject: 'random' });
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(init());
-  }, [dispatch]);
+    if (data) {
+      dispatch(init(data));
+    }
+  }, [data, dispatch]);
 
   const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
@@ -26,9 +30,15 @@ function SingleGame() {
     dispatch(restartGame());
   };
 
-  if (gameState === 'loading') return (
-    <div className="w-screen h-screen flex justify-center items-center">
+  if (isLoading) return (
+    <div className="w-screen flex justify-center items-center p-8">
       <span className="loading loading-bars loading-lg" />
+    </div>
+  );
+
+  if (error) return (
+    <div className="w-screen flex justify-center items-center p-8">
+      Error generating grid
     </div>
   );
 

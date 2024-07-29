@@ -19,7 +19,7 @@ interface ChangeSettingsPayload {
 const initialState: WordSearchContextType = {
   collectedLetters: [],
   difficulty: 'normal',
-  gameState: 'loading',
+  gameState: 'idle',
   grid: [],
   size: DIFFICULTY_SIZE.NORMAL,
   subject: 'random',
@@ -33,8 +33,12 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    init() {
-      return gameStateFactory(wordListFactory());
+    init(state, { payload }) {
+
+      return {
+        ...state,
+        ...payload as Omit<WordSearchContextType, 'tournament'>,
+      };
     },
     showDialog(state, { payload }: PayloadAction<ShowDialogPayload>) {
       state[payload.name] = payload.show;

@@ -56,6 +56,7 @@ const TournamentCreate = () => {
         difficulty: difficultySetting,
         subject: wordListSubject,
       }));
+
       dispatch(setTournament({
         ...tournamentSettings,
         docId: docRef.id,

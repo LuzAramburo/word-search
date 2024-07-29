@@ -55,10 +55,12 @@ const TournamentLanding = () => {
           updateDoc(doc.ref, {
             participants: tournament.participants,
           });
+
           dispatch(changeSettings({
             difficulty: tournament.difficulty,
             subject: tournament.subject,
           }));
+
           dispatch(setTournament(tournament));
           navigate(`/tournament/${tournamentIdInput}`);
         });
