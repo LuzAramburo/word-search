@@ -34,11 +34,11 @@ export const gameStateFactory = (
   return <GameStateFactoryResponse>{
     collectedLetters: [] as IGridItem[],
     difficulty,
-    gameSettingsDialog: false,
     gameState: 'idle',
     grid: gridFactory(size, wordList),
     size: size,
     subject,
+    gameSettingsDialog: false,
     winnerDialog: false,
     wordList,
   };
