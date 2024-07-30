@@ -5,23 +5,31 @@ import { WinnerDialog } from '@/components/ui/WinnerDialog.tsx';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import { confettiOptions } from '@/utils/confettiOptions.ts';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { Engine } from 'tsparticles-engine';
-import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
-import { restartGame } from '@/store/gameSlice.ts';
-import { useGenerateGridQuery } from '@/store/gridApi.ts';
+import { useAppSelector } from '@/store/hooks.ts';
+import { gridApi } from '@/store/gridApi.ts';
 
 function SingleGame() {
-  const { gameState, gameSettingsDialog, winnerDialog } = useAppSelector(state => state.game);
-  const { error, isLoading } = useGenerateGridQuery({ subject: 'random' });
-  const dispatch = useAppDispatch();
+  const {
+    gameState,
+    gameSettingsDialog,
+    winnerDialog,
+    difficulty,
+    subject,
+  } = useAppSelector(state => state.game);
+  const [triggerGrid, { error, isLoading }] = gridApi.endpoints.generateGrid.useLazyQuery();
+
+  useEffect(() => {
+    triggerGrid({ subject: 'random' });
+  }, []);
 
   const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
   }, []);
 
   const resetGame = () => {
-    dispatch(restartGame());
+    triggerGrid({ subject, difficulty });
   };
 
   if (isLoading) return (

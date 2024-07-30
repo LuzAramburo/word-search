@@ -1,6 +1,5 @@
-import { gameStateFactory, WordSearchContextType } from '@/utils/GameStateFactory.ts';
+import { WordSearchContextType } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { wordListFactory } from '@/utils/WordListFactory.ts';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { DIFFICULTY_SIZE } from '@/utils/constants';
@@ -111,22 +110,6 @@ export const gameSlice = createSlice({
       state.grid = updatedGrid;
       state.wordList = updatedWordList;
     },
-    restartGame(state) {
-      const safeWordList = wordListFactory(
-        state.subject,
-        state.size,
-        state.difficulty,
-      );
-      return {
-        ...state,
-        ...gameStateFactory(
-          safeWordList,
-          state.subject,
-          state.difficulty,
-          state.size,
-        ),
-      };
-    },
     //TODO get tournament on refresh page
     setTournament: (state, { payload }: PayloadAction<ITournament>) => {
       state.tournament = payload;
@@ -153,7 +136,6 @@ export const {
   setCollectedLetter,
   stopCollecting,
   checkMatch,
-  restartGame,
   setTournament,
   setTournamentParticipants,
   startTournament,
