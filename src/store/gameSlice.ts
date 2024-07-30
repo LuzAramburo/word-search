@@ -1,6 +1,6 @@
-import { GameDifficultyType, gameStateFactory, WordSearchContextType } from '@/utils/GameStateFactory.ts';
+import { gameStateFactory, WordSearchContextType } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.ts';
+import { wordListFactory } from '@/utils/WordListFactory.ts';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { DIFFICULTY_SIZE } from '@/utils/constants';
@@ -9,11 +9,6 @@ import { primaryInput } from 'detect-it';
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
   show: boolean;
-}
-
-interface ChangeSettingsPayload {
-  difficulty: GameDifficultyType;
-  subject: WordListSubjects;
 }
 
 const initialState: WordSearchContextType = {
@@ -33,8 +28,7 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    init(state, { payload }) {
-
+    setGrid(state, { payload }) {
       return {
         ...state,
         ...payload as Omit<WordSearchContextType, 'tournament'>,
@@ -42,34 +36,6 @@ export const gameSlice = createSlice({
     },
     showDialog(state, { payload }: PayloadAction<ShowDialogPayload>) {
       state[payload.name] = payload.show;
-    },
-    changeSettings(state, { payload }: PayloadAction<ChangeSettingsPayload>) {
-      if (
-        payload.difficulty === state.difficulty
-        && payload.subject === state.subject
-      ) return state;
-
-      let updatedSize: number = DIFFICULTY_SIZE.NORMAL;
-      if (payload.difficulty === 'easy') updatedSize = DIFFICULTY_SIZE.EASY;
-      if (payload.difficulty === 'normal') updatedSize = DIFFICULTY_SIZE.NORMAL;
-      if (payload.difficulty === 'hard') updatedSize = DIFFICULTY_SIZE.HARD;
-      const wordList = wordListFactory(
-        payload.subject,
-        updatedSize,
-        payload.difficulty,
-      );
-
-      const gridState = gameStateFactory(
-        wordList,
-        payload.subject,
-        payload.difficulty,
-        updatedSize,
-      );
-
-      return {
-        ...state,
-        ...gridState,
-      };
     },
     setCollectedLetter(state, { payload }: PayloadAction<IGridItem>) {
 
@@ -182,9 +148,8 @@ export const gameSlice = createSlice({
 });
 
 export const {
-  init,
+  setGrid,
   showDialog,
-  changeSettings,
   setCollectedLetter,
   stopCollecting,
   checkMatch,

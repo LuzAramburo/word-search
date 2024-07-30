@@ -3,7 +3,7 @@ import { IWord } from '@/types/IWord.ts';
 import { gridFactory } from '@/utils/gridFactory.ts';
 import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.ts';
 import { ITournament } from '@/types/ITournament.ts';
-import { defaultDifficulty, defaultSize } from '@/utils/constants.ts';
+import { defaultDifficulty, defaultSize, DIFFICULTY_SIZE } from '@/utils/constants.ts';
 import { GridParams } from '@/store/gridApi.ts';
 
 export type GameStateType = 'idle' | 'collecting' | 'winner';
@@ -46,9 +46,15 @@ export const gameStateFactory = (
 
 export const generateGrid = async (arg: GridParams): Promise<GameStateFactoryResponse> => {
   const wordList = wordListFactory(arg.subject);
+  const difficulty = arg.difficulty || defaultDifficulty();
+
+  let size: number = DIFFICULTY_SIZE.NORMAL;
+  if (difficulty === 'easy') size = DIFFICULTY_SIZE.EASY;
+  if (difficulty === 'normal') size = DIFFICULTY_SIZE.NORMAL;
+  if (difficulty === 'hard') size = DIFFICULTY_SIZE.HARD;
 
   return new Promise((resolve) => {
-    resolve(gameStateFactory(wordList));
+    resolve(gameStateFactory(wordList, arg.subject, difficulty, size));
   });
 };
 

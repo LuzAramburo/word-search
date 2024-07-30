@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { db } from '@/firebase.ts';
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import { changeSettings, setTournament } from '@/store/gameSlice.ts';
+import { setTournament } from '@/store/gameSlice.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { addToast } from '@/store/notificationsSlice.ts';
+import { gridApi } from '@/store/gridApi.ts';
 
 const TournamentLanding = () => {
+  const [triggerGrid] = gridApi.endpoints.generateGrid.useLazyQuery();
   const { user } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
@@ -56,10 +58,7 @@ const TournamentLanding = () => {
             participants: tournament.participants,
           });
 
-          dispatch(changeSettings({
-            difficulty: tournament.difficulty,
-            subject: tournament.subject,
-          }));
+          triggerGrid({ difficulty: tournament.difficulty, subject: tournament.subject });
 
           dispatch(setTournament(tournament));
           navigate(`/tournament/${tournamentIdInput}`);

@@ -1,10 +1,11 @@
 import { createApi, BaseQueryFn } from '@reduxjs/toolkit/query/react';
-import { GameStateFactoryResponse, generateGrid } from '@/utils/GameStateFactory.ts';
+import { GameDifficultyType, GameStateFactoryResponse, generateGrid } from '@/utils/GameStateFactory.ts';
 import { WordListSubjects } from '@/utils/WordListFactory.ts';
+import { setGrid } from '@/store/gameSlice.ts';
 
 export interface GridParams {
   subject: WordListSubjects;
-  difficulty?: number;
+  difficulty?: GameDifficultyType;
 }
 
 const customBaseQuery: BaseQueryFn<{arg: GridParams}, GameStateFactoryResponse> = async ({ arg }) => {
@@ -22,6 +23,14 @@ export const gridApi = createApi({
   endpoints: (builder) => ({
     generateGrid: builder.query<GameStateFactoryResponse, GridParams>({
       query: (arg) => ({ arg }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setGrid(data));
+        } catch (err) {
+          console.error(err);
+        }
+      },
     }),
   }),
 });
