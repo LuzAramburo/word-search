@@ -1,5 +1,5 @@
-import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
+import { WordListSubjects } from '@/utils/word-list-builder.ts';
 
 export const TOURNAMENTS_DB = 'tournaments';
 

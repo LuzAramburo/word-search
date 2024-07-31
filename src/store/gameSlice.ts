@@ -1,16 +1,17 @@
-import { WordSearchContextType } from '@/utils/GameStateFactory.ts';
+import { WordSearchContext } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { DIFFICULTY_SIZE } from '@/utils/constants';
 import { primaryInput } from 'detect-it';
+import { IGame } from '@/utils/game-builder.ts';
 
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
   show: boolean;
 }
 
-const initialState: WordSearchContextType = {
+const initialState: WordSearchContext = {
   collectedLetters: [],
   difficulty: 'normal',
   gameState: 'idle',
@@ -30,7 +31,9 @@ export const gameSlice = createSlice({
     setGrid(state, { payload }) {
       return {
         ...state,
-        ...payload as Omit<WordSearchContextType, 'tournament'>,
+        gameSettingsDialog: false,
+        winnerDialog: false,
+        ...payload as IGame,
       };
     },
     showDialog(state, { payload }: PayloadAction<ShowDialogPayload>) {

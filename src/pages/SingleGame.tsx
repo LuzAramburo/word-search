@@ -40,7 +40,7 @@ function SingleGame() {
 
   if (error) return (
     <div className="w-screen flex justify-center items-center p-8">
-      Error generating grid
+      Error generating grid. Please refresh page.
     </div>
   );
 

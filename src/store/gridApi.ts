@@ -1,7 +1,7 @@
 import { createApi, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 import { GameDifficultyType, GameStateFactoryResponse, generateGrid } from '@/utils/GameStateFactory.ts';
-import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { setGrid } from '@/store/gameSlice.ts';
+import { WordListSubjects } from '@/utils/word-list-builder.ts';
 
 export interface GridParams {
   subject: WordListSubjects;

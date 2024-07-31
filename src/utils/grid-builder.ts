@@ -33,7 +33,6 @@ export class GridBuilder {
         position: itemIdx,
         col: itemIdx % this.gridSize,
         row: Math.floor(itemIdx / this.gridSize),
-        // orientation: '',
         collected: false,
         used: false,
       }));
@@ -42,11 +41,14 @@ export class GridBuilder {
   private fillGrid(gridMatrix: IGridItem[], wordList: string[]) {
     const positions = [this.positions.ROW, this.positions.COLUMN, this.positions.DIAGONAL];
     let updatedGrid = [...gridMatrix];
+    let attempts = 0;
+    const maxAttempts = 1000;
 
     wordList.forEach((word) => {
       let wordPlaced = false;
 
       while (!wordPlaced) {
+        if (attempts >= maxAttempts) throw new Error('There is a problem generating the grid, please try again.');
         const orientation = positions[Math.floor(Math.random() * positions.length)];
         const randomStartingPosition = Math.floor(Math.random() * gridMatrix.length);
         const randomStartingCell = { ...updatedGrid[randomStartingPosition] };
@@ -58,8 +60,11 @@ export class GridBuilder {
           randomStartingCell,
           orientation,
         );
+        attempts++;
 
         if (gridWithWordPlaced) {
+          // console.log(`=>(grid-builder.ts:67) attempts for word ${word}: `, attempts);
+          attempts = 0;
           updatedGrid = gridWithWordPlaced;
           wordPlaced = true;
         }
@@ -142,8 +147,6 @@ export class GridBuilder {
 
     this.generateMatrix(this.gridSize);
     this.fillGrid(this.gridMatrix, this.words);
-
-    // if (this.grid.length === 0) throw new Error('Grid is empty'); // or every letter not empty string
 
     return this.grid;
   }
