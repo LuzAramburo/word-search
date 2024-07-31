@@ -35,4 +35,16 @@ export default [
   { word: 'UNIVERSE', found: false },
   { word: 'EXOPLANET', found: false },
   { word: 'PLANET', found: false },
+  { word: 'STAR', found: false },
+  { word: 'MOON', found: false },
+  { word: 'SUN', found: false },
+  { word: 'ASTRO', found: false },
+  { word: 'SPACE', found: false },
+  { word: 'GAS', found: false },
+  { word: 'AURORA', found: false },
+  { word: 'PLUTO', found: false },
+  { word: 'CRATER', found: false },
+  { word: 'RING', found: false },
+  { word: 'ECLIPSE', found: false },
+
 ] as IWord[];
