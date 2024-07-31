@@ -16,7 +16,7 @@ const testWord = (
 ): IGridItem[] | null => {
   const newGrid = [...grid];
 
-  if(newGrid[cell.position].letter === word.slice(0, 1) || newGrid[cell.position].letter === '' ) {
+  if(newGrid[cell.position].letter === word.slice(0, 1) || newGrid[cell.position].letter === '') {
 
     if (direction === POSITIONS.ROW && (cell.col + word.length) <= gridSize) {
       let startingCell = cell.position;
@@ -69,7 +69,7 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
       const orientation = positions[Math.floor(Math.random() * positions.length)];
       const startingPosition = Math.floor(Math.random() * gridMatrix.length);
 
-      const cellFormatted = { ...updatedGrid[startingPosition], orientation };
+      const cellFormatted = { ...updatedGrid[startingPosition] };
 
       const grid = testWord(updatedGrid, gridSize, word, cellFormatted, orientation);
 
@@ -98,6 +98,7 @@ const placeWords = (gridMatrix: IGridItem[], wordList: string[], gridSize: numbe
 
 export const gridFactory = (gridSize: number, wordList: IWord[]) => {
   const emptyGrid: null[][] = new Array(gridSize * gridSize).fill(null);
+
   const grid: IGridItem[] = emptyGrid.map((_item, itemIndex) =>  {
     return {
       letter: '',

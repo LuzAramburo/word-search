@@ -22,7 +22,7 @@ function SingleGame() {
 
   useEffect(() => {
     triggerGrid({ subject: 'random' });
-  }, []);
+  }, [triggerGrid]);
 
   const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);

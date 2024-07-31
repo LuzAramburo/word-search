@@ -3,27 +3,28 @@ import { WordListBuilder, WordListSubjects } from '@/utils/word-list-builder.ts'
 import { DIFFICULTY_SIZE } from '@/utils/constants.ts';
 import { IWord } from '@/types/IWord.ts';
 import { IGridItem } from '@/types/IGrid.ts';
-import { ITournament } from '@/types/ITournament.ts';
+import { GridBuilder } from '@/utils/grid-builder.ts';
 
-type WordSearchContextType = {
-  wordList: IWord[]; // ✔️
-  subject: WordListSubjects; // ✔️
-  size: number; // ✔️ Do i need it on the state?
-  difficulty: GameDifficultyType; // ✔️
-
-  grid: IGridItem[];
-  gameState: GameStateType; //🟰
-  collectedLetters: IGridItem[]; //🟰
-
-  gameSettingsDialog: boolean; // ✖️ false, but not part of the game
-  winnerDialog: boolean; // ✖️ false, but not part of the game
-  tournament: ITournament | null; // ✖️ not part of the game
-}
+// type WordSearchContextType = {
+//   wordList: IWord[]; // ✔️
+//   subject: WordListSubjects; // ✔️
+//   size: number; // ✔️ Do I need it on the state?
+//   difficulty: GameDifficultyType; // ✔️
+//
+//   grid: IGridItem[];
+//   gameState: GameStateType; //🟰
+//   collectedLetters: IGridItem[]; //🟰
+//
+//   gameSettingsDialog: boolean; // ✖️ false, but not part of the game
+//   winnerDialog: boolean; // ✖️ false, but not part of the game
+//   tournament: ITournament | null; // ✖️ not part of the game
+// }
 
 interface IGame {
   difficulty: GameDifficultyType;
   subject: WordListSubjects;
   wordList: IWord[];
+  grid: IGridItem[];
   size: number;
   gameState: GameStateType;
   collectedLetters: IGridItem[];
@@ -53,11 +54,11 @@ export class GameBuilder {
   }
 
   build(): IGame {
-    if (!this.game.difficulty) throw new Error('Difficulty is required');
-    if (!this.game.subject) throw new Error('Subject is required');
+    if (!this.game.difficulty) throw new Error('Difficulty is required.');
+    if (!this.game.subject) throw new Error('Subject is required.');
 
     this.setSize(this.game.difficulty);
-    if (!this.game.size) throw new Error('Grid size not calculated');
+    if (!this.game.size) throw new Error('Grid size not calculated.');
 
     this.game.wordList = new WordListBuilder()
       .setDifficulty(this.game.difficulty)
@@ -68,7 +69,11 @@ export class GameBuilder {
     this.game.gameState = 'idle';
     this.game.collectedLetters = [] as IGridItem[];
 
-    // TODO Grid builder
+    const wordListStrings = this.game.wordList.map(item => item.word);
+    this.game.grid = new GridBuilder()
+      .setSize(this.game.size)
+      .setWords(wordListStrings)
+      .build();
 
     return this.game as IGame;
   }
