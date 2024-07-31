@@ -40,38 +40,53 @@ export class GridBuilder {
 
   private fillGrid(gridMatrix: IGridItem[], wordList: string[]) {
     const positions = [this.positions.ROW, this.positions.COLUMN, this.positions.DIAGONAL];
-    let updatedGrid = [...gridMatrix];
-    let attempts = 0;
-    const maxAttempts = 1000;
+    const maxAttempts = 500;
+    let successfulPlacement = false;
 
-    wordList.forEach((word) => {
-      let wordPlaced = false;
+    // If max attempts reached, start all over again
+    while (!successfulPlacement) {
+      let updatedGrid = [...gridMatrix];
+      let attempts = 0;
+      successfulPlacement = true;
 
-      while (!wordPlaced) {
-        if (attempts >= maxAttempts) throw new Error('There is a problem generating the grid, please try again.');
-        const orientation = positions[Math.floor(Math.random() * positions.length)];
-        const randomStartingPosition = Math.floor(Math.random() * gridMatrix.length);
-        const randomStartingCell = { ...updatedGrid[randomStartingPosition] };
+      wordList.forEach((word) => {
+        let wordPlaced = false;
 
-        const gridWithWordPlaced = this.placeWordInGrid(
-          updatedGrid,
-          this.gridSize,
-          word,
-          randomStartingCell,
-          orientation,
-        );
-        attempts++;
+        while (!wordPlaced) {
+          if (attempts >= maxAttempts) {
+            successfulPlacement = false;
+            break;
+          }
 
-        if (gridWithWordPlaced) {
-          // console.log(`=>(grid-builder.ts:67) attempts for word ${word}: `, attempts);
-          attempts = 0;
-          updatedGrid = gridWithWordPlaced;
-          wordPlaced = true;
+          const orientation = positions[Math.floor(Math.random() * positions.length)];
+          const randomStartingPosition = Math.floor(Math.random() * gridMatrix.length);
+          const randomStartingCell = { ...updatedGrid[randomStartingPosition] };
+
+          const gridWithWordPlaced = this.placeWordInGrid(
+            updatedGrid,
+            this.gridSize,
+            word,
+            randomStartingCell,
+            orientation,
+          );
+          attempts++;
+
+          if (gridWithWordPlaced) {
+            // console.log(`=>(grid-builder.ts:75) attempts for word ${word}: `, attempts);
+            attempts = 0;
+            updatedGrid = gridWithWordPlaced;
+            wordPlaced = true;
+          }
         }
-      }
-    });
+      });
 
-    this.grid = this.placeRandomLetters(updatedGrid);
+      if (!successfulPlacement) {
+        console.warn('=>(grid-builder.ts:84) Could not place a word. Trying again.');
+        this.fillGrid(gridMatrix, wordList);
+        break;
+      }
+      this.grid = this.placeRandomLetters(updatedGrid);
+    }
   }
 
   placeWordInGrid(
@@ -84,7 +99,7 @@ export class GridBuilder {
     const newGrid = [...grid];
 
     // If the cell already contains the same initial letter as the word or is an empty letter
-    if(newGrid[cell.position].letter === word.slice(0, 1) || newGrid[cell.position].letter === '') {
+    if (newGrid[cell.position].letter === word.slice(0, 1) || newGrid[cell.position].letter === '') {
 
       if (direction === this.positions.ROW && (cell.col + word.length) <= gridSize) {
         let startingCell = cell.position;
@@ -133,9 +148,10 @@ export class GridBuilder {
       if (updatedGrid[position].letter === '') {
         updatedGrid[position] = {
           ...updatedGrid[position],
-          letter:  import.meta.env.VITE_DEBUG_GRID
+          letter: import.meta.env.VITE_DEBUG_GRID
             ? 'x'
-            : letters[Math.floor(Math.random() * letters.length)] };
+            : letters[Math.floor(Math.random() * letters.length)],
+        };
       }
     }
 
