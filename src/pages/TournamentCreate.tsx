@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
-import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { useNavigate } from 'react-router-dom';
 import { db } from '@/firebase.ts';
 import { collection, addDoc } from 'firebase/firestore';
@@ -11,6 +10,7 @@ import { setTournament } from '@/store/gameSlice.ts';
 import { IParticipant } from '@/types/ITournament.ts';
 import { addToast } from '@/store/notificationsSlice.ts';
 import { gridApi } from '@/store/gridApi.ts';
+import { WordListSubjects } from '@/utils/word-list-builder.ts';
 
 const TournamentCreate = () => {
   const [triggerGrid] = gridApi.endpoints.generateGrid.useLazyQuery();
