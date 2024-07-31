@@ -1,42 +1,27 @@
-import { IGridItem } from '@/types/IGrid.ts';
-import { IWord } from '@/types/IWord.ts';
-import { gridFactory } from '@/utils/gridFactory.ts';
-import { WordListSubjects } from '@/utils/WordListFactory.ts';
 import { ITournament } from '@/types/ITournament.ts';
-import { defaultDifficulty, defaultSize } from '@/utils/constants.ts';
+import { defaultDifficulty } from '@/utils/constants.ts';
+import { GridParams } from '@/store/gridApi.ts';
+import { GameBuilder, IGame } from '@/utils/game-builder.ts';
 
-export type GameStateType = 'loading' | 'idle' | 'collecting' | 'winner';
+export type GameStateType = 'idle' | 'collecting' | 'winner';
 
 export type GameDifficultyType = 'easy' | 'normal' | 'hard';
 
-export type WordSearchContextType = {
-  gameState: GameStateType;
-  subject: WordListSubjects;
-  collectedLetters: IGridItem[];
-  wordList: IWord[];
-  grid: IGridItem[];
-  size: number;
-  difficulty: GameDifficultyType;
+export interface WordSearchContext extends IGame {
   gameSettingsDialog: boolean;
   winnerDialog: boolean;
   tournament: ITournament | null;
 }
 
-export const gameStateFactory = (
-  wordList: IWord[],
-  subject: WordListSubjects = 'random',
-  difficulty: GameDifficultyType = defaultDifficulty(),
-  size = defaultSize(),
-) => {
-  return <WordSearchContextType>{
-    collectedLetters: [] as IGridItem[],
-    difficulty,
-    gameSettingsDialog: false,
-    gameState: 'idle',
-    grid: gridFactory(size, wordList),
-    size: size,
-    subject,
-    winnerDialog: false,
-    wordList,
-  };
+export interface GameStateFactoryResponse extends IGame {}
+
+export const generateGrid = (arg: GridParams) => {
+  const difficulty = arg.difficulty || defaultDifficulty();
+  const gameFactory = new GameBuilder();
+
+  return gameFactory
+    .setDifficulty(difficulty)
+    .setSubject(arg.subject)
+    .build();
 };
+

@@ -9,13 +9,20 @@ import type { Engine } from 'tsparticles-engine';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
-import { clearTournament, restartGame, setTournamentParticipants, setTournamentWinner } from '@/store/gameSlice.ts';
+import { clearTournament, setTournamentParticipants, setTournamentWinner } from '@/store/gameSlice.ts';
 import { ITournament } from '@/types/ITournament.ts';
 import { TOURNAMENTS_DB } from '@/utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { gridApi } from '@/store/gridApi.ts';
 
 function Game() {
-  const { gameState, tournament } = useAppSelector(state => state.game);
+  const {
+    gameState,
+    tournament,
+    difficulty,
+    subject,
+  } = useAppSelector(state => state.game);
+  const [triggerGrid] = gridApi.endpoints.generateGrid.useLazyQuery();
   const user = useAppSelector(state => state.user.user);
   const dispatch = useAppDispatch();
 
@@ -49,10 +56,11 @@ function Game() {
 
   useEffect( () => {
     if (gameState === 'winner' && tournament && user) {
-      const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
-      let userCompletedAllRounds = false;
 
       const updateTournament = async () => {
+        const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
+        let userCompletedAllRounds = false;
+
         const updatedParticipants = [...tournament.participants];
         updatedParticipants[userParticipantIndex] = {
           ...updatedParticipants[userParticipantIndex],
@@ -78,7 +86,7 @@ function Game() {
           setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
           dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
         } else {
-          dispatch(restartGame());
+          triggerGrid({ subject, difficulty });
         }
       };
 

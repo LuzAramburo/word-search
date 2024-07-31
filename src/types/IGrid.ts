@@ -3,7 +3,6 @@ export interface IGridItem {
   position: number;
   row: number;
   col: number;
-  orientation: string;
   collected: boolean;
   used: boolean;
 }

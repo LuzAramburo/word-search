@@ -1,25 +1,20 @@
-import { GameDifficultyType, gameStateFactory, WordSearchContextType } from '@/utils/GameStateFactory.ts';
+import { WordSearchContext } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { wordListFactory, WordListSubjects } from '@/utils/WordListFactory.ts';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { DIFFICULTY_SIZE } from '@/utils/constants';
 import { primaryInput } from 'detect-it';
+import { IGame } from '@/utils/game-builder.ts';
 
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
   show: boolean;
 }
 
-interface ChangeSettingsPayload {
-  difficulty: GameDifficultyType;
-  subject: WordListSubjects;
-}
-
-const initialState: WordSearchContextType = {
+const initialState: WordSearchContext = {
   collectedLetters: [],
   difficulty: 'normal',
-  gameState: 'loading',
+  gameState: 'idle',
   grid: [],
   size: DIFFICULTY_SIZE.NORMAL,
   subject: 'random',
@@ -33,39 +28,16 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    init() {
-      return gameStateFactory(wordListFactory());
+    setGrid(state, { payload }) {
+      return {
+        ...state,
+        gameSettingsDialog: false,
+        winnerDialog: false,
+        ...payload as IGame,
+      };
     },
     showDialog(state, { payload }: PayloadAction<ShowDialogPayload>) {
       state[payload.name] = payload.show;
-    },
-    changeSettings(state, { payload }: PayloadAction<ChangeSettingsPayload>) {
-      if (
-        payload.difficulty === state.difficulty
-        && payload.subject === state.subject
-      ) return state;
-
-      let updatedSize: number = DIFFICULTY_SIZE.NORMAL;
-      if (payload.difficulty === 'easy') updatedSize = DIFFICULTY_SIZE.EASY;
-      if (payload.difficulty === 'normal') updatedSize = DIFFICULTY_SIZE.NORMAL;
-      if (payload.difficulty === 'hard') updatedSize = DIFFICULTY_SIZE.HARD;
-      const wordList = wordListFactory(
-        payload.subject,
-        updatedSize,
-        payload.difficulty,
-      );
-
-      const gridState = gameStateFactory(
-        wordList,
-        payload.subject,
-        payload.difficulty,
-        updatedSize,
-      );
-
-      return {
-        ...state,
-        ...gridState,
-      };
     },
     setCollectedLetter(state, { payload }: PayloadAction<IGridItem>) {
 
@@ -141,22 +113,6 @@ export const gameSlice = createSlice({
       state.grid = updatedGrid;
       state.wordList = updatedWordList;
     },
-    restartGame(state) {
-      const safeWordList = wordListFactory(
-        state.subject,
-        state.size,
-        state.difficulty,
-      );
-      return {
-        ...state,
-        ...gameStateFactory(
-          safeWordList,
-          state.subject,
-          state.difficulty,
-          state.size,
-        ),
-      };
-    },
     //TODO get tournament on refresh page
     setTournament: (state, { payload }: PayloadAction<ITournament>) => {
       state.tournament = payload;
@@ -178,13 +134,11 @@ export const gameSlice = createSlice({
 });
 
 export const {
-  init,
+  setGrid,
   showDialog,
-  changeSettings,
   setCollectedLetter,
   stopCollecting,
   checkMatch,
-  restartGame,
   setTournament,
   setTournamentParticipants,
   startTournament,

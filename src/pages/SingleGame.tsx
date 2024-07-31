@@ -7,28 +7,40 @@ import { loadFull } from 'tsparticles';
 import { confettiOptions } from '@/utils/confettiOptions.ts';
 import { useCallback, useEffect } from 'react';
 import type { Engine } from 'tsparticles-engine';
-import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
-import { init, restartGame } from '@/store/gameSlice.ts';
+import { useAppSelector } from '@/store/hooks.ts';
+import { gridApi } from '@/store/gridApi.ts';
 
 function SingleGame() {
-  const { gameState, gameSettingsDialog, winnerDialog }= useAppSelector(state => state.game);
-  const dispatch = useAppDispatch();
+  const {
+    gameState,
+    gameSettingsDialog,
+    winnerDialog,
+    difficulty,
+    subject,
+  } = useAppSelector(state => state.game);
+  const [triggerGrid, { error, isLoading }] = gridApi.endpoints.generateGrid.useLazyQuery();
 
   useEffect(() => {
-    dispatch(init());
-  }, [dispatch]);
+    triggerGrid({ subject: 'random' });
+  }, [triggerGrid]);
 
   const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
   }, []);
 
   const resetGame = () => {
-    dispatch(restartGame());
+    triggerGrid({ subject, difficulty });
   };
 
-  if (gameState === 'loading') return (
-    <div className="w-screen h-screen flex justify-center items-center">
+  if (isLoading) return (
+    <div className="w-screen flex justify-center items-center p-8">
       <span className="loading loading-bars loading-lg" />
+    </div>
+  );
+
+  if (error) return (
+    <div className="w-screen flex justify-center items-center p-8">
+      Error generating grid. Please refresh page.
     </div>
   );
 

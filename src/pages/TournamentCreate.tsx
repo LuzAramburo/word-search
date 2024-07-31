@@ -7,11 +7,13 @@ import { db } from '@/firebase.ts';
 import { collection, addDoc } from 'firebase/firestore';
 import generateUniqueId from 'generate-unique-id';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
-import { changeSettings, setTournament } from '@/store/gameSlice.ts';
+import { setTournament } from '@/store/gameSlice.ts';
 import { IParticipant } from '@/types/ITournament.ts';
 import { addToast } from '@/store/notificationsSlice.ts';
+import { gridApi } from '@/store/gridApi.ts';
 
 const TournamentCreate = () => {
+  const [triggerGrid] = gridApi.endpoints.generateGrid.useLazyQuery();
   const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -52,10 +54,8 @@ const TournamentCreate = () => {
       };
       const docRef = await addDoc(collection(db, 'tournaments'), tournamentSettings);
 
-      dispatch(changeSettings({
-        difficulty: difficultySetting,
-        subject: wordListSubject,
-      }));
+      triggerGrid({ difficulty: difficultySetting, subject: wordListSubject });
+
       dispatch(setTournament({
         ...tournamentSettings,
         docId: docRef.id,
