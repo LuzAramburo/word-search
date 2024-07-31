@@ -81,7 +81,7 @@ export class GridBuilder {
       });
 
       if (!successfulPlacement) {
-        console.warn('=>(grid-builder.ts:84) Could not place a word. Trying again.');
+        // console.warn('=>(grid-builder.ts:84) Could not place a word. Trying again.');
         this.fillGrid(gridMatrix, wordList);
         break;
       }
