@@ -37,7 +37,7 @@ export const Navbar = () => {
         </a>
       </div>
       <div className="flex-none">
-        <a className="btn btn-ghost btn-sm" onClick={goTournamentCreation}>🕹️ Play with friends</a>
+        <a className="btn btn-ghost btn-sm" onClick={goTournamentCreation}>Play Tournament</a>
         <div className="divider lg:divider-horizontal"/>
         <div className="flex items-center gap-3">
           <button
