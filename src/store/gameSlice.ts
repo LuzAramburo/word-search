@@ -128,7 +128,7 @@ export const gameSlice = createSlice({
       if (state.tournament) state.tournament.participants = payload;
     },
     startTournament: (state) => {
-      if (state.tournament) state.tournament.started = true;
+      if (state.tournament) state.tournament.status = 'STARTED';
     },
   },
 });

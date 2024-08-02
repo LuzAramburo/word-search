@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
 import { clearTournament, setTournamentParticipants, setTournamentWinner } from '@/store/gameSlice.ts';
-import { ITournament } from '@/types/ITournament.ts';
+import { ITournament, TOURNAMENT_STATUS } from '@/types/ITournament.ts';
 import { TOURNAMENTS_DB } from '@/utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { gridApi } from '@/store/gridApi.ts';
@@ -45,6 +45,7 @@ function Game() {
 
   useEffect(() => {
     if (!tournament) return;
+
     return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
       const tournamentInDB = doc.data() as ITournament;
       if (tournamentInDB.winner && tournamentInDB.winner.uid !== user?.uid) {
@@ -54,45 +55,44 @@ function Game() {
     });
   }, []);
 
-  useEffect( () => {
-    if (gameState === 'winner' && tournament && user) {
+  const updateTournament = useCallback(async () => {
+    if (!tournament) return;
+    const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
+    let userCompletedAllRounds = false;
 
-      const updateTournament = async () => {
-        const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
-        let userCompletedAllRounds = false;
+    const updatedParticipants = [...tournament.participants];
+    updatedParticipants[userParticipantIndex] = {
+      ...updatedParticipants[userParticipantIndex],
+      roundsFinished: updatedParticipants[userParticipantIndex].roundsFinished + 1,
+    };
 
-        const updatedParticipants = [...tournament.participants];
-        updatedParticipants[userParticipantIndex] = {
-          ...updatedParticipants[userParticipantIndex],
-          roundsFinished: updatedParticipants[userParticipantIndex].roundsFinished + 1,
-        };
+    setRoundsFinished(prev => prev + 1);
+    if (roundsFinished === tournament.rounds) userCompletedAllRounds = true;
 
-        setRoundsFinished(prev => prev + 1);
-        if (roundsFinished === tournament.rounds) userCompletedAllRounds = true;
-
-        dispatch(setTournamentParticipants(updatedParticipants));
-        const docRef = doc(db, TOURNAMENTS_DB, tournament.docId);
-        try {
-          await updateDoc(docRef, {
-            participants: updatedParticipants,
-            winner: userCompletedAllRounds ? updatedParticipants[userParticipantIndex] : null,
-          });
-        } catch (e) {
-          console.error(e);
-          throw new Error('Error on update doc');
-        }
-
-        if (userCompletedAllRounds) {
-          setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
-          dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
-        } else {
-          triggerGrid({ subject, difficulty });
-        }
-      };
-
-      updateTournament();
+    dispatch(setTournamentParticipants(updatedParticipants));
+    const docRef = doc(db, TOURNAMENTS_DB, tournament.docId);
+    try {
+      await updateDoc(docRef, {
+        participants: updatedParticipants,
+        winner: userCompletedAllRounds ? updatedParticipants[userParticipantIndex] : null,
+        status: userCompletedAllRounds ? TOURNAMENT_STATUS.FINISHED : TOURNAMENT_STATUS.STARTED,
+      });
+    } catch (e) {
+      console.error(e);
+      throw new Error('Error on update doc');
     }
-  }, [gameState]);
+
+    if (userCompletedAllRounds) {
+      setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
+      dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
+    } else {
+      triggerGrid({ subject, difficulty });
+    }
+  }, []);
+
+  useEffect( () => {
+    if (gameState === 'winner') updateTournament();
+  }, [gameState, updateTournament]);
 
   return (
     <>
