@@ -1,10 +1,23 @@
 import { GridCell } from '@/components/grid/GridCell.tsx';
-import { useAppSelector } from '@/store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
+import { primaryInput } from 'detect-it';
+import { clearSelection, stopCollecting } from '@/store/gameSlice.ts';
 
 export const Grid = () => {
   const { size, grid } = useAppSelector(state => state.game);
+  const dispatch = useAppDispatch();
+
+  const handleClearSelection = () => {
+    dispatch(stopCollecting());
+    dispatch(clearSelection());
+  };
+
   return (
     <div className="md:col-span-4">
+      <div className="w-full mb-4">
+        {primaryInput === 'touch' &&
+            <button className="btn btn-sm" onClick={handleClearSelection}>Clear selection</button>}
+      </div>
       <div
         className="inline-grid gap-2.5"
         style={{

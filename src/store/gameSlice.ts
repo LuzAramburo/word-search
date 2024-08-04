@@ -73,6 +73,12 @@ export const gameSlice = createSlice({
       state.collectedLetters = [];
       state.gameState = 'idle';
     },
+    clearSelection(state) {
+      state.grid = state.grid.map((cell) => {
+        if (cell.collected) return { ...cell, collected: false };
+        return cell;
+      });
+    },
     checkMatch(state, { payload }: PayloadAction<{ primaryInput: 'touch' | 'mouse' }>) {
       const wordToMatch = state.collectedLetters
         .map((item) => item.letter)
@@ -143,6 +149,7 @@ export const {
   showDialog,
   setCollectedLetter,
   stopCollecting,
+  clearSelection,
   checkMatch,
   setTournament,
   setTournamentParticipants,
