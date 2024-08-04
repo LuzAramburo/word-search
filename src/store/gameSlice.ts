@@ -1,4 +1,3 @@
-import { WordSearchContext } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
@@ -9,6 +8,12 @@ import { IGame } from '@/utils/game-builder.ts';
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
   show: boolean;
+}
+
+export interface WordSearchContext extends IGame {
+  gameSettingsDialog: boolean;
+  winnerDialog: boolean;
+  tournament: ITournament | null;
 }
 
 const initialState: WordSearchContext = {

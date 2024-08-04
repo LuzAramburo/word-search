@@ -7,7 +7,7 @@ export interface IParticipant extends Omit<IUser, 'email'> {
 }
 
 export const TOURNAMENT_STATUS = {
-  CREATED: 'CREATEd',
+  CREATED: 'CREATED',
   STARTED: 'STARTED',
   FINISHED: 'FINISHED',
 };

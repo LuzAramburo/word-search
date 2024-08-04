@@ -23,7 +23,6 @@ const TournamentCreate = () => {
   const [difficultySetting, setDifficultySetting] = useState<GameDifficultyType>('normal');
   const [rounds, setRounds] = useState(4);
   const [wordListSubject, setWordListSubject] = useState<WordListSubjects>('random');
-  const [displayName, setDisplayName] = useState('');
 
   const createTournament = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,12 +35,12 @@ const TournamentCreate = () => {
       }).toUpperCase();
 
       const firstParticipant: IParticipant = {
-        uid: user?.uid,
-        displayName: user?.displayName ? user?.displayName : displayName,
-        avatar: user?.avatar,
+        uid: user.uid,
+        displayName: user.displayName,
+        avatar: user.avatar,
         roundsFinished: 0,
       };
-      if (user?.avatar) firstParticipant.avatar = user?.avatar;
+      if (user?.avatar) firstParticipant.avatar = user.avatar;
 
       const tournamentSettings = {
         code: code,
@@ -90,18 +89,6 @@ const TournamentCreate = () => {
     <div className="min-h-[70vh] mx-auto md:w-2/5 flex flex-col justify-center">
       <h2 className="text-xl font-bold">Create Tournament</h2>
       <form onSubmit={e => createTournament(e)} className="max-w-xl">
-        {!user?.displayName && <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text">Display Name</span>
-          </label>
-          <input
-            type="text"
-            value={displayName}
-            className="input input-bordered w-full"
-            onChange={e => setDisplayName(e.target.value)}
-            required
-          />
-        </div>}
         <div className="flex gap-5">
           <div className="form-control w-full">
             <label className="label">
