@@ -14,10 +14,9 @@ export const Grid = () => {
 
   return (
     <div className="md:col-span-4">
-      <div className="w-full mb-4">
-        {primaryInput === 'touch' &&
-            <button className="btn btn-sm" onClick={handleClearSelection}>Clear selection</button>}
-      </div>
+      {primaryInput === 'touch' && (<div className="w-full mb-4">
+        <button className="btn btn-sm" onClick={handleClearSelection}>Clear selection</button>
+      </div>)}
       <div
         className="inline-grid gap-2.5"
         style={{
