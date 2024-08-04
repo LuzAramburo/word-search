@@ -37,7 +37,7 @@ export const GridCell = ({ item }: GridCellProps) => {
   return (
     <div
       className={classNames(
-        'w-10 h-10 flex justify-center items-center select-none cursor-pointer ',
+        'w-7 h-7 sm:w-10 sm:h-10 flex justify-center items-center select-none cursor-pointer ',
         'transition-colors border border-gray-400',
         { 'hover:bg-base-200 text-base-content': !item.collected && !item.used },
         { 'bg-primary-content text-primary': item.collected },
