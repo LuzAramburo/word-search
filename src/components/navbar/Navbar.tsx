@@ -2,6 +2,7 @@ import { showDialog } from '@/store/gameSlice.ts';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavbarAvatar } from '@/components/navbar/NavbarAvatar.tsx';
+import ThemeSwitch from '@/components/ui/ThemeSwitch.tsx';
 
 export const Navbar = () => {
   const tournament = useAppSelector(state => state.game.tournament);
@@ -30,14 +31,15 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-200 rounded mb-4 px-5">
+    <div className="flex bg-gray-200 rounded mb-4 py-3 px-5">
       <div className="flex-1">
-        <a onClick={goHome} className="cursor-pointer opacity-80 hover:opacity-100">
+        <a onClick={goHome} className="text-purple-700 cursor-pointer opacity-80 hover:opacity-100">
           <h1 className="text-2xl text-primary font-bold underline">Word Soup</h1>
         </a>
       </div>
-      <div className="flex-none">
+      <div className="flex items-center gap-3">
         <a className="btn btn-ghost btn-sm" onClick={goTournamentCreation}>🕹️Multiplayer</a>
+        <ThemeSwitch/>
         <div className="divider lg:divider-horizontal"/>
         <div className="flex items-center gap-3">
           <button
