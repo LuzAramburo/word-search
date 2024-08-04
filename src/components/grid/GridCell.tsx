@@ -10,7 +10,7 @@ type GridCellProps = {
 
 export const GridCell = ({ item }: GridCellProps) => {
   const dispatch = useAppDispatch();
-  const { gameState } = useAppSelector(state => state.game);
+  const { gameState, difficulty } = useAppSelector(state => state.game);
 
   const hoverHandler = () => {
     if (gameState === 'collecting') dispatch(setCollectedLetter(item));
@@ -39,6 +39,7 @@ export const GridCell = ({ item }: GridCellProps) => {
       className={classNames(
         'w-10 h-10 flex justify-center items-center select-none cursor-pointer ',
         'transition-colors border border-gray-400',
+        { 'w-7 h-7 sm:w-10 sm:h-10 ': difficulty !== 'easy' },
         { 'hover:bg-base-200 text-base-content': !item.collected && !item.used },
         { 'bg-primary-content text-primary': item.collected },
         { 'text-accent-content bg-accent': item.used && !item.collected },

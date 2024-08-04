@@ -5,6 +5,7 @@ import { startTournament } from '@/store/gameSlice.ts';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
 import { TOURNAMENTS_DB } from '@/utils/constants';
+import { TOURNAMENT_STATUS } from '@/types/ITournament.ts';
 
 export const TournamentLobbyOwner = () => {
   const tournament = useAppSelector(state => state.game.tournament);
@@ -17,7 +18,7 @@ export const TournamentLobbyOwner = () => {
     const docRef = doc(db, TOURNAMENTS_DB, tournament.docId);
     try {
       await updateDoc(docRef, {
-        started: true,
+        status: TOURNAMENT_STATUS.STARTED,
       });
       dispatch(startTournament());
     }catch (e) {

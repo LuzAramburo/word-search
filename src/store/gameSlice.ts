@@ -1,4 +1,3 @@
-import { WordSearchContext } from '@/utils/GameStateFactory.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IGridItem } from '@/types/IGrid.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
@@ -9,6 +8,12 @@ import { IGame } from '@/utils/game-builder.ts';
 interface ShowDialogPayload {
   name: 'gameSettingsDialog' | 'winnerDialog';
   show: boolean;
+}
+
+export interface WordSearchContext extends IGame {
+  gameSettingsDialog: boolean;
+  winnerDialog: boolean;
+  tournament: ITournament | null;
 }
 
 const initialState: WordSearchContext = {
@@ -67,6 +72,12 @@ export const gameSlice = createSlice({
     stopCollecting(state) {
       state.collectedLetters = [];
       state.gameState = 'idle';
+    },
+    clearSelection(state) {
+      state.grid = state.grid.map((cell) => {
+        if (cell.collected) return { ...cell, collected: false };
+        return cell;
+      });
     },
     checkMatch(state, { payload }: PayloadAction<{ primaryInput: 'touch' | 'mouse' }>) {
       const wordToMatch = state.collectedLetters
@@ -128,7 +139,7 @@ export const gameSlice = createSlice({
       if (state.tournament) state.tournament.participants = payload;
     },
     startTournament: (state) => {
-      if (state.tournament) state.tournament.started = true;
+      if (state.tournament) state.tournament.status = 'STARTED';
     },
   },
 });
@@ -138,6 +149,7 @@ export const {
   showDialog,
   setCollectedLetter,
   stopCollecting,
+  clearSelection,
   checkMatch,
   setTournament,
   setTournamentParticipants,

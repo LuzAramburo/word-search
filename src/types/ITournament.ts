@@ -6,12 +6,20 @@ export interface IParticipant extends Omit<IUser, 'email'> {
   roundsFinished: number;
 }
 
+export const TOURNAMENT_STATUS = {
+  CREATED: 'CREATED',
+  STARTED: 'STARTED',
+  FINISHED: 'FINISHED',
+};
+
+type tournamentStatus = keyof typeof TOURNAMENT_STATUS;
+
 export interface ITournament {
   docId: string;
   code: string;
   participants: IParticipant[];
   rounds: number;
-  started: boolean;
+  status: tournamentStatus;
   userOwner: string;
   winner: null | IParticipant;
   difficulty: GameDifficultyType;

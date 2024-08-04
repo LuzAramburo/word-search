@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.1.2] - 2024-01-03
+## [1.1.2]
 
-### Changed
-- Removed account requirement for Tournament mode. Play against your friends!
+### Fixed
+- Tournament mode works again
+
+### Added
+- Anonymous login added
 
 ## [1.1.1] - 2024-01-03
 

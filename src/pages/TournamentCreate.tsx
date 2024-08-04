@@ -35,18 +35,18 @@ const TournamentCreate = () => {
       }).toUpperCase();
 
       const firstParticipant: IParticipant = {
-        uid: user?.uid,
-        displayName: user?.displayName,
-        avatar: user?.avatar,
+        uid: user.uid,
+        displayName: user.displayName,
+        avatar: user.avatar,
         roundsFinished: 0,
       };
-      if (user?.avatar) firstParticipant.avatar = user?.avatar;
+      if (user?.avatar) firstParticipant.avatar = user.avatar;
 
       const tournamentSettings = {
         code: code,
         participants: [firstParticipant],
         rounds: rounds,
-        started: false,
+        status: 'CREATED',
         userOwner: user.uid,
         winner: null,
         difficulty: difficultySetting,
@@ -58,8 +58,10 @@ const TournamentCreate = () => {
 
       dispatch(setTournament({
         ...tournamentSettings,
+        status: 'CREATED',
         docId: docRef.id,
       }));
+
       navigate(`/tournament/${code}`);
     } catch (e) {
       setLoadingGame(false);
@@ -84,7 +86,7 @@ const TournamentCreate = () => {
   };
 
   return (
-    <div className="min-h-[70vh] mx-auto w-1/3 flex flex-col justify-center">
+    <div className="min-h-[70vh] mx-auto md:w-2/5 flex flex-col justify-center">
       <h2 className="text-xl font-bold">Create Tournament</h2>
       <form onSubmit={e => createTournament(e)} className="max-w-xl">
         <div className="flex gap-5">
@@ -138,7 +140,7 @@ const TournamentCreate = () => {
         </div>
         <div className="form-control w-full mt-4">
           <button className="btn btn-secondary">
-            {loadingGame && <span className="loading loading-spinner" />}
+            {loadingGame && <span className="loading loading-spinner"/>}
             Create
           </button>
         </div>

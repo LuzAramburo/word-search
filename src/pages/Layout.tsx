@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/firebase.ts';
 import { clearUser, setUser } from '@/store/userSlice.ts';
 import { primaryInput } from 'detect-it';
+import { uniqueNamesGenerator, colors, animals } from 'unique-names-generator';
 
 function Layout() {
   const dispatch = useAppDispatch();
@@ -17,12 +18,17 @@ function Layout() {
   useEffect(() => {
     onAuthStateChanged(auth, (userAuth) => {
       if (userAuth) {
+        const displayName= uniqueNamesGenerator({
+          dictionaries: [colors, animals],
+          length: 2,
+          separator: ' ',
+        });
         dispatch(
           setUser({
             email: userAuth.email,
             uid: userAuth.uid,
-            displayName: userAuth.displayName,
-            avatar: userAuth.photoURL,
+            displayName: userAuth.displayName ?? displayName,
+            avatar: userAuth.photoURL ?? 'https://api.dicebear.com/9.x/pixel-art/svg',
           }),
         );
       } else {

@@ -19,10 +19,12 @@ export const Avatar = ({ user, large = false, isLoading = false }: Props) => {
   );
 
   return (
-    <div className={classNames(
-      'avatar',
-      { 'placeholder':  !user?.avatar },
-    )}>
+    <div
+      className={classNames(
+        'avatar',
+        { 'placeholder':  !user?.avatar },
+      )}
+      title={user?.displayName ?? ''}>
       {user?.avatar && (
         <div className={classNames(
           'rounded',

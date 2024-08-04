@@ -38,7 +38,7 @@ const TournamentLanding = () => {
         }
         querySnapshot.forEach((doc) => {
           const tournament = doc.data() as ITournament;
-          if (tournament.started) {
+          if (tournament.status === 'STARTED') {
             dispatch(addToast({
               type: 'error',
               content: 'This tournament has already started',

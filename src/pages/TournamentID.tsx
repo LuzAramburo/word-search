@@ -17,12 +17,12 @@ const TournamentID = () => {
     if (tournament && tournament.userOwner !== user?.uid) {
       return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
         const tournament = doc.data() as ITournament;
-        if (tournament.started) dispatch(startTournament());
+        if (tournament.status === 'STARTED') dispatch(startTournament());
       });
     }
   }, []);
 
-  if (!tournament?.started) return (
+  if (tournament?.status === 'CREATED') return (
     <TournamentLobby />
   );
 
