@@ -39,7 +39,7 @@ export const TournamentLobbyOwner = () => {
             ref={idInput}
             value={tournament?.code}
             type="text"
-            className="input input-bordered py-2 text-sm text-base-content rounded-md pr-10"
+            className="input input-bordered py-2 text-sm rounded-md pr-10"
             readOnly
             onFocus={focusInput}
           />

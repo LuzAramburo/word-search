@@ -5,12 +5,12 @@ export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme();
 
   const handleClick = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    console.log(newTheme);
-    setTheme(newTheme);
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  if (theme === 'dark') return (<Moon className="cursor-pointer" onClick={handleClick}/>);
-
-  return(<Sun className="cursor-pointer" onClick={handleClick}/>);
+  return(
+    <button className="hover:bg-zinc-300 rounded-lg p-2 cursor-pointer" onClick={handleClick}>
+      {theme ==='dark' ? <Moon/> : <Sun/>}
+    </button>
+  );
 }

@@ -43,7 +43,7 @@ export const GameSettingsDialog = () => {
         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={cancelHandler}>✕</button>
       </form>
       <h1 className="font-bold text-2xl">Game Settings</h1>
-      <h4 className="py-4 font-bold text-sm uppercase text-base-content/70">Game Difficulty</h4>
+      <h4 className="py-4 font-bold text-sm uppercase">Game Difficulty</h4>
       <div className="join">
         {DIFFICULTY_OPTIONS.map((item) => (
           <input
@@ -58,7 +58,7 @@ export const GameSettingsDialog = () => {
           />
         ))}
       </div>
-      <h4 className="py-4 font-bold text-sm uppercase text-base-content/70 mt-3">Word List Theme</h4>
+      <h4 className="py-4 font-bold text-sm uppercase mt-3">Word List Theme</h4>
       <select
         className="select select-bordered w-full max-w-xs"
         onChange={wordSubjectChangeHandler}

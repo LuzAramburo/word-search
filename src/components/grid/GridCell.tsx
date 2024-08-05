@@ -40,9 +40,9 @@ export const GridCell = ({ item }: GridCellProps) => {
         'w-10 h-10 flex justify-center items-center select-none cursor-pointer ',
         'transition-colors border border-gray-400',
         { 'w-7 h-7 sm:w-10 sm:h-10 ': difficulty !== 'easy' },
-        { 'hover:bg-base-200 text-base-content': !item.collected && !item.used },
-        { 'bg-primary-content text-primary': item.collected },
-        { 'text-accent-content bg-accent': item.used && !item.collected },
+        { 'hover:bg-zinc-200 dark:hover:bg-zinc-700': !item.collected && !item.used },
+        { 'bg-violet-300 text-primary dark:bg-violet-100/80 dark:text-black': item.collected },
+        { 'text-white bg-violet-800 dark:bg-violet-300 dark:text-black': item.used && !item.collected },
         { 'opacity-40': import.meta.env.VITE_DEBUG_GRID && item.letter === 'x' },
       )}
       onMouseEnter={hoverHandler}
