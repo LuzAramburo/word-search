@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { startTournament } from '@/store/gameSlice.ts';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
-import { TOURNAMENTS_DB } from '@/utils/constants';
+import { TOURNAMENTS_DB } from '@/utils/constants.ts';
 import { TOURNAMENT_STATUS } from '@/types/ITournament.ts';
 
 export const TournamentLobbyOwner = () => {
@@ -22,7 +22,7 @@ export const TournamentLobbyOwner = () => {
       });
       dispatch(startTournament());
     }catch (e) {
-      throw new Error('Error Starting Tournament');
+      throw new Error('Error Starting tournament');
     }
   };
 

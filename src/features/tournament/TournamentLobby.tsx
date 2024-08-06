@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
-import { Avatar } from '@/components/ui/Avatar.tsx';
+import { Avatar } from '@/components/Avatar.tsx';
 import { useEffect } from 'react';
 import { setTournamentParticipants } from '@/store/gameSlice.ts';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
-import { TournamentLobbyOwner } from '@/components/Tournament/TournamentLobbyOwner.tsx';
-import { TournamentLobbyParticipant } from '@/components/Tournament/TournamentLobbyParticipant.tsx';
-import { TOURNAMENTS_DB } from '@/utils/constants';
+import { TournamentLobbyOwner } from '@/features/tournament/TournamentLobbyOwner.tsx';
+import { TournamentLobbyParticipant } from '@/features/tournament/TournamentLobbyParticipant.tsx';
+import { TOURNAMENTS_DB } from '@/utils/constants.ts';
 import { addToast } from '@/store/notificationsSlice.ts';
 
 export const TournamentLobby = () => {

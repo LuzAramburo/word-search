@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
-import { Dialog } from '@/components/ui/Dialog.tsx';
+import { Dialog } from '@/components/Dialog.tsx';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { showDialog } from '@/store/gameSlice.ts';
 import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';

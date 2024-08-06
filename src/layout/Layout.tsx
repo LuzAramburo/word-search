@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useEffect } from 'react';
 import { checkMatch, stopCollecting } from '@/store/gameSlice.ts';
-import { Notifications } from '@/components/ui/Notifications/Notifications.tsx';
+import { Notifications } from '@/components/Notifications/Notifications.tsx';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/firebase.ts';
 import { clearUser, setUser } from '@/store/userSlice.ts';

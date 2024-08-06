@@ -2,7 +2,7 @@ import { showDialog } from '@/store/gameSlice.ts';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavbarAvatar } from '@/components/navbar/NavbarAvatar.tsx';
-import ThemeSwitch from '@/components/ui/ThemeSwitch.tsx';
+import ThemeSwitch from '@/components/ThemeSwitch.tsx';
 
 export const Navbar = () => {
   const tournament = useAppSelector(state => state.game.tournament);

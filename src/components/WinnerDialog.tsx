@@ -1,4 +1,4 @@
-import { Dialog } from '@/components/ui/Dialog.tsx';
+import { Dialog } from '@/components/Dialog.tsx';
 import { useAppSelector } from '@/store/hooks.ts';
 type WinnerDialogProps = {
   title: string;

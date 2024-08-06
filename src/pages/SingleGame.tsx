@@ -1,7 +1,7 @@
-import { Grid } from '@/components/grid/Grid';
-import { WordList } from '@/components/wordList/WordList';
-import { GameSettingsDialog } from '@/components/ui/GameSettingsDialog.tsx';
-import { WinnerDialog } from '@/components/ui/WinnerDialog.tsx';
+import { Grid } from '@/features/grid/Grid';
+import { WordList } from '@/features/wordList/WordList';
+import { GameSettingsDialog } from '@/components/GameSettingsDialog.tsx';
+import { WinnerDialog } from '@/components/WinnerDialog.tsx';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import { confettiOptions } from '@/utils/confettiOptions.ts';

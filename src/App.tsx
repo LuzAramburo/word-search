@@ -1,6 +1,6 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from '@/router.tsx';
-import { ThemeProvider } from '@/components/ui/theme-provider.tsx';
+import { ThemeProvider } from '@/components/theme-provider.tsx';
 
 export const App = () => {
   return (

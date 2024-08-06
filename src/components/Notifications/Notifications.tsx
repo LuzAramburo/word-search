@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/store/hooks.ts';
-import { Toast } from '@/components/ui/Notifications/Toast.tsx';
+import { Toast } from '@/components/Notifications/Toast.tsx';
 
 export const Notifications = () => {
   const { toasts } = useAppSelector(state => state.notifications);

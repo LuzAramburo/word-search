@@ -1,4 +1,4 @@
-import { GridCell } from '@/components/grid/GridCell.tsx';
+import { GridCell } from '@/features/grid/GridCell.tsx';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { primaryInput } from 'detect-it';
 import { clearSelection, stopCollecting } from '@/store/gameSlice.ts';

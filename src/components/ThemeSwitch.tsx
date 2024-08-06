@@ -1,5 +1,5 @@
 import { Moon, Sun } from 'lucide-react';
-import { useTheme } from '@/components/ui/theme-provider.tsx';
+import { useTheme } from '@/components/theme-provider.tsx';
 
 export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme();

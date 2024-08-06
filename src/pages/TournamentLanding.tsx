@@ -33,7 +33,7 @@ const TournamentLanding = () => {
         if(querySnapshot.empty) {
           dispatch(addToast({
             type: 'error',
-            content: 'Tournament Not Found',
+            content: 'tournament Not Found',
           }));
         }
         querySnapshot.forEach((doc) => {
@@ -65,7 +65,7 @@ const TournamentLanding = () => {
         });
       } catch (e) {
         console.error(e);
-        throw new Error('Error getting Tournament');
+        throw new Error('Error getting tournament');
       }
     }
 

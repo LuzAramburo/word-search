@@ -1,6 +1,6 @@
-import { Grid } from '@/components/grid/Grid';
-import { WordList } from '@/components/wordList/WordList';
-import { WinnerDialog } from '@/components/ui/WinnerDialog.tsx';
+import { Grid } from '@/features/grid/Grid.tsx';
+import { WordList } from '@/features/wordList/WordList.tsx';
+import { WinnerDialog } from '@/components/WinnerDialog.tsx';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import { confettiOptions } from '@/utils/confettiOptions.ts';
@@ -11,7 +11,7 @@ import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase.ts';
 import { clearTournament, setTournamentParticipants, setTournamentWinner } from '@/store/gameSlice.ts';
 import { ITournament, TOURNAMENT_STATUS } from '@/types/ITournament.ts';
-import { TOURNAMENTS_DB } from '@/utils/constants';
+import { TOURNAMENTS_DB } from '@/utils/constants.ts';
 import { useNavigate } from 'react-router-dom';
 import { gridApi } from '@/store/gridApi.ts';
 
