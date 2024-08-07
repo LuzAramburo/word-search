@@ -1,4 +1,4 @@
-import { auth } from '@/firebase.ts';
+import { auth } from '@/libs/firebase.ts';
 import {
   signInWithPopup,
   GoogleAuthProvider,

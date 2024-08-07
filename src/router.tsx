@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage/>,
     children: [
       {
-        path: '/tournament',
+        path: '',
         element: <TournamentLanding/>,
       },
       {

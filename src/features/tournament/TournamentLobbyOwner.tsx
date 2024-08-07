@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { useRef } from 'react';
 import { startTournament } from '@/store/gameSlice.ts';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/firebase.ts';
+import { db } from '@/libs/firebase.ts';
 import { TOURNAMENTS_DB } from '@/utils/constants.ts';
 import { TOURNAMENT_STATUS } from '@/types/ITournament.ts';
 

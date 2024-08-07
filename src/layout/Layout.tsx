@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { checkMatch, stopCollecting } from '@/store/gameSlice.ts';
 import { Notifications } from '@/components/Notifications/Notifications.tsx';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/firebase.ts';
+import { auth } from '@/libs/firebase.ts';
 import { clearUser, setUser } from '@/store/userSlice.ts';
 import { primaryInput } from 'detect-it';
 import { uniqueNamesGenerator, colors, animals } from 'unique-names-generator';

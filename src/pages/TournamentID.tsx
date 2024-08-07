@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { TournamentLobby } from '@/features/tournament/TournamentLobby.tsx';
 import { useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '@/firebase.ts';
+import { db } from '@/libs/firebase.ts';
 import { ITournament } from '@/types/ITournament.ts';
 import { startTournament } from '@/store/gameSlice.ts';
 import TournamentGame from '@/features/tournament/TournamentGame.tsx';

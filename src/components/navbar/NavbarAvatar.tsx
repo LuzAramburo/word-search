@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { signOut } from 'firebase/auth';
-import { auth } from '@/firebase.ts';
+import { auth } from '@/libs/firebase.ts';
 import { clearUser } from '@/store/userSlice.ts';
 import { Avatar } from '@/components/Avatar.tsx';
 import { Link } from 'react-router-dom';

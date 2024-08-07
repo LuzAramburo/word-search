@@ -3,7 +3,7 @@ import { Avatar } from '@/components/Avatar.tsx';
 import { useEffect } from 'react';
 import { setTournamentParticipants } from '@/store/gameSlice.ts';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '@/firebase.ts';
+import { db } from '@/libs/firebase.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
 import { TournamentLobbyOwner } from '@/features/tournament/TournamentLobbyOwner.tsx';
 import { TournamentLobbyParticipant } from '@/features/tournament/TournamentLobbyParticipant.tsx';

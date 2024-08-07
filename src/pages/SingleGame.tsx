@@ -4,7 +4,7 @@ import { GameSettingsDialog } from '@/components/GameSettingsDialog.tsx';
 import { WinnerDialog } from '@/components/WinnerDialog.tsx';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
-import { confettiOptions } from '@/utils/confettiOptions.ts';
+import { confettiOptions } from '@/libs/confettiOptions.ts';
 import { useCallback, useEffect } from 'react';
 import type { Engine } from 'tsparticles-engine';
 import { useAppSelector } from '@/store/hooks.ts';

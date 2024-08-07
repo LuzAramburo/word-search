@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { DIFFICULTY_OPTIONS, SUBJECT_OPTIONS } from '@/utils/constants.ts';
 import { GameDifficultyType } from '@/utils/GameStateFactory.ts';
 import { useNavigate } from 'react-router-dom';
-import { db } from '@/firebase.ts';
+import { db } from '@/libs/firebase.ts';
 import { collection, addDoc } from 'firebase/firestore';
 import generateUniqueId from 'generate-unique-id';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';

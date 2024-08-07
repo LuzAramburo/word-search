@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { db } from '@/firebase.ts';
+import { db } from '@/libs/firebase.ts';
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { setTournament } from '@/store/gameSlice.ts';
 import { IParticipant, ITournament } from '@/types/ITournament.ts';
