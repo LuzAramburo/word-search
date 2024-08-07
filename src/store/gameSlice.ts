@@ -79,7 +79,7 @@ export const gameSlice = createSlice({
         return cell;
       });
     },
-    checkMatch(state, { payload }: PayloadAction<{ primaryInput: 'touch' | 'mouse' }>) {
+    checkMatch(state) {
       const wordToMatch = state.collectedLetters
         .map((item) => item.letter)
         .join('');
@@ -120,7 +120,7 @@ export const gameSlice = createSlice({
 
       if (primaryInput === 'mouse') state.collectedLetters = [];
       state.winnerDialog = allWordsFound;
-      state.gameState = allWordsFound ? 'winner' : payload.primaryInput === 'mouse' ? 'idle' : 'collecting';
+      state.gameState = allWordsFound ? 'winner' : 'idle';
       state.grid = updatedGrid;
       state.wordList = updatedWordList;
     },
