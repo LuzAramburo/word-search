@@ -42,15 +42,15 @@ function Layout() {
   };
 
   const mouseUpHandler = () => {
-    if (primaryInput === 'mouse' && gameState !== 'winner') checkMatchHandler('mouse');
+    if (primaryInput === 'mouse' && gameState !== 'winner') checkMatchHandler();
   };
 
   const touchEndHandler = () => {
-    if (primaryInput === 'touch' && gameState !== 'winner') checkMatchHandler('touch');
+    if (primaryInput === 'touch' && gameState !== 'winner') checkMatchHandler();
   };
 
-  const checkMatchHandler = (primaryInput: 'mouse' | 'touch') => {
-    if (collectedLetters.length > 0 && gameState !== 'winner') dispatch(checkMatch({ primaryInput }));
+  const checkMatchHandler = () => {
+    if (collectedLetters.length > 0 && gameState !== 'winner') dispatch(checkMatch());
   };
 
   return (
