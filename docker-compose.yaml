@@ -1,0 +1,14 @@
+services:
+  word-search:
+    build:
+      context: .
+    container_name: word-search
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
