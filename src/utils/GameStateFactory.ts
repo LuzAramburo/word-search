@@ -6,7 +6,7 @@ export type GameStateType = 'idle' | 'collecting' | 'winner';
 
 export type GameDifficultyType = 'easy' | 'normal' | 'hard';
 
-export interface GameStateFactoryResponse extends IGame {}
+export type GameStateFactoryResponse = IGame;
 
 export const generateGrid = (arg: GridParams) => {
   const difficulty = arg.difficulty || defaultDifficulty();
