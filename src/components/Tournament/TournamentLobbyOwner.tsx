@@ -21,7 +21,7 @@ export const TournamentLobbyOwner = () => {
         status: TOURNAMENT_STATUS.STARTED,
       });
       dispatch(startTournament());
-    }catch (e) {
+    } catch {
       throw new Error('Error Starting Tournament');
     }
   };
