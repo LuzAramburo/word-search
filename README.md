@@ -22,8 +22,23 @@ To run the project locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/yourusername/word-soup.git`
 2. Navigate to the project directory: `cd word-soup`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm run dev`
+3. Copy `.env.example` to `.env` and fill in your Firebase credentials
+4. Install dependencies: `npm install`
+5. Start the development server: `npm run dev`
+
+### Docker
+
+You can also run the project with Docker Compose:
+
+```bash
+# Development — hot reload on localhost:5173
+docker compose up dev
+
+# Local production simulation — nginx on localhost:8080
+docker compose up prod
+```
+
+> The `prod` service builds the static bundle and serves it with nginx. This is for local testing only — the project is deployed to Netlify via GitHub.
 
 ## Contributing
 
