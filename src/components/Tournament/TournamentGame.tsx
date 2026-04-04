@@ -34,6 +34,9 @@ function Game() {
 
   const navigate = useNavigate();
 
+  const tournamentDocId = tournament?.docId;
+  const uid = user?.uid;
+
   const goToCreateTournament = () => {
     dispatch(clearTournament());
     navigate('/tournament/create');
@@ -44,21 +47,21 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    if (!tournament) return;
+    if (!tournamentDocId) return;
 
-    return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
+    return onSnapshot(doc(db, TOURNAMENTS_DB, tournamentDocId), (doc) => {
       const tournamentInDB = doc.data() as ITournament;
-      if (tournamentInDB.winner && tournamentInDB.winner.uid !== user?.uid) {
+      if (tournamentInDB.winner && tournamentInDB.winner.uid !== uid) {
         setWinnerDialogText({ title: `${tournamentInDB.winner.displayName} Won!`, subtitle: 'Another round?' });
         dispatch(setTournamentWinner(tournamentInDB.winner));
       }
     });
-  }, []);
+  }, [dispatch, tournamentDocId, uid]);
 
   const updateTournament = useCallback(async () => {
-    if (!tournament) return;
+    if (!tournamentDocId) return;
     const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
-    let userCompletedAllRounds = false;
+    let isLastRound = false;
 
     const updatedParticipants = [...tournament.participants];
     updatedParticipants[userParticipantIndex] = {
@@ -67,28 +70,28 @@ function Game() {
     };
 
     setRoundsFinished(prev => prev + 1);
-    if (roundsFinished === tournament.rounds) userCompletedAllRounds = true;
+    if (roundsFinished === tournament.rounds) isLastRound = true;
 
     dispatch(setTournamentParticipants(updatedParticipants));
-    const docRef = doc(db, TOURNAMENTS_DB, tournament.docId);
+    const docRef = doc(db, TOURNAMENTS_DB, tournamentDocId);
     try {
       await updateDoc(docRef, {
         participants: updatedParticipants,
-        winner: userCompletedAllRounds ? updatedParticipants[userParticipantIndex] : null,
-        status: userCompletedAllRounds ? TOURNAMENT_STATUS.FINISHED : TOURNAMENT_STATUS.STARTED,
+        winner: isLastRound ? updatedParticipants[userParticipantIndex] : null,
+        status: isLastRound ? TOURNAMENT_STATUS.FINISHED : TOURNAMENT_STATUS.STARTED,
       });
     } catch (e) {
       console.error(e);
       throw new Error('Error on update doc');
     }
 
-    if (userCompletedAllRounds) {
+    if (isLastRound) {
       setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
       dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
     } else {
       triggerGrid({ subject, difficulty });
     }
-  }, []);
+  }, [tournamentDocId, dispatch]);
 
   useEffect( () => {
     if (gameState === 'winner') updateTournament();
