@@ -58,9 +58,9 @@ function Game() {
     });
   }, [dispatch, tournamentDocId, uid]);
 
-  const updateTournament = useCallback(async () => {
+  const handleRoundEnd = useCallback(async () => {
     if (!tournamentDocId) return;
-    const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
+    const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === uid);
     let isLastRound = false;
 
     const updatedParticipants = [...tournament.participants];
@@ -91,11 +91,11 @@ function Game() {
     } else {
       triggerGrid({ subject, difficulty });
     }
-  }, [tournamentDocId, dispatch]);
+  }, [tournamentDocId, dispatch, difficulty, subject, uid, triggerGrid]);
 
   useEffect( () => {
-    if (gameState === 'winner') updateTournament();
-  }, [gameState, updateTournament]);
+    if (gameState === 'winner') handleRoundEnd();
+  }, [gameState, handleRoundEnd]);
 
   return (
     <>
