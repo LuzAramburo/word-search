@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks.ts';
 import { setIsRedirected } from '@/store/userSlice.ts';
@@ -9,20 +9,17 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const user = useAppSelector(state => state.user.user);
-  const tournament = useAppSelector(state => state.game);
+  const tournament = useAppSelector(state => state.game.tournament);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    if (!user) dispatch(setIsRedirected(pathname));
-  }, []);
-
-  if (!tournament && pathname !== '/tournament/create') {
-    return <Navigate to="/tournament/create" />;
+  if (!user) {
+    dispatch(setIsRedirected(pathname));
+    return <Navigate to="/login" />;
   }
 
-  if (!user) {
-    return <Navigate to="/login" />;
+  if (!tournament && pathname !== '/tournament' && pathname !== '/tournament/create') {
+    return <Navigate to="/tournament" />;
   }
 
   return children;
