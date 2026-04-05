@@ -14,6 +14,7 @@ import { ITournament, TOURNAMENT_STATUS } from '@/types/ITournament.ts';
 import { TOURNAMENTS_DB } from '@/utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { gridApi } from '@/store/gridApi.ts';
+import { store } from '@/store/store.ts';
 
 function Game() {
   const {
@@ -30,12 +31,12 @@ function Game() {
     title: '',
     subtitle: '',
   });
-  const [roundsFinished, setRoundsFinished] = useState(1);
-
   const navigate = useNavigate();
 
   const tournamentDocId = tournament?.docId;
   const uid = user?.uid;
+  const userParticipant = tournament?.participants?.find(p => p.uid === uid);
+  const roundsFinished = (userParticipant?.roundsFinished ?? 0) + 1;
 
   const goToCreateTournament = () => {
     dispatch(clearTournament());
@@ -59,25 +60,26 @@ function Game() {
   }, [dispatch, tournamentDocId, uid]);
 
   const handleRoundEnd = useCallback(async () => {
-    if (!tournamentDocId) return;
-    const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === uid);
-    let isLastRound = false;
+    const { tournament: freshTournament } = store.getState().game;
+    if (!freshTournament || !tournamentDocId) return;
 
-    const updatedParticipants = [...tournament.participants];
-    updatedParticipants[userParticipantIndex] = {
-      ...updatedParticipants[userParticipantIndex],
-      roundsFinished: updatedParticipants[userParticipantIndex].roundsFinished + 1,
+    const participants = freshTournament.participants;
+    const userIdx = participants.findIndex(p => p.uid === uid);
+
+    const updatedParticipants = [...participants];
+    updatedParticipants[userIdx] = {
+      ...updatedParticipants[userIdx],
+      roundsFinished: updatedParticipants[userIdx].roundsFinished + 1,
     };
 
-    setRoundsFinished(prev => prev + 1);
-    if (roundsFinished === tournament.rounds) isLastRound = true;
+    const isLastRound = updatedParticipants[userIdx].roundsFinished === freshTournament.rounds;
 
     dispatch(setTournamentParticipants(updatedParticipants));
     const docRef = doc(db, TOURNAMENTS_DB, tournamentDocId);
     try {
       await updateDoc(docRef, {
         participants: updatedParticipants,
-        winner: isLastRound ? updatedParticipants[userParticipantIndex] : null,
+        winner: isLastRound ? updatedParticipants[userIdx] : null,
         status: isLastRound ? TOURNAMENT_STATUS.FINISHED : TOURNAMENT_STATUS.STARTED,
       });
     } catch (e) {
@@ -87,11 +89,11 @@ function Game() {
 
     if (isLastRound) {
       setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
-      dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
+      dispatch(setTournamentWinner(updatedParticipants[userIdx]));
     } else {
       triggerGrid({ subject, difficulty });
     }
-  }, [tournamentDocId, dispatch, difficulty, subject, uid, triggerGrid]);
+  }, [tournamentDocId, uid, dispatch, triggerGrid, subject, difficulty]);
 
   useEffect( () => {
     if (gameState === 'winner') handleRoundEnd();
