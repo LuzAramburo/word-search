@@ -10,7 +10,7 @@ const initialState: notificationsState = {
   toasts: [],
 };
 
-interface setTostPayload {
+interface setToastPayload {
   type?: ToastTypes;
   content: string;
 }
@@ -19,7 +19,7 @@ export const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {
-    addToast: ({ toasts }, { payload }: PayloadAction<setTostPayload>) => {
+    addToast: ({ toasts }, { payload }: PayloadAction<setToastPayload>) => {
       const toastFormatted: IToast = {
         type: 'info',
         ...payload,
