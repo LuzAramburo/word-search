@@ -139,7 +139,7 @@ const TournamentCreate = () => {
           </select>
         </div>
         <div className="form-control w-full mt-4">
-          <button className="btn btn-secondary">
+          <button className="btn btn-primary">
             {loadingGame && <span className="loading loading-spinner"/>}
             Create
           </button>
