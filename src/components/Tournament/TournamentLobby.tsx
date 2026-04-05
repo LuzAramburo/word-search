@@ -14,20 +14,22 @@ export const TournamentLobby = () => {
   const tournament = useAppSelector(state => state.game.tournament);
   const user = useAppSelector(state => state.user.user);
   const dispatch = useAppDispatch();
+  const tournamentDocId = tournament?.docId;
+  const uid = user?.uid;
 
   useEffect(() => {
-    if (!tournament) return;
-    return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
-      const tournament = doc.data() as ITournament;
-      dispatch(setTournamentParticipants(tournament.participants));
-      const lastParticipant = tournament.participants.slice(-1)[0];
-      if (lastParticipant.uid !== user?.uid) {
+    if (!tournamentDocId) return;
+    return onSnapshot(doc(db, TOURNAMENTS_DB, tournamentDocId), (snapshot) => {
+      const data = snapshot.data() as ITournament;
+      dispatch(setTournamentParticipants(data.participants));
+      const lastParticipant = data.participants.slice(-1)[0];
+      if (lastParticipant.uid !== uid) {
         dispatch(addToast({
           content: 'A new participant joined!',
         }));
       }
     });
-  }, []);
+  }, [tournamentDocId, uid, dispatch]);
 
 
   return (

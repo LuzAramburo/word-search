@@ -12,15 +12,18 @@ const TournamentID = () => {
   const { tournament } = useAppSelector(state => state.game);
   const { user } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  const tournamentDocId = tournament?.docId;
+  const tournamentOwner = tournament?.userOwner;
+  const uid = user?.uid;
 
   useEffect(() => {
-    if (tournament && tournament.userOwner !== user?.uid) {
-      return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
-        const tournament = doc.data() as ITournament;
-        if (tournament.status === 'STARTED') dispatch(startTournament());
+    if (tournamentDocId && tournamentOwner !== uid) {
+      return onSnapshot(doc(db, TOURNAMENTS_DB, tournamentDocId), (snapshot) => {
+        const data = snapshot.data() as ITournament;
+        if (data.status === 'STARTED') dispatch(startTournament());
       });
     }
-  }, []);
+  }, [tournamentDocId, tournamentOwner, uid, dispatch]);
 
   if (tournament?.status === 'CREATED') return (
     <TournamentLobby />

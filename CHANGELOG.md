@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2026-04-04
+
+### Fixed
+- Tournament game `handleRoundEnd` no longer causes infinite re-renders (stale closure fix)
+- `ProtectedRoute` correctly redirects to tournament lobby when no tournament is in store
+- Fixed `exhaustive-deps` lint warning in Toast component
+- Fixed typo in `setToastPayload` interface name
+
+### Changed
+- Updated Firebase and related dependencies to latest versions
+- Removed unused `react-firebase-hooks` dependency
+
 ## [1.2.0] - 2026-04-03
 
 ### Added

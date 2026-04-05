@@ -14,6 +14,7 @@ import { ITournament, TOURNAMENT_STATUS } from '@/types/ITournament.ts';
 import { TOURNAMENTS_DB } from '@/utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { gridApi } from '@/store/gridApi.ts';
+import { store } from '@/store/store.ts';
 
 function Game() {
   const {
@@ -30,9 +31,12 @@ function Game() {
     title: '',
     subtitle: '',
   });
-  const [roundsFinished, setRoundsFinished] = useState(1);
-
   const navigate = useNavigate();
+
+  const tournamentDocId = tournament?.docId;
+  const uid = user?.uid;
+  const userParticipant = tournament?.participants?.find(p => p.uid === uid);
+  const roundsFinished = (userParticipant?.roundsFinished ?? 0) + 1;
 
   const goToCreateTournament = () => {
     dispatch(clearTournament());
@@ -44,55 +48,56 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    if (!tournament) return;
+    if (!tournamentDocId) return;
 
-    return onSnapshot(doc(db, TOURNAMENTS_DB, tournament.docId), (doc) => {
+    return onSnapshot(doc(db, TOURNAMENTS_DB, tournamentDocId), (doc) => {
       const tournamentInDB = doc.data() as ITournament;
-      if (tournamentInDB.winner && tournamentInDB.winner.uid !== user?.uid) {
+      if (tournamentInDB.winner && tournamentInDB.winner.uid !== uid) {
         setWinnerDialogText({ title: `${tournamentInDB.winner.displayName} Won!`, subtitle: 'Another round?' });
         dispatch(setTournamentWinner(tournamentInDB.winner));
       }
     });
-  }, []);
+  }, [dispatch, tournamentDocId, uid]);
 
-  const updateTournament = useCallback(async () => {
-    if (!tournament) return;
-    const userParticipantIndex = tournament.participants.findIndex(participant => participant.uid === user?.uid);
-    let userCompletedAllRounds = false;
+  const handleRoundEnd = useCallback(async () => {
+    const { tournament: freshTournament } = store.getState().game;
+    if (!freshTournament || !tournamentDocId) return;
 
-    const updatedParticipants = [...tournament.participants];
-    updatedParticipants[userParticipantIndex] = {
-      ...updatedParticipants[userParticipantIndex],
-      roundsFinished: updatedParticipants[userParticipantIndex].roundsFinished + 1,
+    const participants = freshTournament.participants;
+    const userIdx = participants.findIndex(p => p.uid === uid);
+
+    const updatedParticipants = [...participants];
+    updatedParticipants[userIdx] = {
+      ...updatedParticipants[userIdx],
+      roundsFinished: updatedParticipants[userIdx].roundsFinished + 1,
     };
 
-    setRoundsFinished(prev => prev + 1);
-    if (roundsFinished === tournament.rounds) userCompletedAllRounds = true;
+    const isLastRound = updatedParticipants[userIdx].roundsFinished === freshTournament.rounds;
 
     dispatch(setTournamentParticipants(updatedParticipants));
-    const docRef = doc(db, TOURNAMENTS_DB, tournament.docId);
+    const docRef = doc(db, TOURNAMENTS_DB, tournamentDocId);
     try {
       await updateDoc(docRef, {
         participants: updatedParticipants,
-        winner: userCompletedAllRounds ? updatedParticipants[userParticipantIndex] : null,
-        status: userCompletedAllRounds ? TOURNAMENT_STATUS.FINISHED : TOURNAMENT_STATUS.STARTED,
+        winner: isLastRound ? updatedParticipants[userIdx] : null,
+        status: isLastRound ? TOURNAMENT_STATUS.FINISHED : TOURNAMENT_STATUS.STARTED,
       });
     } catch (e) {
       console.error(e);
       throw new Error('Error on update doc');
     }
 
-    if (userCompletedAllRounds) {
+    if (isLastRound) {
       setWinnerDialogText({ title: 'You Won!', subtitle: 'Congratulations. Another round?' });
-      dispatch(setTournamentWinner(updatedParticipants[userParticipantIndex]));
+      dispatch(setTournamentWinner(updatedParticipants[userIdx]));
     } else {
       triggerGrid({ subject, difficulty });
     }
-  }, []);
+  }, [tournamentDocId, uid, dispatch, triggerGrid, subject, difficulty]);
 
   useEffect( () => {
-    if (gameState === 'winner') updateTournament();
-  }, [gameState, updateTournament]);
+    if (gameState === 'winner') handleRoundEnd();
+  }, [gameState, handleRoundEnd]);
 
   return (
     <>
