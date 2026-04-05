@@ -18,7 +18,7 @@ export const Toast = ({ toast }: ToastProps) => {
   useEffect(() => {
     const autoRemoveToast = setTimeout(() => dispatch(removeToast(toast.id)), toast.timer);
     return () => clearTimeout(autoRemoveToast);
-  }, []);
+  }, [dispatch, toast.id, toast.timer]);
 
   return (
     <div className={classNames(
