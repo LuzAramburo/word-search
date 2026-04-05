@@ -43,7 +43,8 @@ export const Navbar = () => {
           <button
             className="btn btn-square btn-ghost btn-sm"
             onClick={openConfigHandler}
-            disabled={location.pathname.includes('tournament')}
+            disabled={location.pathname.includes('tournament') || location.pathname.includes('login')}
+            title="Game Settings"
           >
             <svg
               className="inline-block w-5 h-5"

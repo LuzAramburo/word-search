@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1] - 2026-04-04
+
+### Changed
+- DaisyUI theme switched to `night`
+- Avatar placeholder now shows initials from both words in the display name (e.g. "Turquoise Cheese" → "TC")
+- Avatar placeholder background is now a deterministic color from the Tailwind 300-level palette, derived from the user's display name
+- Fallback display name (for users without a Firebase display name) is now stable across route changes — seeded from the user's uid
+
+### Fixed
+- Navbar and TournamentCreate button states and titles corrected
+
 ## [1.3.0] - 2026-04-04
 
 ### Fixed

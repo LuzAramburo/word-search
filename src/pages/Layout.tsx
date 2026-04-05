@@ -18,17 +18,18 @@ function Layout() {
   useEffect(() => {
     onAuthStateChanged(auth, (userAuth) => {
       if (userAuth) {
-        const displayName= uniqueNamesGenerator({
+        const displayName = uniqueNamesGenerator({
           dictionaries: [colors, animals],
           length: 2,
           separator: ' ',
+          seed: userAuth.uid,
         });
         dispatch(
           setUser({
             email: userAuth.email,
             uid: userAuth.uid,
             displayName: userAuth.displayName ?? displayName,
-            avatar: userAuth.photoURL ?? 'https://api.dicebear.com/9.x/pixel-art/svg',
+            avatar: userAuth.photoURL ?? null,
           }),
         );
       } else {
