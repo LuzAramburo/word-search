@@ -1,14 +1,17 @@
 # ── base: shared dependency install ──────────────────────────────────────────
 FROM node:22-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
 # ── dev: hot-reload development server ───────────────────────────────────────
 FROM base AS dev
 COPY . .
 EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["pnpm", "run", "dev", "--", "--host"]
 
 # ── build: compile for production (VITE_* vars baked in at build time) ───────
 FROM base AS build
@@ -19,7 +22,7 @@ ARG VITE_FIREBASE_PROJECT_ID
 ARG VITE_FIREBASE_STORAGE_BUCKET
 ARG VITE_FIREBASE_MESSAGING_SENDER_ID
 ARG VITE_FIREBASE_APP_ID
-RUN npm run build
+RUN pnpm run build
 
 # ── prod: nginx serves compiled static files (local testing only) ─────────────
 FROM nginx:stable-alpine AS prod
